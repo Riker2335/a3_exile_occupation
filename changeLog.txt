@@ -1,4 +1,18 @@
 =================================================================================
+V48 (16-06-2016)
+=================================================================================
+Added the setting SC_useMapOverrides, setting to true activates the map specific 
+overrides at the bottom of the config.sqf, false ignores the settings
+
+Removed the over write for DMS_Enable_RankChange
+
+Added in checks for the transport module to only spawn the public transport if there
+are more than 1 destination map markers (in the dev branch map markers are not 
+displaying correctly intermittently which is causing issues). Check the server rpt
+if your transport is not spawning and you have activated it.
+
+
+=================================================================================
 V47 (13-06-2016)
 =================================================================================
 Fixed a bug in Occupation places modules

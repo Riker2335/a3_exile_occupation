@@ -16,11 +16,6 @@ _scaleAI			= SC_scaleAI;
 _side               = "bandit"; 
 _okToSpawn          = true;
 
-if(SC_occupyPlacesSurvivors) then 
-{ 
-    if(!isNil "DMS_Enable_RankChange") then { DMS_Enable_RankChange = true;  };
-};
-
 
 // more than _scaleAI players on the server and the max AI count drops per additional player
 _currentPlayerCount = count playableUnits;

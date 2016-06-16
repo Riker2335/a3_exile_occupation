@@ -15,6 +15,7 @@
 
 
 SC_debug 				    = false;			    // set to true to turn on debug features (not for live servers) 
+SC_useMapOverrides          = false;                // set to true to enable over riding options per map (see the bottom of this file for examples)
 SC_extendedLogging          = false;                // set to true for additional logging
 SC_processReporter          = true;                 // log the a list of active server processes every 60 seconds (useful for debugging server problems)
 SC_infiSTAR_log			    = true;		            // true Use infiSTAR logging, false logs to server rpt
@@ -105,6 +106,7 @@ SC_occupySea				= false;		        // true if you want to have roaming AI boats
 
 SC_occupyTransport 	        = true;					// true if you want pubic transport (travels between traders)
 SC_occupyTransportClass 	= ["Exile_Chopper_Mohawk_FIA","Exile_Chopper_Mohawk_FIA","Exile_Car_LandRover_Urban"]; // to always use the same vehicle, specify one option only
+
 SC_occupyTransportStartPos  = [];                   // if empty defaults to map centre
 SC_occupyTransportAnnounce  = false;                 // true if you want the pilot/driver to talk to passengers in vehicle chat, false if not
 SC_occupyTransportGetIn     = [];
@@ -196,7 +198,7 @@ SC_maxNumberofVehicles 	    = 4;
 
 // Array of arrays of ground vehicles which can be used by AI patrols (the number next to next vehicle is the maximum amount of that class allowed, 0 for no limit)				
 SC_VehicleClassToUse 		=   [	
-                                    ["Exile_Car_LandRover_Green",0],
+									["Exile_Car_LandRover_Green",0],
                                     ["Exile_Bike_QuadBike_Black",2],
                                     ["Exile_Car_UAZ_Open_Green",2] 
                                 ];
@@ -269,7 +271,7 @@ SC_buildings                = [	"Land_TentHangar_V1_F","Land_Hangar_F",
                                 ]; 
 
 // namalsk specific settings (if you want to override settings for specific maps if you run multiple servers)
-if (worldName == 'Namalsk') then 
+if (worldName == 'Namalsk' AND SC_useMapOverrides) then 
 { 
 	SC_maxAIcount 			= 80; 
 	SC_occupySky			= false;
@@ -281,15 +283,26 @@ if (worldName == 'Namalsk') then
 };
 
 // Napf specific settings (if you want to override settings for specific maps if you run multiple servers)
-if (worldName == 'Napf') then 
+if (worldName == 'Napf' AND SC_useMapOverrides) then 
 { 
 	SC_occupyTraders		= true;
 };
 
 // Napf specific settings (if you want to override settings for specific maps if you run multiple servers)
-if (worldName == 'Tanoa') then 
+if (worldName == 'Tanoa' AND SC_useMapOverrides) then 
 { 
 	SC_occupyTraders		= true;
+	SC_BanditWeapon 		= [	"arifle_MX_khk_F","arifle_MX_GL_khk_F","arifle_MX_SW_khk_F","arifle_MXC_khk_F","arifle_MXM_khk_F","arifle_AK12_F","arifle_AK12_GL_F","arifle_AKM_F",
+								"arifle_AKS_F","arifle_ARX_blk_F","arifle_ARX_ghex_F","arifle_ARX_hex_F","arifle_CTAR_blk_F","arifle_CTAR_GL_blk_F","arifle_CTARS_blk_F","arifle_SPAR_01_blk_F","arifle_SPAR_01_khk_F",
+								"arifle_SPAR_01_snd_F","arifle_SPAR_01_GL_blk_F","arifle_SPAR_01_GL_khk_F","arifle_SPAR_01_GL_snd_F","arifle_SPAR_02_blk_F","arifle_SPAR_02_khk_F","arifle_SPAR_02_snd_F",
+								"arifle_SPAR_03_blk_F","arifle_SPAR_03_khk_F","arifle_SPAR_03_snd_F"];
+	SC_BanditUniforms		= [	"U_I_C_Soldier_Para_1_F","U_I_C_Soldier_Para_2_F","U_I_C_Soldier_Para_3_F","U_I_C_Soldier_Para_4_F","U_I_C_Soldier_Para_5_F","U_I_C_Soldier_Bandit_1_F","U_I_C_Soldier_Bandit_2_F",
+								"U_I_C_Soldier_Bandit_3_F","U_I_C_Soldier_Bandit_4_F","U_I_C_Soldier_Bandit_5_F","U_I_C_Soldier_Camo_F","U_B_CTRG_Soldier_urb_1_F","U_B_CTRG_Soldier_urb_2_F","U_B_CTRG_Soldier_urb_3_F"];
+	SC_VehicleClassToUse 		=   [	
+									["B_GEN_Offroad_01_gen_F",0],
+									["C_Offroad_02_unarmed_F",0],
+									["I_C_Offroad_02_unarmed_F",0]
+                                ];
 };
 
 if (SC_debug) then
@@ -297,15 +310,15 @@ if (SC_debug) then
     SC_extendedLogging          = true;
     SC_processReporter          = true;
     SC_mapMarkers			    = true;
-    //SC_occupyPlaces 			= true;
-    //SC_occupyVehicle			= true;
-    //SC_occupyMilitary 		    = true;
-    //SC_occupyStatic	 		    = true;
-    //SC_occupySky				= true;
-    //SC_occupySea				= true;
-    //SC_occupyTransport			= true;
-    //SC_occupyLootCrates		    = true;
-    //SC_occupyHeliCrashes		= true;	
+    SC_occupyPlaces 			= true;
+    SC_occupyVehicle			= true;
+    SC_occupyMilitary 		    = true;
+    SC_occupyStatic	 		    = true;
+    SC_occupySky				= true;
+    SC_occupySea				= true;
+    SC_occupyTransport			= true;
+    SC_occupyLootCrates		    = true;
+    SC_occupyHeliCrashes		= true;	
     SC_maxNumberofVehicles 	    = 4;
     SC_maxNumberofBoats		    = 1;
     SC_maxNumberofHelis		    = 1;

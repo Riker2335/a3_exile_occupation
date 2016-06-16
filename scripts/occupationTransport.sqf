@@ -34,7 +34,7 @@ if(SC_occupyTransportClassToUse isKindOf "LandVehicle") then
     _nearestRoadPos = position (_nearRoads select 0);
     _spawnLocation = [_nearestRoadPos select 0, _nearestRoadPos select 1, 0];    
     _transportSpeed = "LIMITED";
-    _transportBehaviour = "CARELESS";
+    _transportBehaviour = "SAFE";
     _transportWaitingTime = 10;
 } 
 else
@@ -47,182 +47,198 @@ else
 };   
 
 
-// Create the driver/pilot and ensure he doest react to gunfire or being shot at.
-_group = createGroup resistance;
-_group setCombatMode "BLUE";
-_group setVariable ["DMS_AllowFreezing",false,true];
-
-// Spawn Vehicle
-
-if(_transportType == "heli") then 
-{
-    _transport = createVehicle [SC_occupyTransportClassToUse, _spawnLocation, [], 0, "NONE"];
-    _transport setVehiclePosition [_spawnLocation, [], 0, "FLY"];
-	_transport setVariable ["vehicleID", _spawnLocation, true];  
-	_transport setFuel 1;
-	_transport setDamage 0;
-	_transport engineOn true;
-	_transport flyInHeight 100;    
-}
-else
-{
-    _transport = createVehicle [SC_occupyTransportClassToUse, _spawnLocation, [], 0, "CAN_COLLIDE"];    
-};
-
-sleep 0.2;
-
-if(isNull _transport) exitWith 
-{  
-    _logDetail = format ["[OCCUPATION:transport]:: %1 failed to spawn, check it is a valid vehicle class name",SC_occupyTransportClassToUse];
-    [_logDetail] call SC_fnc_log;
-};
-
-_transport addEventHandler ["handleDamage", { false }];
-_transport allowdamage false;
-
-if( _transportType == "land") then
-{
-    //_transport setObjectTextureGlobal [0,"#(argb,8,8,3)color(0.518,0.519,0.7,0.2)"];    
-}
-else
-{
-    _transport setObjectTextureGlobal [0,"#(argb,8,8,3)color(0.518,0.519,0.7,0.2)"];
-    _transport setObjectTextureGlobal [1,"#(argb,8,8,3)color(0.518,0.519,0.7,0.2)"];
-    _transport setObjectTextureGlobal [2,"#(argb,8,8,3)color(0.518,0.519,0.7,0.2)"];    
-};
-
-
-_group addVehicle _transport;
-	
-_transport enableCopilot false;
-
-_transportDriver = _group createUnit [DMS_AI_Classname, _spawnLocation, [], 0,"FORM"];
-removeGoggles _transportDriver;
-_transportDriver forceAddUniform "U_IG_Guerilla3_1";
-_transportDriver addVest "V_TacVest_blk_POLICE";
-_transportDriver addHeadgear "H_Cap_blk";
-removeBackpackGlobal _transportDriver;
-_transportDriver addBackpackGlobal "B_Parachute";
-_transportDriver disableAI 'AUTOTARGET'; 
-_transportDriver disableAI 'TARGET'; 
-_transportDriver disableAI 'SUPPRESSION';
-_transportDriver setCaptive true;
-_transportDriver allowDamage false; 
-_transportDriver assignasdriver _transport;
-_transportDriver moveInDriver _transport;
-[_transportDriver] orderGetin true;
-_transport lockDriver true;
-_transport lockTurret [[0],true];
-
-SC_transportArray = SC_transportArray + [_transport];
-_transport setVariable ["SC_assignedDriver", _transportDriver,true];
-_transport setVariable ["SC_transport", true,true];
-_transport setVariable ["SC_vehicleSpawnLocation", _spawnLocation,true];
-_transportDriver setVariable ["DMS_AssignedVeh",_transport]; 
-_transportDriver setVariable ["SC_lastSpoke", time, true]; 
-_transport addEventHandler ["getin", "_this call SC_fnc_getOnBus;"];
-_transport addEventHandler ["getout", "_this call SC_fnc_getOffBus;"];
-
-clearBackpackCargoGlobal _transport;
-clearItemCargoGlobal _transport;
-clearMagazineCargoGlobal _transport;
-clearWeaponCargoGlobal _transport;
-_transport setVariable ["ExileIsPersistent", false];
-_transport setVariable["vehPos",_spawnLocation,true];
-_transport setFuel 1;
-
-_logDetail = format['[OCCUPATION:transport] Vehicle %1 spawned @ %2',SC_occupyTransportClassToUse,_spawnLocation];
-[_logDetail] call SC_fnc_log;
-
+// Check there are enough waypoints to use   
 _markerCount = 0;	
 {
-	_markerName = _x;
-	_markerPos = getMarkerPos _markerName;
-	if (markerType _markerName == "ExileTraderZone" OR markerType _markerName == "o_unknown") then 
-	{
-		_wp = _group addWaypoint [_markerPos, 100];
-		_wp setWaypointType "MOVE";
-        _wp setWaypointBehaviour _transportBehaviour;
-        _wp setWaypointspeed _transportSpeed;
-        
-		_wp = _group addWaypoint [_markerPos, 25];
-		_wp setWaypointType "TR UNLOAD";
-        _wp setWaypointBehaviour "SAFE";
-        _wp setWaypointspeed "LIMITED";
-        _wp setWaypointTimeout [_transportWaitingTime,_transportWaitingTime,_transportWaitingTime]; 
+    _markerName = _x;
+    _markerPos = getMarkerPos _markerName;
+    if (markerType _markerName == "ExileTraderZone" OR markerType _markerName == "o_unknown") then 
+    { 
         _markerCount = _markerCount + 1;
-	};
-  
+    };
+
 } forEach allMapMarkers;
 
-if(_markerCount == 0) exitWith 
+if(_markerCount < 2) then 
 {  
-    _logDetail = format ["[OCCUPATION:transport]:: failed to find any ExileTraderZone or o_unknown map markers @ %1",time];
+    _logDetail = format ["[OCCUPATION:transport]:: failed to find more than 1 ExileTraderZone or o_unknown map markers @ %1",time];
     [_logDetail] call SC_fnc_log;
-};
-
-_logDetail = format ["[OCCUPATION:transport]:: Found %1 markers to use as pickup points @ %2",_markerCount,time];
-[_logDetail] call SC_fnc_log;
-
-_textures = getObjectTextures _transport;
-
-_logDetail = format ["[OCCUPATION:transport]:: textures for vehicle are: %1",_textures];
-[_logDetail] call SC_fnc_log;
-
-// Add a final CYCLE
-_wp = _group addWaypoint [_spawnLocation, 20];
-_wp setWaypointType "CYCLE";
-_wp setWaypointBehaviour _transportBehaviour;
-_wp setWaypointspeed _transportSpeed; 
-_wp setWaypointTimeout [_transportWaitingTime,_transportWaitingTime,_transportWaitingTime]; 
-
- 
-_transportPos = position _transport;
-_mk = createMarker ["transportLocation",_transportPos];
-
-if(_transportType == "land") then
-{
-    "transportLocation" setMarkerType "loc_BusStop";
-    "transportLocation" setMarkerText "Occupation Public Bus";    
 }
 else
 {
-    "transportLocation" setMarkerType "c_air";
-    "transportLocation" setMarkerText "Occupation Airlines"; 
-    "transportLocation" setMarkerColor "ColorBLUFOR";      
-};
+    // Create the driver/pilot and ensure he doest react to gunfire or being shot at.
+    _group = createGroup resistance;
+    _group setCombatMode "BLUE";
+    _group setVariable ["DMS_AllowFreezing",false,true];
 
+    // Spawn Vehicle
 
-diag_log format['[OCCUPATION:transport] Running'];
-_transportDriver = _transport getVariable "SC_assignedDriver";
-
-// Make _transportDriver stop when players near him.
-while {true} do
-{
-    
-    _pos = position _transport;
-    _mk setMarkerPos _pos;
-    _nearPlayers = (count (_pos nearEntities [['Exile_Unit_Player'],25]));
-
-    if (_nearPlayers >= 1 && _transportType == "land") then
+    if(_transportType == "heli") then 
     {
-        uiSleep 0.5;
+        _transport = createVehicle [SC_occupyTransportClassToUse, _spawnLocation, [], 0, "NONE"];
+        _transport setVehiclePosition [_spawnLocation, [], 0, "FLY"];
+        _transport setVariable ["vehicleID", _spawnLocation, true];  
         _transport setFuel 1;
-        _transport setVehicleAmmo 1;
-        _transportDriver disableAI "MOVE";
-        uiSleep 3;
+        _transport setDamage 0;
+        _transport engineOn true;
+        _transport flyInHeight 100;    
     }
     else
-    {	
-        _transport setFuel 1;
-        _transport setVehicleAmmo 1;
-        uiSleep 3;
-        _transportDriver enableAI "MOVE";     
+    {
+        _transport = createVehicle [SC_occupyTransportClassToUse, _spawnLocation, [], 0, "CAN_COLLIDE"];    
     };
-    if(!Alive _transportDriver) exitWith {};
-    uiSleep 5;   
-};		
-deleteMarker _mk;
 
+    sleep 0.2;
+
+    if(isNull _transport) exitWith 
+    {  
+        _logDetail = format ["[OCCUPATION:transport]:: %1 failed to spawn, check it is a valid vehicle class name",SC_occupyTransportClassToUse];
+        [_logDetail] call SC_fnc_log;
+    };
+
+    _transport addEventHandler ["handleDamage", { false }];
+    _transport allowdamage false;
+
+    if( _transportType == "land") then
+    {
+        //_transport setObjectTextureGlobal [0,"#(argb,8,8,3)color(0.518,0.519,0.7,0.2)"];    
+    }
+    else
+    {
+        _transport setObjectTextureGlobal [0,"#(argb,8,8,3)color(0.518,0.519,0.7,0.2)"];
+        _transport setObjectTextureGlobal [1,"#(argb,8,8,3)color(0.518,0.519,0.7,0.2)"];
+        _transport setObjectTextureGlobal [2,"#(argb,8,8,3)color(0.518,0.519,0.7,0.2)"];    
+    };
+
+
+    _group addVehicle _transport;
+        
+    _transport enableCopilot false;
+
+    _transportDriver = _group createUnit [DMS_AI_Classname, _spawnLocation, [], 0,"FORM"];
+    removeGoggles _transportDriver;
+    _transportDriver forceAddUniform "U_IG_Guerilla3_1";
+    _transportDriver addVest "V_TacVest_blk_POLICE";
+    _transportDriver addHeadgear "H_Cap_blk";
+    removeBackpackGlobal _transportDriver;
+    _transportDriver addBackpackGlobal "B_Parachute";
+    _transportDriver disableAI 'AUTOTARGET'; 
+    _transportDriver disableAI 'TARGET'; 
+    _transportDriver disableAI 'SUPPRESSION';
+    _transportDriver setCaptive true;
+    _transportDriver allowDamage false; 
+    _transportDriver assignasdriver _transport;
+    _transportDriver moveInDriver _transport;
+    [_transportDriver] orderGetin true;
+    _transport lockDriver true;
+    _transport lockTurret [[0],true];
+
+    SC_transportArray = SC_transportArray + [_transport];
+    _transport setVariable ["SC_assignedDriver", _transportDriver,true];
+    _transport setVariable ["SC_transport", true,true];
+    _transport setVariable ["SC_vehicleSpawnLocation", _spawnLocation,true];
+    _transportDriver setVariable ["DMS_AssignedVeh",_transport]; 
+    _transportDriver setVariable ["SC_lastSpoke", time, true]; 
+    _transport addEventHandler ["getin", "_this call SC_fnc_getOnBus;"];
+    _transport addEventHandler ["getout", "_this call SC_fnc_getOffBus;"];
+
+    clearBackpackCargoGlobal _transport;
+    clearItemCargoGlobal _transport;
+    clearMagazineCargoGlobal _transport;
+    clearWeaponCargoGlobal _transport;
+    _transport setVariable ["ExileIsPersistent", false];
+    _transport setVariable["vehPos",_spawnLocation,true];
+    _transport setFuel 1;
+
+    _logDetail = format['[OCCUPATION:transport] Vehicle %1 spawned @ %2',SC_occupyTransportClassToUse,_spawnLocation];
+    [_logDetail] call SC_fnc_log;
+
+    _logDetail = format ["[OCCUPATION:transport]:: Found %1 markers to use as pickup points @ %2",_markerCount,time];
+    [_logDetail] call SC_fnc_log;
+
+    _textures = getObjectTextures _transport;
+
+    _logDetail = format ["[OCCUPATION:transport]:: textures for vehicle are: %1",_textures];
+    [_logDetail] call SC_fnc_log;
+
+
+
+    _markerCount = 0;	
+    {
+        _markerName = _x;
+        _markerPos = getMarkerPos _markerName;
+        if (markerType _markerName == "ExileTraderZone" OR markerType _markerName == "o_unknown") then 
+        {
+            _wp = _group addWaypoint [_markerPos, 100];
+            _wp setWaypointType "MOVE";
+            _wp setWaypointBehaviour _transportBehaviour;
+            _wp setWaypointspeed _transportSpeed;
+            
+            _wp = _group addWaypoint [_markerPos, 25];
+            _wp setWaypointType "TR UNLOAD";
+            _wp setWaypointBehaviour "SAFE";
+            _wp setWaypointspeed "LIMITED";
+            _wp setWaypointTimeout [_transportWaitingTime,_transportWaitingTime,_transportWaitingTime]; 
+            _markerCount = _markerCount + 1;
+        };
+    
+    } forEach allMapMarkers;
+
+
+
+    // Add a final CYCLE
+    _wp = _group addWaypoint [_spawnLocation, 20];
+    _wp setWaypointType "CYCLE";
+    _wp setWaypointBehaviour _transportBehaviour;
+    _wp setWaypointspeed _transportSpeed; 
+    _wp setWaypointTimeout [_transportWaitingTime,_transportWaitingTime,_transportWaitingTime]; 
+
+    _transportPos = position _transport;
+    _mk = createMarker ["transportLocation",_transportPos];
+
+    if(_transportType == "land") then
+    {
+        "transportLocation" setMarkerType "loc_BusStop";
+        "transportLocation" setMarkerText "Occupation Public Bus";    
+    }
+    else
+    {
+        "transportLocation" setMarkerType "c_air";
+        "transportLocation" setMarkerText "Occupation Airlines"; 
+        "transportLocation" setMarkerColor "ColorBLUFOR";      
+    };
+
+
+    diag_log format['[OCCUPATION:transport] Running'];
+    _transportDriver = _transport getVariable "SC_assignedDriver";
+
+    // Make _transportDriver stop when players near him.
+    while {true} do
+    {
+        
+        _pos = position _transport;
+        _mk setMarkerPos _pos;
+        _nearPlayers = (count (_pos nearEntities [['Exile_Unit_Player'],25]));
+
+        if (_nearPlayers >= 1 && _transportType == "land") then
+        {
+            uiSleep 0.5;
+            _transport setFuel 1;
+            _transport setVehicleAmmo 1;
+            _transportDriver disableAI "MOVE";
+            uiSleep 3;
+        }
+        else
+        {	
+            _transport setFuel 1;
+            _transport setVehicleAmmo 1;
+            uiSleep 3;
+            _transportDriver enableAI "MOVE";     
+        };
+        if(!Alive _transportDriver) exitWith {};
+        uiSleep 5;   
+    };		
+    deleteMarker _mk;
+};
 _logDetail = format ["[OCCUPATION:transport]:: Ended @ %1",time];
 [_logDetail] call SC_fnc_log;
