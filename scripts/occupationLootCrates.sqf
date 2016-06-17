@@ -21,12 +21,12 @@ for "_i" from 1 to SC_numberofLootCrates do
 		if (!isNil "_nearOtherCrate") then { _validspot = false; };			
 	};	
 	
-	_mapMarkerName = format ["loot_marker_%1", _i];
+	_mapMarkerName = format ["SC_loot_marker_%1", _i];
 	
 	if (SC_occupyLootCratesMarkers) then 
 	{
 		
-		_event_marker = createMarker [ format ["loot_marker_%1", _i], _position];
+		_event_marker = createMarker [ format ["SC_loot_marker_%1", _i], _position];
 		_event_marker setMarkerColor "ColorGreen";
 		_event_marker setMarkerAlpha 1;
 		_event_marker setMarkerText "Gear Crate";
