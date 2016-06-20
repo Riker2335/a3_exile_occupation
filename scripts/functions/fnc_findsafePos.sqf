@@ -6,9 +6,19 @@ private _nearestRoad    = [0,0,0];
 
 
 private _middle     = worldSize/2;
-private _pos = [_middle,_middle,0];
-private _maxDist = _middle - 100;
+private _pos 		= [_middle,_middle,0];
+private _maxDist 	= _middle - 100;
 
+if (worldName == 'Esseker') then 
+{ 
+	_pos = [6502,6217,0];
+    _maxDist = 6000;
+};
+
+if(_roadSpawn) then
+{
+    _maxDist = _maxDist - 1400;
+};
 
 
 if(_waterSpawn) then
