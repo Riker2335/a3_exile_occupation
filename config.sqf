@@ -15,7 +15,8 @@
 
 
 SC_debug 				    = false;			    // set to true to turn on debug features (not for live servers) 
-SC_useMapOverrides          = false;                // set to true to enable over riding options per map (see the bottom of this file for examples)
+SC_useApexClasses           = false;                // true if you want to use the Apex class list, false to use vanilla Arma
+SC_useMapOverrides          = true;                	// set to true to enable over riding options per map (see the bottom of this file for examples)
 SC_extendedLogging          = false;                // set to true for additional logging
 SC_processReporter          = true;                 // log the a list of active server processes every 60 seconds (useful for debugging server problems)
 SC_infiSTAR_log			    = true;		            // true Use infiSTAR logging, false logs to server rpt
@@ -26,9 +27,9 @@ SC_scaleAI 				    = 10; 					// any more than _scaleAI players on the server an
 
 SC_removeUserMapMarkers     = true;                 // true to delete map markers placed by players every 10 seconds
 
-SC_fastNights               = false;                // true if you want night time to go faster than daytime
+SC_fastNights               = true;                	// true if you want night time to go faster than daytime
 SC_fastNightsStarts         = 18;                   // Start fast nights at this hour (24 hour clock) eg. 18 for 6pm
-SC_fastNightsMultiplierNight= 16;                   // the time multiplier to use at night (12 = 12x speed)
+SC_fastNightsMultiplierNight= 24;                   // the time multiplier to use at night (12 = 12x speed)
 SC_fastNightsEnds           = 6;                    // End fast nights at this hour (24 hour clock) eg. 6 for 6am
 SC_fastNightsMultiplierDay  = 4;                    // the time multiplier to use during daylight hours (4 = 4x speed)
 
@@ -93,6 +94,7 @@ SC_BanditAssignedItems      = ["ItemMap","ItemCompass","ItemRadio","ItemWatch"];
 SC_BanditLauncher           = [];
 SC_BanditBackpack           = ["B_HuntingBackpack","B_Kitbag_cbr","B_Kitbag_mcamo","B_Kitbag_sgg","B_OutdoorPack_blk","B_OutdoorPack_blu","B_OutdoorPack_tan","B_TacticalPack_blk","B_TacticalPack_mcamo","B_TacticalPack_ocamo","B_TacticalPack_oli","B_TacticalPack_rgr"];  
 
+
 SC_occupyStatic	 		    = false;		    	// true if you want to add AI in specific locations
 SC_staticBandits            = [                     //[[pos],ai count,radius,search buildings]	
     
@@ -105,7 +107,9 @@ SC_occupySky				= true;					// true if you want to have roaming AI helis
 SC_occupySea				= false;		        // true if you want to have roaming AI boats
 
 SC_occupyTransport 	        = true;					// true if you want pubic transport (travels between traders)
-SC_occupyTransportClass 	= ["Exile_Chopper_Mohawk_FIA","Exile_Chopper_Mohawk_FIA","Exile_Car_LandRover_Urban"]; // to always use the same vehicle, specify one option only
+SC_colourTransport          = true;                 // true if you want the public transport coloured
+SC_secureTransport          = true;                 // true if you want the public transport and pilot to be indestructible
+SC_occupyTransportClass 	= ["Exile_Chopper_Mohawk_FIA"]; // to always use the same vehicle, specify one option only
 
 SC_occupyTransportStartPos  = [];                   // if empty defaults to map centre
 SC_occupyTransportAnnounce  = false;                 // true if you want the pilot/driver to talk to passengers in vehicle chat, false if not
@@ -116,8 +120,8 @@ SC_occupyTransportMessages  = [];
 
 SC_occupyLootCrates		    = true;					// true if you want to have random loot crates with guards
 SC_numberofLootCrates       = 6;                    // if SC_occupyLootCrates = true spawn this many loot crates (overrided below for Namalsk)
-SC_LootCrateGuards          = 7;                    // number of AI to spawn at each crate
-SC_LootCrateGuardsRandomize = false;                 // Use a random number of guards up to a maximum = SC_LootCrateGuards (so between 1 and SC_LootCrateGuards)
+SC_LootCrateGuards          = 3;                    // number of AI to spawn at each crate
+SC_LootCrateGuardsRandomize = true;                 // Use a random number of guards up to a maximum = SC_LootCrateGuards (so between 1 and SC_LootCrateGuards)
 SC_occupyLootCratesMarkers	= true;					// true if you want to have markers on the loot crate spawns
 
 SC_ropeAttach               = false;                // Allow lootcrates to be airlifted (for SC_occupyLootCrates and SC_occupyHeliCrashes)
@@ -158,7 +162,7 @@ SC_blackListedAreas         =   [
 
 SC_occupyHeliCrashes		= true;					// true if you want to have Dayz style helicrashes
 SC_numberofHeliCrashesFire  = true;                 // true if you want the crash on fire, false if you just want smoke
-SC_numberofHeliCrashes      = 5;                    // if SC_occupyHeliCrashes = true spawn this many loot crates (overrided below for Namalsk)
+SC_numberofHeliCrashes      = 5;                    // if SC_occupyHeliCrashes = true spawn this many loot crates
 
 // Array of possible common items to go in heli crash crates ["classname",fixed amount,random amount] NOT INCLUDING WEAPONS
 // ["HandGrenade",0,2] this example would add between 0 and 2 HandGrenade to the crate (fixed 0 plus 0-2 random)
@@ -292,18 +296,31 @@ if (worldName == 'Napf' AND SC_useMapOverrides) then
 if (worldName == 'Tanoa' AND SC_useMapOverrides) then 
 { 
 	SC_occupyTraders		= true;
+    SC_useApexClasses       = true;
+};
+
+// Overrides to use Apex weapons, gear and vehicles if SC_useApexClasses = true
+if(SC_useApexClasses) then 
+{
 	SC_BanditWeapon 		= [	"arifle_MX_khk_F","arifle_MX_GL_khk_F","arifle_MX_SW_khk_F","arifle_MXC_khk_F","arifle_MXM_khk_F","arifle_AK12_F","arifle_AK12_GL_F","arifle_AKM_F",
 								"arifle_AKS_F","arifle_ARX_blk_F","arifle_ARX_ghex_F","arifle_ARX_hex_F","arifle_CTAR_blk_F","arifle_CTAR_GL_blk_F","arifle_CTARS_blk_F","arifle_SPAR_01_blk_F","arifle_SPAR_01_khk_F",
 								"arifle_SPAR_01_snd_F","arifle_SPAR_01_GL_blk_F","arifle_SPAR_01_GL_khk_F","arifle_SPAR_01_GL_snd_F","arifle_SPAR_02_blk_F","arifle_SPAR_02_khk_F","arifle_SPAR_02_snd_F",
 								"arifle_SPAR_03_blk_F","arifle_SPAR_03_khk_F","arifle_SPAR_03_snd_F"];
 	SC_BanditUniforms		= [	"U_I_C_Soldier_Para_1_F","U_I_C_Soldier_Para_2_F","U_I_C_Soldier_Para_3_F","U_I_C_Soldier_Para_4_F","U_I_C_Soldier_Para_5_F","U_I_C_Soldier_Bandit_1_F","U_I_C_Soldier_Bandit_2_F",
 								"U_I_C_Soldier_Bandit_3_F","U_I_C_Soldier_Bandit_4_F","U_I_C_Soldier_Bandit_5_F","U_I_C_Soldier_Camo_F","U_B_CTRG_Soldier_urb_1_F","U_B_CTRG_Soldier_urb_2_F","U_B_CTRG_Soldier_urb_3_F"];
-	SC_VehicleClassToUse 		=   [	
+	SC_VehicleClassToUse 	=   [	
 									["B_GEN_Offroad_01_gen_F",0],
 									["C_Offroad_02_unarmed_F",0],
 									["I_C_Offroad_02_unarmed_F",0]
                                 ];
+    SC_VehicleClassToUseRare	=   [	
+                                    ["B_LSV_01_unarmed_black_F",1],
+                                    ["O_T_LSV_02_unarmed_black_F",1],
+                                    ["O_T_Truck_03_device_ghex_F",1]
+                                ];
+    SC_occupyTransportClass 	= ["Exile_Chopper_Mohawk_FIA","C_Offroad_02_unarmed_black_F","B_LSV_01_unarmed_black_F"];
 };
+
 
 if (SC_debug) then
 {

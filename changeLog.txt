@@ -1,4 +1,22 @@
 =================================================================================
+V49 (22-06-2016)
+=================================================================================
+Changed the map marker names for loot crates to stop clashing with a previously 
+released loot crate script
+
+Fixed a bug in the unstick script which was resulting in the patrol order being 
+wiped after the vehicle was unstuck
+
+Added SC_useApexClasses to config (allow or disallow use of Apex items in Occupation)
+
+Added SC_colourTransport to config (allow or disallow the changing of the colour
+of the public transport)
+
+Added SC_secureTransport to config (allow or disallow damage to the public transport
+and its driver, set to false to allow damage). If the driver dies then the vehicle
+will explode.
+
+=================================================================================
 V48 (16-06-2016)
 =================================================================================
 Added the setting SC_useMapOverrides, setting to true activates the map specific 
