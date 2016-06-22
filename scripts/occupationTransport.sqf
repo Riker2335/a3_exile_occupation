@@ -223,7 +223,7 @@ while {true} do
         _transportDriver = _transport getVariable "SC_assignedDriver";
 
         // Make _transportDriver stop when players near him.
-        while {alive _transportDriver} do
+        while {true} do
         {
             
             _pos = position _transport;
