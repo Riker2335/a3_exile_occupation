@@ -250,9 +250,10 @@ while {true} do
         };		
         deleteMarker _mk;
         _transport setDamage 1;
+		_logDetail = format ["[OCCUPATION:transport]:: Transport destroyed @ %1 (%2)",_pos,time];
+		[_logDetail] call SC_fnc_log;
     };
-    _logDetail = format ["[OCCUPATION:transport]:: Transport destroyed @ %1 (%2)",_pos,time];
-    [_logDetail] call SC_fnc_log;
+	if(_markerCount < 2) exitWith {};
 
     // Spawn another heli
     uiSleep 15; // delay the start
