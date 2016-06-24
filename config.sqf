@@ -15,7 +15,7 @@
 
 
 SC_debug 				    = false;			    // set to true to turn on debug features (not for live servers) 
-SC_useApexClasses           = false;                // true if you want to use the Apex class list, false to use vanilla Arma
+SC_useApexClasses           = false;                // true if you want to use the Apex class list over rides, false to use vanilla Arma gear
 SC_useMapOverrides          = true;                	// set to true to enable over riding options per map (see the bottom of this file for examples)
 SC_extendedLogging          = false;                // set to true for additional logging
 SC_processReporter          = true;                 // log the a list of active server processes every 60 seconds (useful for debugging server problems)
@@ -112,10 +112,21 @@ SC_secureTransport          = true;                 // true if you want the publ
 SC_occupyTransportClass 	= ["Exile_Chopper_Mohawk_FIA"]; // to always use the same vehicle, specify one option only
 
 SC_occupyTransportStartPos  = [];                   // if empty defaults to map centre
-SC_occupyTransportAnnounce  = false;                 // true if you want the pilot/driver to talk to passengers in vehicle chat, false if not
-SC_occupyTransportGetIn     = [];
-SC_occupyTransportGetOut    = [];
-SC_occupyTransportMessages  = [];
+
+SC_TransportAirFixed        = false;                // true if you want to use fixed waypoints for air transport, false to autodetect where trader zones are
+SC_TransportAirWaypoints    = [
+                                    [1000,1000,0],
+                                    [2000,2000,0],
+                                    [3000,3000,0],
+                                    [4000,4000,0]
+                                ];
+SC_TransportLandFixed       = false;                // true if you want to use fixed waypoints for land transport, false to autodetect where trader zones are
+SC_TransportLandWaypoints   = [
+                                    [1000,1000,0],
+                                    [2000,2000,0],
+                                    [3000,3000,0],
+                                    [4000,4000,0]
+                                ];
 
 
 SC_occupyLootCrates		    = true;					// true if you want to have random loot crates with guards
@@ -129,7 +140,7 @@ SC_ropeAttach               = false;                // Allow lootcrates to be ai
 // Array of possible common items to go in loot crates ["classname",fixed amount,random amount]
 // ["Exile_Item_Matches",1,2] this example would add between 1 and 3 Exile_Item_Matches to the crate (1 + 0 to 2 more)
 // to add a fixed amount make the second number 0
-SC_LootCrateItems     = [
+SC_LootCrateItems           = [
                                     ["Exile_Melee_Axe",1,0],
                                     ["Exile_Item_GloriousKnakworst",1,2],
                                     ["Exile_Item_PlasticBottleFreshWater",1,2],

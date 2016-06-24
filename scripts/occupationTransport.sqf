@@ -51,19 +51,55 @@ while {true} do
 
     // Check there are enough waypoints to use   
     _markerCount = 0;	
-    {
-        _markerName = _x;
-        _markerPos = getMarkerPos _markerName;
-        if (markerType _markerName == "ExileTraderZone" OR markerType _markerName == "o_unknown") then 
-        { 
-            _markerCount = _markerCount + 1;
-        };
 
-    } forEach allMapMarkers;
+
+    _fixedWaypoints = [];
+    SC_occupyTransportFixed = false;
+
+    if(_transportType == "heli" && SC_TransportAirFixed) then
+    {
+        SC_occupyTransportFixed = true;
+        _fixedWaypoints = SC_TransportAirWaypoints;
+    };
+
+    if(_transportType == "land" && SC_TransportLandFixed) then
+    {
+        SC_occupyTransportFixed = true;
+        _fixedWaypoints = SC_TransportLandWaypoints;
+    };
+
+
+
+
+    if(SC_occupyTransportFixed) then
+    {
+        if(_transportType == "heli") then
+        {
+            _markerCount = count SC_TransportAirWaypoints;
+        }
+        else
+        {
+            _markerCount = count SC_TransportLandWaypoints;
+        };
+    }
+    else
+    {
+        {
+            _markerName = _x;
+            _markerPos = getMarkerPos _markerName;
+            if (markerType _markerName == "ExileTraderZone" OR markerType _markerName == "o_unknown") then 
+            { 
+                _markerCount = _markerCount + 1;
+            };
+
+        } forEach allMapMarkers;
+    };
+
+
 
     if(_markerCount < 2) then 
     {  
-        _logDetail = format ["[OCCUPATION:transport]:: failed to find more than 1 ExileTraderZone or o_unknown map markers @ %1",time];
+        _logDetail = format ["[OCCUPATION:transport]:: failed to find more than 1 suitable waypoint @ %1",time];
         [_logDetail] call SC_fnc_log;
     }
     else
@@ -171,30 +207,47 @@ while {true} do
         _logDetail = format ["[OCCUPATION:transport]:: textures for vehicle are: %1",_textures];
         [_logDetail] call SC_fnc_log;
 
+        _markerCount    = 0;	
 
-
-        _markerCount = 0;	
+        if(SC_occupyTransportFixed) then
         {
-            _markerName = _x;
-            _markerPos = getMarkerPos _markerName;
-            if (markerType _markerName == "ExileTraderZone" OR markerType _markerName == "o_unknown") then 
             {
-                _wp = _group addWaypoint [_markerPos, 100];
+                _markerPos = _x;
+                _wp = _group addWaypoint [_markerPos, 25];
                 _wp setWaypointType "MOVE";
                 _wp setWaypointBehaviour _transportBehaviour;
                 _wp setWaypointspeed _transportSpeed;
                 
-                _wp = _group addWaypoint [_markerPos, 25];
+                _wp = _group addWaypoint [_markerPos, 5];
                 _wp setWaypointType "TR UNLOAD";
                 _wp setWaypointBehaviour "SAFE";
                 _wp setWaypointspeed "LIMITED";
                 _wp setWaypointTimeout [_transportWaitingTime,_transportWaitingTime,_transportWaitingTime]; 
                 _markerCount = _markerCount + 1;
-            };
-        
-        } forEach allMapMarkers;
-
-
+            } forEach _fixedWaypoints;
+        }
+        else
+        {
+            {
+                _markerName = _x;
+                _markerPos = getMarkerPos _markerName;
+                if (markerType _markerName == "ExileTraderZone" OR markerType _markerName == "o_unknown") then 
+                {
+                    _wp = _group addWaypoint [_markerPos, 100];
+                    _wp setWaypointType "MOVE";
+                    _wp setWaypointBehaviour _transportBehaviour;
+                    _wp setWaypointspeed _transportSpeed;
+                    
+                    _wp = _group addWaypoint [_markerPos, 25];
+                    _wp setWaypointType "TR UNLOAD";
+                    _wp setWaypointBehaviour "SAFE";
+                    _wp setWaypointspeed "LIMITED";
+                    _wp setWaypointTimeout [_transportWaitingTime,_transportWaitingTime,_transportWaitingTime]; 
+                    _markerCount = _markerCount + 1;
+                };
+            
+            } forEach allMapMarkers;
+        };
 
         // Add a final CYCLE
         _wp = _group addWaypoint [_spawnLocation, 20];
