@@ -297,16 +297,9 @@ if (worldName == 'Namalsk' AND SC_useMapOverrides) then
     SC_occupyTransportClass = "Exile_Car_LandRover_Urban"; // the ikarus bus gets stuck on Namalsk
 };
 
-// Napf specific settings (if you want to override settings for specific maps if you run multiple servers)
-if (worldName == 'Napf' AND SC_useMapOverrides) then 
-{ 
-	SC_occupyTraders		= true;
-};
-
-// Napf specific settings (if you want to override settings for specific maps if you run multiple servers)
+// Tanoa specific settings (if you want to override settings for specific maps if you run multiple servers)
 if (worldName == 'Tanoa' AND SC_useMapOverrides) then 
 { 
-	SC_occupyTraders		= true;
     SC_useApexClasses       = true;
 };
 
