@@ -1,7 +1,7 @@
 _logDetail = format['[OCCUPATION:Traders] starting @ %1',time]; 
 [_logDetail] call SC_fnc_log;
 { 
-    private _world              = _x select 0;
+    private _world              	= _x select 0;
     
     if (worldName == _world) then
     {
@@ -18,7 +18,12 @@ _logDetail = format['[OCCUPATION:Traders] starting @ %1',time];
         _marker setMarkerText "";
 		_marker setMarkerShape "ICON";
 		_marker setMarkerType "ExileTraderZoneIcon";
-   
+
+		private _marker1 = createMarker [ format [" %1_1 ", _traderName], _traderPos];
+        _marker1 setMarkerText "";
+		_marker1 setMarkerType "ExileTraderZone";
+		_marker1 setmarkeralpha 0;
+
         if(_createSafezone) then
         {
             ExileTraderZoneMarkerPositions pushBack _traderPos;  
@@ -36,13 +41,13 @@ _logDetail = format['[OCCUPATION:Traders] starting @ %1',time];
             ["Exile_Trader_AircraftCustoms",    "Exile_Sign_AircraftCustoms",       "GreekHead_A3_08",  ["HubBriefing_loop","HubBriefing_scratch","HubBriefing_stretch","HubBriefing_think"]],
             ["Exile_Trader_Aircraft",           "Exile_Sign_Aircraft",              "WhiteHead_10",     ["LHD_krajPaluby"]],
             ["Exile_Trader_Armory",             "Exile_Sign_Armory",                "WhiteHead_01",     ["InBaseMoves_HandsBehindBack1","InBaseMoves_HandsBehindBack2"]],
-            ["Exile_Trader_Hardware",           "Exile_Sign_Hardware",              "WhiteHead_14",     ["HubStandingUC_idle1"]],
-            ["Exile_Trader_Vehicle",            "Exile_Sign_Vehicles",              "AfricanHead_03",   ["HubStandingUC_idle2"]],
+            ["Exile_Trader_Hardware",           "Exile_Sign_Hardware",              "WhiteHead_14",     ["HubStandingUC_idle1","HubStandingUC_idle3"]],
+            ["Exile_Trader_Vehicle",            "Exile_Sign_Vehicles",              "AfricanHead_03",   ["HubStandingUC_idle2","HubStandingUC_idle1"]],
             ["Exile_Trader_VehicleCustoms",     "Exile_Sign_VehicleCustoms",        "GreekHead_A3_05",  ["HubBriefing_loop","HubBriefing_scratch","HubBriefing_stretch","HubBriefing_think"]],
             ["Exile_Trader_WasteDump",          "Exile_Sign_WasteDump",             "WhiteHead_07",     ["c4coming2cDf_genericstani1","c4coming2cDf_genericstani2","c4coming2cDf_genericstani3"]],
-            ["Exile_Trader_Food",               "Exile_Sign_Food",                  "WhiteHead_15",     ["HubStandingUC_idle3"]],
-            ["Exile_Trader_SpecialOperations",  "Exile_Sign_SpecialOperations",     "WhiteHead_06",     ["HubStandingUC_idle1"]],
-            ["Exile_Trader_Equipment",          "Exile_Sign_Equipment",             "WhiteHead_15",     ["HubStandingUC_idle2"]],
+            ["Exile_Trader_Food",               "Exile_Sign_Food",                  "WhiteHead_15",     ["HubStandingUC_idle3","HubStandingUC_idle2"]],
+            ["Exile_Trader_SpecialOperations",  "Exile_Sign_SpecialOperations",     "WhiteHead_06",     ["HubStandingUC_idle1","HubStandingUC_idle3"]],
+            ["Exile_Trader_Equipment",          "Exile_Sign_Equipment",             "WhiteHead_15",     ["HubStandingUC_idle2","HubStandingUC_idle1"]],
             ["Exile_Trader_Office",             "Exile_Sign_Office",                "WhiteHead_10",     ["HubBriefing_loop","HubBriefing_scratch","HubBriefing_stretch","HubBriefing_think"]]
         ];
 
@@ -93,11 +98,15 @@ _logDetail = format['[OCCUPATION:Traders] starting @ %1',time];
 			trader allowDamage false;
 			trader setFace _traderFace;			
 			
-            removeGoggles trader;
-            removeBackpack trader;
-            removeVest trader;
-            removeHeadgear trader;
-            private _loadOut = ["bandit"] call SC_fnc_selectGear;      
+            removeGoggles 					trader;
+			removeAllItemsWithMagazines 	trader;
+			removeHeadgear 					trader;
+			removeUniform 					trader;
+			removeVest 						trader;
+			removeBackpackGlobal 			trader;
+
+            private _loadOut = ["bandit"] call SC_fnc_selectGear;
+			trader addWeapon (_loadOut select 0);
             trader forceAddUniform (_loadOut select 8);
             trader addVest (_loadOut select 9);
             trader addBackpack (_loadOut select 10);

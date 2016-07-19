@@ -16,7 +16,7 @@
 
 SC_debug						= false;					// set to true to turn on debug features (not for live servers) 
 SC_useApexClasses           	= true;                 	// true if you want to use the Apex class list over rides, false to use vanilla Arma gear
-SC_useMapOverrides          	= true;                 	// set to true to enable over riding options per map (see the bottom of this file for examples)
+SC_useMapOverrides          	= false;                 	// set to true to enable over riding options per map (see the bottom of this file for examples)
 SC_extendedLogging          	= false;                	// set to true for additional logging
 SC_processReporter				= true;                 	// log the a list of active server processes every 60 seconds (useful for debugging server problems)
 SC_infiSTAR_log					= true;						// true Use infiSTAR logging, false logs to server rpt
@@ -55,10 +55,10 @@ SC_occupyVehiclesLocked			= false;					// true if AI vehicles to stay locked unt
 
 SC_occupyTraders            	= true;						// (WORK IN PROGRESS) true if you want to create trader camps at positions specified in SC_occupyTraderDetails
 SC_occupyTraderDetails      	= [
-                                ["Tanoa","Lifou Traders",[7317,7217,0],"trader1.sqf",true],
-                                ["Tanoa","Lijnhaven Traders",[11580,2051,0],"trader1.sqf",true],
-                                ["Napf","Hafen Traders",[9286,17606,0],"trader1.sqf",true]
-                              ];  //["mapname","Name",[x,y,z],"filename",true] trader name, location, safezone true/false
+										//["Tanoa","Lifou Traders",[7317,7217,0],"trader1.sqf",true],
+										//["Tanoa","Lijnhaven Traders",[11580,2051,0],"trader1.sqf",true],
+										["Napf","Hafen Traders",[9286,17606,0],"trader1.sqf",true]
+									];  //["mapname","Name",[x,y,z],"filename",true] trader name, location, safezone true/false
                                                     
 SC_SurvivorsChance          	= 20;						// chance in % to spawn survivors instead of bandits (for places and land vehicles)
 SC_occupyPlacesSurvivors		= true;						// true if you want a chance to spawn survivor AI as well as bandits (SC_occupyPlaces must be true to use this option)
