@@ -144,8 +144,9 @@ while {true} do
         if( _transportType == "land" && SC_colourTransport) then
         {
             //_transport setObjectTextureGlobal [0,"#(argb,8,8,3)color(0.518,0.519,0.7,0.2)"];    
-        }
-        else
+        };
+		
+        if( _transportType == "air" && SC_colourTransport) then
         {
             _transport setObjectTextureGlobal [0,"#(argb,8,8,3)color(0.518,0.519,0.7,0.2)"];
             _transport setObjectTextureGlobal [1,"#(argb,8,8,3)color(0.518,0.519,0.7,0.2)"];
@@ -303,7 +304,7 @@ while {true} do
         };		
         deleteMarker _mk;
         _transport setDamage 1;
-		_logDetail = format ["[OCCUPATION:transport]:: Transport destroyed @ %1 (%2)",_pos,time];
+		_logDetail = format ["[OCCUPATION:transport]:: Transport destroyed @ %1",time];
 		[_logDetail] call SC_fnc_log;
     };
 	if(_markerCount < 2) exitWith {};

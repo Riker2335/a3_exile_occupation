@@ -15,13 +15,10 @@ _logDetail = format['[OCCUPATION:Traders] starting @ %1',time];
 
         _traderName setmarkeralpha 0; 
         private _marker = createMarker [ format [" %1 ", _traderName], _traderPos];
-        _marker setMarkerText format ["%1", _traderName];
-        _marker setMarkerSize  [3,3];
-        _marker setMarkerShape "ICON";
-        _marker setMarkerType "loc_Tree";
-        _marker setMarkerColor "ColorBlack";
-        _marker setMarkerBrush "Vertical";	
-        
+        _marker setMarkerText "";
+		_marker setMarkerShape "ICON";
+		_marker setMarkerType "ExileTraderZoneIcon";
+   
         if(_createSafezone) then
         {
             ExileTraderZoneMarkerPositions pushBack _traderPos;  
@@ -36,18 +33,19 @@ _logDetail = format['[OCCUPATION:Traders] starting @ %1',time];
         // Place the traders randomly
 
         private _traders = [
-            ["Exile_Trader_AircraftCustoms",    "Exile_Sign_AircraftCustoms",       "GreekHead_A3_08",  "HubStandingUC_idle1"],
-            ["Exile_Trader_Aircraft",           "Exile_Sign_Aircraft",              "WhiteHead_10",     "HubStandingUC_idle2"],
-            ["Exile_Trader_Armory",             "Exile_Sign_Armory",                "WhiteHead_01",     "HubStandingUC_idle3"],
-            ["Exile_Trader_Hardware",           "Exile_Sign_Hardware",              "WhiteHead_14",     "HubStandingUC_idle1"],
-            ["Exile_Trader_Vehicle",            "Exile_Sign_Vehicles",              "AfricanHead_03",   "HubStandingUC_idle2"],
-            ["Exile_Trader_VehicleCustoms",     "Exile_Sign_VehicleCustoms",        "GreekHead_A3_05",  "HubStandingUC_idle3"],
-            ["Exile_Trader_WasteDump",          "Exile_Sign_WasteDump",             "WhiteHead_07",     "HubStandingUC_idle2"],
-            ["Exile_Trader_Food",               "Exile_Sign_Food",                  "WhiteHead_15",     "HubStandingUC_idle3"],
-            ["Exile_Trader_SpecialOperations",  "Exile_Sign_SpecialOperations",     "WhiteHead_06",     "HubStandingUC_idle1"],
-            ["Exile_Trader_Equipment",          "Exile_Sign_Equipment",             "WhiteHead_15",     "HubStandingUC_idle2"],
-            ["Exile_Trader_Office",             "Exile_Sign_Office",                "WhiteHead_10",     "HubStandingUC_idle1"]
+            ["Exile_Trader_AircraftCustoms",    "Exile_Sign_AircraftCustoms",       "GreekHead_A3_08",  ["HubBriefing_loop","HubBriefing_scratch","HubBriefing_stretch","HubBriefing_think"]],
+            ["Exile_Trader_Aircraft",           "Exile_Sign_Aircraft",              "WhiteHead_10",     ["LHD_krajPaluby"]],
+            ["Exile_Trader_Armory",             "Exile_Sign_Armory",                "WhiteHead_01",     ["InBaseMoves_HandsBehindBack1","InBaseMoves_HandsBehindBack2"]],
+            ["Exile_Trader_Hardware",           "Exile_Sign_Hardware",              "WhiteHead_14",     ["HubStandingUC_idle1"]],
+            ["Exile_Trader_Vehicle",            "Exile_Sign_Vehicles",              "AfricanHead_03",   ["HubStandingUC_idle2"]],
+            ["Exile_Trader_VehicleCustoms",     "Exile_Sign_VehicleCustoms",        "GreekHead_A3_05",  ["HubBriefing_loop","HubBriefing_scratch","HubBriefing_stretch","HubBriefing_think"]],
+            ["Exile_Trader_WasteDump",          "Exile_Sign_WasteDump",             "WhiteHead_07",     ["c4coming2cDf_genericstani1","c4coming2cDf_genericstani2","c4coming2cDf_genericstani3"]],
+            ["Exile_Trader_Food",               "Exile_Sign_Food",                  "WhiteHead_15",     ["HubStandingUC_idle3"]],
+            ["Exile_Trader_SpecialOperations",  "Exile_Sign_SpecialOperations",     "WhiteHead_06",     ["HubStandingUC_idle1"]],
+            ["Exile_Trader_Equipment",          "Exile_Sign_Equipment",             "WhiteHead_15",     ["HubStandingUC_idle2"]],
+            ["Exile_Trader_Office",             "Exile_Sign_Office",                "WhiteHead_10",     ["HubBriefing_loop","HubBriefing_scratch","HubBriefing_stretch","HubBriefing_think"]]
         ];
+
         private _group = createGroup SC_SurvivorSide;
         _group setCombatMode "BLUE";
         _group setVariable ["DMS_AllowFreezing",false,true];
@@ -57,7 +55,8 @@ _logDetail = format['[OCCUPATION:Traders] starting @ %1',time];
 
 
         enableSentences false;
-        enableRadio false;
+        enableRadio false;		
+
         {         
             private _traderType         = _x select 0;
             private _traderSign         = _x select 1;
@@ -70,15 +69,9 @@ _logDetail = format['[OCCUPATION:Traders] starting @ %1',time];
             private _signDir = getDir _nearestSign;
             _nearestSign setDir _signDir;            
             private _traderPosition = position _nearestSign;
-
+			
             _traderType createUnit [_traderPosition, _group, "trader = this;"];
-            trader disableAI "FSM";    
-            trader disableAI "MOVE";                                                   
-            trader disableAI "TARGET";
-            trader disableAI "AUTOTARGET";
-            trader disableAI "AUTOCOMBAT";
-            trader disableAI "COVER";  
-            trader disableAI "SUPPRESSION"; 
+				
             trader reveal _nearestSign;
             _nearestSign disableCollisionWith trader;         
             trader disableCollisionWith _nearestSign; 
@@ -87,8 +80,19 @@ _logDetail = format['[OCCUPATION:Traders] starting @ %1',time];
             private _traderDirection = _signDir-180;
             trader setDir _traderDirection;
             
-            trader setVariable ["ExileTraderType", _traderType,true];
-            trader allowDamage false; 
+			trader setVariable ["BIS_enableRandomization", false];
+			trader setVariable ["BIS_fnc_animalBehaviour_disable", true];
+			trader setVariable ["ExileAnimations", _traderAnimation];
+			trader setVariable ["ExileTraderType", _traderType,true];
+			trader disableAI "ANIM";
+			trader disableAI "MOVE";
+			trader disableAI "FSM";
+			trader disableAI "AUTOTARGET";
+			trader disableAI "TARGET";
+			trader disableAI "CHECKVISIBLE";
+			trader allowDamage false;
+			trader setFace _traderFace;			
+			
             removeGoggles trader;
             removeBackpack trader;
             removeVest trader;
@@ -98,8 +102,10 @@ _logDetail = format['[OCCUPATION:Traders] starting @ %1',time];
             trader addVest (_loadOut select 9);
             trader addBackpack (_loadOut select 10);
             trader addHeadgear "H_Cap_blk";
-            //trader setCaptive true;
-            //trader switchMove _traderAnimation;
+
+			trader switchMove (_traderAnimation select 0);
+			trader addEventHandler ["AnimDone", {_this call ExileClient_object_trader_event_onAnimationDone}];
+			
             sleep 0.2;
             diag_log format["[OCCUPATION:Traders] Created %1 with head %2 at %3 facing %4", _x select 0, _x select 2, _traderPosition, _traderDirection];
         } forEach _traders;                   

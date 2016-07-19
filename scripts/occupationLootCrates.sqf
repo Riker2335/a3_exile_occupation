@@ -13,7 +13,23 @@ for "_i" from 1 to SC_numberofLootCrates do
 	while{!_validspot} do 
 	{
 		sleep 0.2;
-		_position = [ false, false ] call SC_fnc_findsafePos;
+		if(SC_occupyLootCratesStatic) then
+		{
+			_tempPosition = SC_occupyLootCratesLocations select 0;
+			_position = [_tempPosition select 0, _tempPosition select 1, _tempPosition select 2];
+
+			SC_occupyLootCratesLocations = SC_occupyLootCratesLocations deleteAt 0;
+			diag_log format["_tempPosition: %1 _position: %2",_tempPosition,_position];
+			if(isNil "_position") then
+			{
+				_position = [ false, false ] call SC_fnc_findsafePos;
+			};
+		}
+		else
+		{
+			_position = [ false, false ] call SC_fnc_findsafePos;
+		};
+		
 		_validspot	= true;
 		
 		//Check if near another crate site
@@ -24,8 +40,7 @@ for "_i" from 1 to SC_numberofLootCrates do
 	_mapMarkerName = format ["SC_loot_marker_%1", _i];
 	
 	if (SC_occupyLootCratesMarkers) then 
-	{
-		
+	{		
 		_event_marker = createMarker [ format ["SC_loot_marker_%1", _i], _position];
 		_event_marker setMarkerColor "ColorGreen";
 		_event_marker setMarkerAlpha 1;

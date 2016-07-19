@@ -14,11 +14,14 @@ private _validspot      = true;
     };
     if (worldName == _blacklistMap) then
     {
-        if(_position distance _blacklistPos < _blacklistRadius) exitWith
+        	
+		_distance = _position distance2D _blacklistPos;
+		if(_distance < _blacklistRadius) exitWith
         {
-            _validspot = false;                                        
+            _validspot = false;
+			diag_log format["%1 is %2m from blacklisted position %3 (blacklisted)",_position,_distance,_blacklistPos];			
         };
-    };     
+    };
 }forEach SC_blackListedAreas;
 
 //Check if near player territory

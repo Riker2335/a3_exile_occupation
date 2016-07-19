@@ -74,5 +74,5 @@ SC_occupationVersion = getText (configFile >> "CfgPatches" >> "a3_exile_occupati
     [_logDetail] call SC_fnc_log;
 
     // Start Occupation
-    [] execVM "\x\addons\a3_exile_occupation\scripts\startOccupation.sqf";
+    []execVM "\x\addons\a3_exile_occupation\scripts\startOccupation.sqf";
 };

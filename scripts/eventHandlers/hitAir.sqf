@@ -40,7 +40,7 @@ _damagedEssentials = 0;
 } forEach _essentials;
 
 
-if(_heliDamage > 0.2 && _damagedEssentials > 0 && !_crewEjected && _ejectChance > 100) then
+if((_heliDamage > 0.2 OR _damagedEssentials) > 0 && !_crewEjected && _ejectChance > 100) then
 {
 	_target = _this select 1;
 	[_heli, _target] spawn 
