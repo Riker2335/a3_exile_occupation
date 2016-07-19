@@ -15,10 +15,10 @@ for "_i" from 1 to SC_numberofLootCrates do
 		sleep 0.2;
 		if(SC_occupyLootCratesStatic) then
 		{
-			_tempPosition = SC_occupyLootCratesLocations select 0;
+			_tempPosition = SC_occupyLootCratesLocations call BIS_fnc_selectRandom;
+			SC_occupyLootCratesLocations = SC_occupyLootCratesLocations - _tempPosition;
+			
 			_position = [_tempPosition select 0, _tempPosition select 1, _tempPosition select 2];
-
-			SC_occupyLootCratesLocations = SC_occupyLootCratesLocations deleteAt 0;
 			diag_log format["_tempPosition: %1 _position: %2",_tempPosition,_position];
 			if(isNil "_position") then
 			{
