@@ -1,7 +1,7 @@
 =================================================================================
 V53 (20-07-2016)
 =================================================================================
-Added checks to stop vehicles spawning on dirt tracks on Tanos
+Added checks to stop vehicles spawning on dirt tracks on Tanoa
 Added blacklist area for Tanoa Airport
 Fixed typo in heli eventhandler
 
