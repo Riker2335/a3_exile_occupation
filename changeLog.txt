@@ -8,7 +8,7 @@ Fixed typo in heli eventhandler
 =================================================================================
 V52 (19-07-2016)
 =================================================================================
-Trsders now use the new Exile format
+Traders now use the new Exile format
 Various tweaks and bug fixes
 
 
