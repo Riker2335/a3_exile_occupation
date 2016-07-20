@@ -12,7 +12,7 @@ private _maxDist 	= _middle - 100;
 if (worldName == 'Esseker') then 
 { 
 	_pos = [6502,6217,0];
-    _maxDist = 6000;
+    _maxDist = 5000;
 };
 
 if(_roadSpawn) then
@@ -53,7 +53,16 @@ while{!_validspot} do
         {
             _nearestRoad = _nearRoads select 0;
             _position = position _nearestRoad;
-            diag_log format["BIS_fnc_findSafePos checking road found at %1",_position];        
+			_isEmpty = !(_position isFlatEmpty  [15, -1, -1, -1, -1, false, player] isEqualTo []); // Check if there is 15m space around the road position to try and stop vehicles spawning on dirt tracks on Tanoa
+			if(!_isEmpty) then 
+			{ 
+				_validspot = false;  
+			}
+			else
+			{
+				diag_log format["BIS_fnc_findSafePos checking road found at %1",_position];
+			};
+                    
         };        
     };
     

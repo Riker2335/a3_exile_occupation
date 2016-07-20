@@ -16,7 +16,7 @@
 
 SC_debug						= false;					// set to true to turn on debug features (not for live servers) 
 SC_useApexClasses           	= true;                 	// true if you want to use the Apex class list over rides, false to use vanilla Arma gear
-SC_useMapOverrides          	= false;                 	// set to true to enable over riding options per map (see the bottom of this file for examples)
+SC_useMapOverrides          	= true;                 	// set to true to enable over riding options per map (see the bottom of this file for examples)
 SC_extendedLogging          	= false;                	// set to true for additional logging
 SC_processReporter				= true;                 	// log the a list of active server processes every 60 seconds (useful for debugging server problems)
 SC_infiSTAR_log					= true;						// true Use infiSTAR logging, false logs to server rpt
@@ -36,10 +36,10 @@ SC_fastNightsMultiplierDay  	= 4;                    	// the time multiplier to 
 SC_useWaypoints					= true;                 	// When spawning AI create waypoints to make them enter buildings (can affect performance when the AI is spawned and the waypoints are calculated)
 
 															// Distance limits for selecting safe places to spawn AI
-SC_minDistanceToSpawnZones  	= 500;                  	// Minimum distance in metres to the nearest spawn zone
-SC_minDistanceToTraders     	= 500;                  	// Minimum distance in metres to the nearest trader zone
+SC_minDistanceToSpawnZones  	= 1000;                  	// Minimum distance in metres to the nearest spawn zone
+SC_minDistanceToTraders     	= 1000;                  	// Minimum distance in metres to the nearest trader zone
 SC_minDistanceToTerritory   	= 500;                  	// Minimum distance in metres to the nearest player territory
-SC_minDistanceToPlayer      	= 250;                  	// Minimum distance in metres to the nearest player
+SC_minDistanceToPlayer      	= 400;                  	// Minimum distance in metres to the nearest player
 
 
 SC_occupyRandomSpawn        	= false;                	// (WORK IN PROGRESS, NOT WORKING YET) true if you want random spawning AI that hunt for nearby players
@@ -109,7 +109,7 @@ SC_occupySea					= false;		        // true if you want to have roaming AI boats
 SC_occupyTransport 	        	= true;					// true if you want pubic transport (travels between traders)
 SC_colourTransport          	= true;                 // true if you want the public transport coloured
 SC_secureTransport          	= true;                 // true if you want the public transport and pilot to be indestructible
-SC_occupyTransportClass 		= ["Exile_Chopper_Mohawk_FIA"]; // to always use the same vehicle, specify one option only
+SC_occupyTransportClass 		= ["Exile_Chopper_Mohawk_FIA","B_T_VTOL_01_infantry_blue_F"]; // to always use the same vehicle, specify one option only
 
 SC_occupyTransportStartPos  	= [];                   // if empty defaults to map centre
 
@@ -167,7 +167,9 @@ SC_LootCrateItems           	= [
                                     ["Exile_Item_Laptop",0,1],
                                     ["Exile_Item_CodeLock",0,1],
 									["Exile_Item_Cement",2,10],
-									["Exile_Item_Sand",2,10]
+									["Exile_Item_Sand",2,10],
+									["Exile_Item_MetalWire",1,5],
+									["Exile_Item_WaterCanisterEmpty",0,2]
                             ];
 
 SC_blackListedAreas         	=   [
@@ -176,7 +178,8 @@ SC_blackListedAreas         	=   [
                                     [[3926,7523,0],     500,    "Namalsk"],         // Norinsk Occupation DMS Static Mission  
                                     [[3926,7523,0],     500,    "Napf"],            // Lenzburg Occupation DMS Static Mission   
 									[[11685,2666,0],    500,    "Tanoa"],           // Lijnhaven Occupation DMS Static Mission
-									[[11580,2051,0],	500,	"Tanoa"]			// Lijnhaven Traders
+									[[11580,2051,0],	500,	"Tanoa"],			// Lijnhaven Traders
+									[[7228,6986,0],		250,	"Tanoa"]			// Tanoa Airport
                                 ];
 
 
@@ -316,6 +319,9 @@ if (worldName == 'Napf' AND SC_useMapOverrides) then
 if (worldName == 'Tanoa' AND SC_useMapOverrides) then 
 { 
     SC_useApexClasses       	= true;
+	SC_maxAIcount				= 80;
+	SC_maxNumberofVehicles 		= 3;
+	SC_scaleAI					= 1;
 };
 
 // Overrides to use Apex weapons, gear and vehicles if SC_useApexClasses = true

@@ -1,5 +1,12 @@
 =================================================================================
-V52 (16-07-2016)
+V53 (20-07-2016)
+=================================================================================
+Added checks to stop vehicles spawning on dirt tracks on Tanos
+Added blacklist area for Tanoa Airport
+Fixed typo in heli eventhandler
+
+=================================================================================
+V52 (19-07-2016)
 =================================================================================
 Trsders now use the new Exile format
 Various tweaks and bug fixes
