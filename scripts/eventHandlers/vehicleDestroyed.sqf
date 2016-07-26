@@ -1,6 +1,6 @@
 _vehicle = _this select 0;
 _vehicle removeAllMPEventHandlers  "mphit";
-_vehicle removeAllMPEventHandlers  "mpkilled";
+//_vehicle removeAllMPEventHandlers  "mpkilled";
 _vehicle removeAllEventHandlers  "getin";
 _vehicle removeAllEventHandlers  "getout";
 

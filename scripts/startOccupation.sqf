@@ -37,6 +37,36 @@ if (SC_fastNights) then
 	[60, fnc_checkMultiplier, [], true] call ExileServer_system_thread_addTask;
 };
 
+if(SC_occupyMilitary) then
+{
+	uiSleep 15; // delay the start
+
+	// Create a static list of military buildings rather than scanning every time we want to spawn military guards
+	_logDetail = format ["[OCCUPATION Military]:: Starting building scan @ ",time];
+	[_logDetail] call SC_fnc_log;
+	_middle 		    	= worldSize/2;			
+	_areaToScan 	    	= [_middle,_middle,0];		// Centre point for the map
+	_maxDistance 	    	= 20000;			        // Max radius for the map
+	SC_completeMilitaryList = [];
+	{
+		_currentBuilding = _x;
+		_foundBuilding = _areaToScan nearObjects [_currentBuilding, _maxDistance];
+		{
+			_pos = position _x;
+			SC_completeMilitaryList pushBack _foundBuilding;
+			_logDetail = format ["[OCCUPATION Military]:: Added building: %1 (object: %3) found at location: %2 @ ",_currentBuilding,_pos,_x];
+			[_logDetail] call SC_fnc_log;	
+		}forEach _foundBuilding;
+	
+	}forEach SC_buildings;	
+		
+	_logDetail = format ["[OCCUPATION Military]:: Ended building scan @ ",time];
+	[_logDetail] call SC_fnc_log;
+	
+	fnc_occupationMilitary = compile preprocessFileLineNumbers "\x\addons\a3_exile_occupation\scripts\occupationMilitary.sqf";
+	[SC_refreshTime, fnc_occupationMilitary, [], true] call ExileServer_system_thread_addTask;
+};
+
 if(SC_occupyRandomSpawn) then
 {
 	uiSleep 15; // delay the start
@@ -88,13 +118,6 @@ if(SC_occupyPlaces) then
 	uiSleep 15; // delay the start
 	fnc_occupationPlaces = compile preprocessFileLineNumbers "\x\addons\a3_exile_occupation\scripts\occupationPlaces.sqf";
 	[SC_refreshTime, fnc_occupationPlaces, [], true] call ExileServer_system_thread_addTask;
-};
-
-if(SC_occupyMilitary) then
-{
-	uiSleep 15; // delay the start
-	fnc_occupationMilitary = compile preprocessFileLineNumbers "\x\addons\a3_exile_occupation\scripts\occupationMilitary.sqf";
-	[SC_refreshTime, fnc_occupationMilitary, [], true] call ExileServer_system_thread_addTask;
 };
 
 if(SC_occupyTransport) then

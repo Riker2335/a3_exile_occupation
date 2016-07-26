@@ -142,7 +142,12 @@ _locations = (nearestLocations [_spawnCenter, ["NameVillage","NameCity", "NameCi
             for "_i" from 1 to _aiCount do
             {		
                 _loadOut = [_side] call SC_fnc_selectGear;               
-                _unit = [_group,_spawnPosition,"custom","random",_side,"soldier",_loadOut] call DMS_fnc_SpawnAISoldier;               
+                _unit = [_group,_spawnPosition,"custom","random",_side,"soldier",_loadOut] call DMS_fnc_SpawnAISoldier; 
+                _unit allowFleeing 0;
+                _unit allowDamage false;
+                _unit disableAI "AUTOTARGET";
+                _unit disableAI "TARGET";
+                _unit disableAI "MOVE";              
                 _unit setVariable ["SC_unitLocationName", _locationName,true]; 
                 _unit setVariable ["SC_unitLocationPosition", _pos,true];
                 _unit setVariable ["SC_unitSide", _side,true]; 
@@ -158,7 +163,11 @@ _locations = (nearestLocations [_spawnCenter, ["NameVillage","NameCity", "NameCi
             {	
                 _unit = _x;           
                 [_unit] joinSilent grpNull;
-                [_unit] joinSilent _group;      
+                [_unit] joinSilent _group;    
+                _unit allowDamage true;
+                _unit enableAI "AUTOTARGET";
+                _unit enableAI "TARGET";
+                _unit enableAI "MOVE";  
                 _unitName = [_side] call SC_fnc_selectName;
                 if(!isNil "_unitName") then { _unit setName _unitName; }; 	  
                 [_side,_unit] call SC_fnc_addMarker;
@@ -234,6 +243,11 @@ _locations = (nearestLocations [_spawnCenter, ["NameVillage","NameCity", "NameCi
                 {		
                     _loadOut = ["bandit"] call SC_fnc_selectGear;
                     _unit = [_group2,_spawnPosition,"custom","random",_side,"soldier",_loadOut] call DMS_fnc_SpawnAISoldier; 
+                    _unit allowFleeing 0;
+					_unit allowDamage false;
+					_unit disableAI "AUTOTARGET";
+					_unit disableAI "TARGET";
+					_unit disableAI "MOVE";
                     _unit setVariable ["SC_unitLocationName", _locationName,true]; 
                     _unit setVariable ["SC_unitLocationPosition", _pos,true];
                     _unit setVariable ["SC_unitSide", _side,true]; 
@@ -253,6 +267,10 @@ _locations = (nearestLocations [_spawnCenter, ["NameVillage","NameCity", "NameCi
                     _unit = _x;
                     [_unit] joinSilent grpNull;
                     [_unit] joinSilent _group2;
+                    _unit allowDamage true;
+                    _unit enableAI "AUTOTARGET";
+                    _unit enableAI "TARGET";
+                    _unit enableAI "MOVE";  
                     [_side,_unit] call SC_fnc_addMarker;
                     _unitName = [_side] call SC_fnc_selectName;
                     if(!isNil "_unitName") then { _unit setName _unitName; };                     

@@ -109,7 +109,7 @@ SC_occupySea					= false;		        // true if you want to have roaming AI boats
 SC_occupyTransport 	        	= true;					// true if you want pubic transport (travels between traders)
 SC_colourTransport          	= true;                 // true if you want the public transport coloured
 SC_secureTransport          	= true;                 // true if you want the public transport and pilot to be indestructible
-SC_occupyTransportClass 		= ["Exile_Chopper_Mohawk_FIA","B_T_VTOL_01_infantry_blue_F"]; // to always use the same vehicle, specify one option only
+SC_occupyTransportClass 		= ["Exile_Chopper_Hummingbird_Green"]; // to always use the same vehicle, specify one option only
 
 SC_occupyTransportStartPos  	= [];                   // if empty defaults to map centre
 
@@ -159,17 +159,19 @@ SC_LootCrateItems           	= [
                                     ["Exile_Item_MetalPole",1,0],
                                     ["Exile_Item_LightBulb",1,0],
                                     ["Exile_Item_FuelCanisterEmpty",1,0],
-                                    ["Exile_Item_WoodPlank",1,8],
-                                    ["Exile_Item_woodFloorKit",1,2],
-                                    ["Exile_Item_WoodWindowKit",1,1],
-                                    ["Exile_Item_WoodDoorwayKit",1,1],
-                                    ["Exile_Item_WoodFloorPortKit",1,2],   
+                                    ["Exile_Item_WoodPlank",0,8],
+                                    ["Exile_Item_woodFloorKit",0,2],
+                                    ["Exile_Item_WoodWindowKit",0,1],
+                                    ["Exile_Item_WoodDoorwayKit",0,1],
+                                    ["Exile_Item_WoodFloorPortKit",0,2],   
                                     ["Exile_Item_Laptop",0,1],
                                     ["Exile_Item_CodeLock",0,1],
 									["Exile_Item_Cement",2,10],
 									["Exile_Item_Sand",2,10],
 									["Exile_Item_MetalWire",1,5],
-									["Exile_Item_WaterCanisterEmpty",0,2]
+									["Exile_Item_WaterCanisterEmpty",0,2],
+									["Exile_Item_Shovel",0,1],
+									["Exile_Item_MetalScrews",0,5]
                             ];
 
 SC_blackListedAreas         	=   [
@@ -264,37 +266,29 @@ SC_BanditFirstNames     		= ["Alex","Nikita","George","Daniel","Adam","Alexander
 SC_BanditLastNames      		= ["Dimitrov","Petrov","Horvat","Novak","Dvorak","Vesely","Horak","Hansen","Larsen","Tamm","Ivanov","Pavlov","Virtanen"]; 
 
 
-SC_occupyMilitary 		    	= false;			    // true if you want military buildings patrolled
+SC_occupyMilitary 		    	= true;			    // true if you want military buildings patrolled
 
 // Array of buildings to add military patrols to
-SC_buildings                	= [	"Land_TentHangar_V1_F","Land_Hangar_F",
-                                "Land_Airport_Tower_F","Land_Cargo_House_V1_F",
-                                "Land_Cargo_House_V3_F","Land_Cargo_HQ_V1_F",
-                                "Land_Cargo_HQ_V2_F","Land_Cargo_HQ_V3_F",
-                                "Land_u_Barracks_V2_F","Land_i_Barracks_V2_F",
-                                "Land_i_Barracks_V1_F","Land_Cargo_Patrol_V1_F",
-                                "Land_Cargo_Patrol_V2_F","Land_Cargo_Tower_V1_F",
-                                "Land_Cargo_Tower_V1_No1_F","Land_Cargo_Tower_V1_No2_F",
-                                "Land_Cargo_Tower_V1_No3_F","Land_Cargo_Tower_V1_No4_F",
-                                "Land_Cargo_Tower_V1_No5_F","Land_Cargo_Tower_V1_No6_F",
-                                "Land_Cargo_Tower_V1_No7_F","Land_Cargo_Tower_V2_F",
-                                "Land_Cargo_Tower_V3_F","Land_MilOffices_V1_F",
-                                "Land_Radar_F","Land_budova4_winter","land_hlaska",                            
-                                "Land_Vysilac_FM","land_st_vez","Land_ns_Jbad_Mil_Barracks",
-                                "Land_ns_Jbad_Mil_ControlTower","Land_ns_Jbad_Mil_House",
-                                "land_pozorovatelna","Land_vys_budova_p1",
-                                "Land_Vez","Land_Mil_Barracks_i",
-                                "Land_Mil_Barracks_L","Land_Mil_Barracks",
-                                "Land_Hlidac_budka","Land_Ss_hangar",
-                                "Land_Mil_ControlTower","Land_a_stationhouse",
-                                "Land_Farm_WTower","Land_Mil_Guardhouse",
-                                "Land_A_statue01","Land_A_Castle_Gate",
-                                "Land_A_Castle_Donjon","Land_A_Castle_Wall2_30",
-                                "Land_A_Castle_Stairs_A",
-                                "Land_i_Barracks_V1_dam_F","Land_Cargo_Patrol_V3_F",
-                                "Land_Radar_Small_F","Land_Dome_Big_F",
-                                "Land_Dome_Small_F","Land_Army_hut3_long_int",
-                                "Land_Army_hut_int","Land_Army_hut2_int"
+SC_buildings                	= [	"Land_TentHangar_V1_F","Land_Hangar_F","Land_Airport_Tower_F","Land_Cargo_House_V1_F",
+                                    "Land_Cargo_House_V3_F","Land_Cargo_HQ_V1_F","Land_Cargo_HQ_V2_F","Land_Cargo_HQ_V3_F",
+                                    "Land_u_Barracks_V2_F","Land_i_Barracks_V2_F","Land_i_Barracks_V1_F","Land_Cargo_Patrol_V1_F",
+                                    "Land_Cargo_Patrol_V2_F","Land_Cargo_Tower_V1_F","Land_Cargo_Tower_V1_No1_F","Land_Cargo_Tower_V1_No2_F",
+                                    "Land_Cargo_Tower_V1_No3_F","Land_Cargo_Tower_V1_No4_F","Land_Cargo_Tower_V1_No5_F","Land_Cargo_Tower_V1_No6_F",
+                                    "Land_Cargo_Tower_V1_No7_F","Land_Cargo_Tower_V2_F","Land_Cargo_Tower_V3_F","Land_MilOffices_V1_F",
+                                    "Land_Radar_F","Land_budova4_winter","land_hlaska","Land_Vysilac_FM","land_st_vez","Land_ns_Jbad_Mil_Barracks",
+                                    "Land_ns_Jbad_Mil_ControlTower","Land_ns_Jbad_Mil_House","land_pozorovatelna","Land_vys_budova_p1",
+                                    "Land_Vez","Land_Mil_Barracks_i","Land_Mil_Barracks_L","Land_Mil_Barracks",
+                                    "Land_Hlidac_budka","Land_Ss_hangar","Land_Mil_ControlTower","Land_a_stationhouse",
+                                    "Land_Farm_WTower","Land_Mil_Guardhouse","Land_A_statue01","Land_A_Castle_Gate",
+                                    "Land_A_Castle_Donjon","Land_A_Castle_Wall2_30","Land_A_Castle_Stairs_A",
+                                    "Land_i_Barracks_V1_dam_F","Land_Cargo_Patrol_V3_F","Land_Radar_Small_F","Land_Dome_Big_F",
+                                    "Land_Dome_Small_F","Land_Army_hut3_long_int","Land_Army_hut_int","Land_Army_hut2_int",
+                                    // Additional Buildings
+                                    "Land_Barracks_01_camo_F","Land_Barracks_01_grey_F","land_AII_last_floor","land_AII_middle_floor",
+                                    "land_AII_upper_part","Land_Ind_IlluminantTower","Land_Misc_deerstand","Land_ns_Jbad_A_Stationhouse",
+                                    "Land_Airport_01_controlTower_F","Land_Airport_01_terminal_F","Land_Airport_02_controlTower_F",
+                                    "Land_Airport_02_terminal_F","Land_Cargo_House_V4_F","Land_Cargo_HQ_V4_F","Land_Cargo_Patrol_V4_F",
+                                    "Land_Cargo_Tower_V4_F"
                                 ]; 
 
 // namalsk specific settings (if you want to override settings for specific maps if you run multiple servers)
@@ -319,20 +313,18 @@ if (worldName == 'Napf' AND SC_useMapOverrides) then
 if (worldName == 'Tanoa' AND SC_useMapOverrides) then 
 { 
     SC_useApexClasses       	= true;
-	SC_maxAIcount				= 80;
-	SC_maxNumberofVehicles 		= 3;
-	SC_scaleAI					= 1;
+    SC_maxAIcount				= 80;
 };
 
 // Overrides to use Apex weapons, gear and vehicles if SC_useApexClasses = true
 if(SC_useApexClasses) then 
 {
 	SC_BanditWeapon 			= [	"arifle_MX_khk_F","arifle_MX_GL_khk_F","arifle_MX_SW_khk_F","arifle_MXC_khk_F","arifle_MXM_khk_F","arifle_AK12_F","arifle_AK12_GL_F","arifle_AKM_F",
-								"arifle_AKS_F","arifle_ARX_blk_F","arifle_ARX_ghex_F","arifle_ARX_hex_F","arifle_CTAR_blk_F","arifle_CTAR_GL_blk_F","arifle_CTARS_blk_F","arifle_SPAR_01_blk_F","arifle_SPAR_01_khk_F",
-								"arifle_SPAR_01_snd_F","arifle_SPAR_01_GL_blk_F","arifle_SPAR_01_GL_khk_F","arifle_SPAR_01_GL_snd_F","arifle_SPAR_02_blk_F","arifle_SPAR_02_khk_F","arifle_SPAR_02_snd_F",
-								"arifle_SPAR_03_blk_F","arifle_SPAR_03_khk_F","arifle_SPAR_03_snd_F"];
+                                    "arifle_AKS_F","arifle_ARX_blk_F","arifle_ARX_ghex_F","arifle_ARX_hex_F","arifle_CTAR_blk_F","arifle_CTAR_GL_blk_F","arifle_CTARS_blk_F","arifle_SPAR_01_blk_F","arifle_SPAR_01_khk_F",
+                                    "arifle_SPAR_01_snd_F","arifle_SPAR_01_GL_blk_F","arifle_SPAR_01_GL_khk_F","arifle_SPAR_01_GL_snd_F","arifle_SPAR_02_blk_F","arifle_SPAR_02_khk_F","arifle_SPAR_02_snd_F",
+                                    "arifle_SPAR_03_blk_F","arifle_SPAR_03_khk_F","arifle_SPAR_03_snd_F"];
 	SC_BanditUniforms			= [	"U_I_C_Soldier_Para_1_F","U_I_C_Soldier_Para_2_F","U_I_C_Soldier_Para_3_F","U_I_C_Soldier_Para_4_F","U_I_C_Soldier_Para_5_F","U_I_C_Soldier_Bandit_1_F","U_I_C_Soldier_Bandit_2_F",
-								"U_I_C_Soldier_Bandit_3_F","U_I_C_Soldier_Bandit_4_F","U_I_C_Soldier_Bandit_5_F","U_I_C_Soldier_Camo_F","U_B_CTRG_Soldier_urb_1_F","U_B_CTRG_Soldier_urb_2_F","U_B_CTRG_Soldier_urb_3_F"];
+								    "U_I_C_Soldier_Bandit_3_F","U_I_C_Soldier_Bandit_4_F","U_I_C_Soldier_Bandit_5_F","U_I_C_Soldier_Camo_F","U_B_CTRG_Soldier_urb_1_F","U_B_CTRG_Soldier_urb_2_F","U_B_CTRG_Soldier_urb_3_F"];
 	SC_VehicleClassToUse 		=   [	
 									["B_GEN_Offroad_01_gen_F",0],
 									["C_Offroad_02_unarmed_F",0],
@@ -356,7 +348,7 @@ if (SC_debug) then
     SC_occupyMilitary 			= true;
     SC_occupyStatic				= true;
     SC_occupySky				= true;
-    SC_occupySea				= true;
+    SC_occupySea				= false;
     SC_occupyTransport			= true;
     SC_occupyLootCrates			= true;
     SC_occupyHeliCrashes		= true;	

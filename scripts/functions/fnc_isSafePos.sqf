@@ -16,7 +16,7 @@ private _validspot      = true;
     {
         	
 		_distance = _position distance2D _blacklistPos;
-		if(_distance < _blacklistRadius) exitWith
+		if(_distance < _blacklistRadius) then
         {
             _validspot = false;
 			diag_log format["%1 is %2m from blacklisted position %3 (blacklisted)",_position,_distance,_blacklistPos];			
@@ -24,20 +24,23 @@ private _validspot      = true;
     };
 }forEach SC_blackListedAreas;
 
-//Check if near player territory
-private _nearBase = (nearestObjects [_position,["Exile_Construction_Flag_Static"],SC_minDistanceToTerritory]) select 0;
-if (!isNil "_nearBase") then { _validspot = false;  };	
+if(_validspot) then
+{
+    //Check if near player territory
+    private _nearBase = (nearestObjects [_position,["Exile_Construction_Flag_Static"],SC_minDistanceToTerritory]) select 0;
+    if (!isNil "_nearBase") then { _validspot = false;  };	
 
-// is position in range of a territory?
-if([_position, SC_minDistanceToTerritory] call ExileClient_util_world_isTerritoryInRange) exitwith { _validspot = false; };
+    // is position in range of a territory?
+    if([_position, SC_minDistanceToTerritory] call ExileClient_util_world_isTerritoryInRange) exitwith { _validspot = false; };
 
-// is position in range of a trader zone?
-if([_position, SC_minDistanceToTraders] call ExileClient_util_world_isTraderZoneInRange) exitwith { _validspot = false; };
+    // is position in range of a trader zone?
+    if([_position, SC_minDistanceToTraders] call ExileClient_util_world_isTraderZoneInRange) exitwith { _validspot = false; };
 
-// is position in range of a spawn zone?
-if([_position, SC_minDistanceToSpawnZones] call ExileClient_util_world_isSpawnZoneInRange) exitwith { _validspot = false; };
+    // is position in range of a spawn zone?
+    if([_position, SC_minDistanceToSpawnZones] call ExileClient_util_world_isSpawnZoneInRange) exitwith { _validspot = false; };
 
-// is position in range of a player?
-if([_position, SC_minDistanceToPlayer] call ExileClient_util_world_isAlivePlayerInRange) exitwith { _validspot = false; };         
+    // is position in range of a player?
+    if([_position, SC_minDistanceToPlayer] call ExileClient_util_world_isAlivePlayerInRange) exitwith { _validspot = false; }; 
+};       
 
 _validspot	
