@@ -4,7 +4,7 @@ class CfgPatches
 		units[] = {};
 		weapons[] = {};
 		requiredVersion = 0.1;
-		a3_exile_occupation_version = "v54 (26-07-2016)";
+		a3_exile_occupation_version = "v55 (27-07-2016)";
 		requiredAddons[] = {"a3_dms"};
 		author[]= {"second_coming"};
 	};

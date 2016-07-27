@@ -156,7 +156,8 @@ if(_vehiclesToSpawn >= 1) then
                 _vehicle setVehicleLock "UNLOCKED";
                 _vehicle setVariable ["ExileIsLocked", 0, true];             
             };
-
+			
+			_vehicle setVariable ["ExileIsPersistent", false];
             _vehicle setSpeedMode "LIMITED";
             _vehicle limitSpeed 60;
             _vehicle action ["LightOn", _vehicle];			

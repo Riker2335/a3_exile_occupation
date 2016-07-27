@@ -1,9 +1,18 @@
 =================================================================================
+V55 (27-07-2016)
+=================================================================================
+Tweaked military AI
+Added _vehicleObject setVariable ["ExileIsPersistent", false]; to vehicle spawns
+to allow them to be claimed using:
+http://www.exilemod.com/topic/13283-updated-claim-non-persistent-vehicles/
+
+=================================================================================
 V54 (26-07-2016)
 =================================================================================
-Reworked military spawning to include the entire map rather than a small area
-Tweaked the spawning of AI in an attempt to stop groups of AI randomly murdering
-each other when spawning (thanks to Zupa for the pointers)
+Reworked military spawning to include the entire map rather than a small area 
+(including the new military buildings on Tanoa). Tweaked the spawning of AI in an 
+attempt to stop groups of AI randomly murdering each other when spawning 
+(thanks to Zupa for the pointers)
 
 =================================================================================
 V53 (20-07-2016)

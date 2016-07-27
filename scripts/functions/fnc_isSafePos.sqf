@@ -41,6 +41,14 @@ if(_validspot) then
 
     // is position in range of a player?
     if([_position, SC_minDistanceToPlayer] call ExileClient_util_world_isAlivePlayerInRange) exitwith { _validspot = false; }; 
+	
+	// is position in range of a map marker?
+	{
+		_markerPos = getMarkerPos _x;
+		if ((_markerPos distance2D _position) < 350) exitWith { _validspot = false; };
+	}
+	forEach allMapMarkers;
+
 };       
 
 _validspot	

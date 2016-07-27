@@ -109,6 +109,7 @@ for "_i" from 1 to _vehiclesToSpawn do
 		_vehicle lock 0;			
 		_vehicle setVehicleLock "UNLOCKED";
 		_vehicle setVariable ["ExileIsLocked", 0, true];
+		_vehicle setVariable ["ExileIsPersistent", false];
 		_vehicle action ["LightOn", _vehicle];
 			
 		// Calculate the number of seats in the vehicle and fill the required amount

@@ -95,7 +95,7 @@ if(_aiActive > _maxAIcount) exitWith
 			// Get AI to patrol the area
 			//////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 			_aiCount = 2 + (round (random 1)); 
-			_groupRadius = 100;
+			_groupRadius = 200;
 			_difficulty = "random";
 			_side = SC_BanditSide;
 			_spawnPosition = _pos;				
@@ -125,7 +125,7 @@ if(_aiActive > _maxAIcount) exitWith
 				}foreach units _group;
 
 				[_group, _pos, _groupRadius] call bis_fnc_taskPatrol;
-				_group setBehaviour "AWARE";
+				_group setBehaviour "STEALTH";
 				_group setCombatMode "RED";
 			}
 			else
@@ -148,7 +148,7 @@ if(_aiActive > _maxAIcount) exitWith
 					}; 
 				}foreach units _group;
 
-				[ _group,_pos,_difficulty,"AWARE" ] call DMS_fnc_SetGroupBehavior;
+				[ _group,_pos,_difficulty,"STEALTH" ] call DMS_fnc_SetGroupBehavior;
 				
 				_buildings = _pos nearObjects ["house", _groupRadius];
 				{
@@ -170,13 +170,12 @@ if(_aiActive > _maxAIcount) exitWith
 						
 						_i = _buildingPositions find _spawnPosition;
 						_wp = _group addWaypoint [_spawnPosition, 0] ;
-						_wp setWaypointFormation "Column";
 						_wp setWaypointBehaviour "AWARE";
 						_wp setWaypointCombatMode "RED";
 						_wp setWaypointCompletionRadius 1;
 						_wp waypointAttachObject _y;
 						_wp setwaypointHousePosition _i;
-						_wp setWaypointType "SAD";
+						_wp setWaypointType "MOVE";
 
 					};
 				} foreach _buildings;
