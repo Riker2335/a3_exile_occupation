@@ -11,7 +11,7 @@ if (SC_occupyLootCratesMarkers) then
 		if(!isNil "_pos") then
 		{
 			
-			if([_pos, 15] call ExileClient_util_world_isAlivePlayerInRange) then
+			if([_pos, 5] call ExileClient_util_world_isAlivePlayerInRange) then
 			{ 
 				deleteMarker _markerName; 
 				_logDetail =  format ["[OCCUPATION:LootCrates]:: marker %1 removed at %2",_markerName,time];

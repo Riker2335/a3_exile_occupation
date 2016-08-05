@@ -79,7 +79,39 @@ if(_vehiclesToSpawn >= 1) then
  	for "_j" from 1 to _vehiclesToSpawn do
 	{
 		private["_group"];
-        _spawnLocation = [ true, false ] call SC_fnc_findsafePos;
+		
+		_locationArray = SC_occupyVehicleFixedPositions;
+		
+		// Select the spawn position
+		_spawnLocation = [0,0,0];
+		_radius = 2000;
+		if(SC_occupyVehicleUseFixedPos) then
+		{
+			{
+				_vehLocation = _x getVariable "SC_vehicleSpawnLocation";
+				_locationArray = _locationArray - _vehLocation;				
+			}forEach SC_liveVehiclesArray;
+			
+			if(count _locationArray > 0)  then
+			{
+				_randomLocation = _locationArray call BIS_fnc_selectRandom;
+				diag_log format["_randomLocation: %1",_randomLocation];
+				_spawnLocation = _randomLocation select 0;
+				_radius = _randomLocation select 1;
+				_locationArray = _locationArray - _randomLocation;
+			}
+			else
+			{
+				_spawnLocation = [ true, false ] call SC_fnc_findsafePos;
+				_radius = 2000;
+			};
+		}
+		else
+		{
+			_spawnLocation = [ true, false ] call SC_fnc_findsafePos;
+			_radius = 2000;
+		};
+		 
         diag_log format["[OCCUPATION:Vehicle] found position %1",_spawnLocation];
         _group = createGroup SC_BanditSide;
         if(_side == "survivor") then 
@@ -87,8 +119,8 @@ if(_vehiclesToSpawn >= 1) then
             deleteGroup _group;
             _group = createGroup SC_SurvivorSide; 
         };        
-        _group setVariable ["DMS_AllowFreezing",false,true];
-        _group setVariable ["DMS_LockLocality",nil];
+        _group setVariable ["DMS_AllowFreezing",false];
+        _group setVariable ["DMS_LockLocality",true];
         _group setVariable ["DMS_SpawnedGroup",true];
         _group setVariable ["DMS_Group_Side", _side];        
         
@@ -140,7 +172,7 @@ if(_vehiclesToSpawn >= 1) then
 
             _vehicle setVariable["vehPos",_spawnLocation,true];
             _vehicle setVariable["vehClass",_VehicleClassToUse,true];
-            _vehicle setVariable ["SC_vehicleSpawnLocation", _spawnLocation,true];
+            _vehicle setVariable ["SC_vehicleSpawnLocation", [_spawnLocation,_radius,worldName],true];
             _vehicle setFuel 1;
             _vehicle engineOn true;
             
@@ -252,6 +284,7 @@ if(_vehiclesToSpawn >= 1) then
                 _unitName = [_side] call SC_fnc_selectName;
                 if(!isNil "_unitName") then { _unit setName _unitName; }; 
             }forEach units _group;
+			[_group,false] call DMS_fnc_FreezeToggle;
  
             [units _group] orderGetIn true;
             sleep 10; 

@@ -7,6 +7,7 @@ _logDetail = format['[OCCUPATION:Sea] Started'];
 _currentPlayerCount = count playableUnits;
 _maxAIcount 		= SC_maxAIcount;
 
+
 if(_currentPlayerCount > SC_scaleAI) then 
 {
 	_maxAIcount = _maxAIcount - (_currentPlayerCount - SC_scaleAI) ;
@@ -43,11 +44,49 @@ _maxDistance = _middle;
 for "_i" from 1 to _vehiclesToSpawn do
 {
 	private["_group"];
-	_potentialspawnLocation = [ _spawnCenter, 0, _maxDistance + 500, 25, 2, 1, 1] call BIS_fnc_findSafePos;
-    _spawnLocation = [_potentialspawnLocation select 0, _potentialspawnLocation select 1,0];
-     
+	
+	_locationArray = SC_occupyBoatFixedPositions;
+	// Select the spawn position
+	_spawnLocation = [0,0,0];
+	_radius = 4000;
+	if(SC_occupyBoatUseFixedPos) then
+	{
+		{
+			_vehLocation = _x getVariable "SC_vehicleSpawnLocation";
+			_locationArray = _locationArray - _vehLocation;				
+		}forEach SC_liveBoatsArray;
+		
+		if(count _locationArray > 0)  then
+		{
+			_randomLocation = _locationArray call BIS_fnc_selectRandom;
+			diag_log format["_randomLocation: %1",_randomLocation];
+			_tempLocation = _randomLocation select 0;
+			_spawnLocation = [_tempLocation select 0, _tempLocation select 1, _tempLocation select 2];
+			_radius = _randomLocation select 1;
+			_locationArray = _locationArray - _randomLocation;
+
+		}
+		else
+		{
+			_potentialspawnLocation = [ _spawnCenter, 0, _maxDistance + 500, 25, 2, 1, 1] call BIS_fnc_findSafePos;
+			_spawnLocation = [_potentialspawnLocation select 0, _potentialspawnLocation select 1,0];
+			_radius = 4000;
+		};
+	}
+	else
+	{
+		_potentialspawnLocation = [ _spawnCenter, 0, _maxDistance + 500, 25, 2, 1, 1] call BIS_fnc_findSafePos;
+		_spawnLocation = [_potentialspawnLocation select 0, _potentialspawnLocation select 1,0];
+		_radius = 4000;
+	};
+
+    diag_log format["[OCCUPATION:Sea] found position %1",_spawnLocation]; 
     _group = createGroup SC_BanditSide;
-    _group setVariable ["DMS_AllowFreezing",false,true];
+	_group setVariable ["DMS_AllowFreezing",false];
+	[_group,false] call DMS_fnc_FreezeToggle;
+	_group setVariable ["DMS_LockLocality",true];
+	_group setVariable ["DMS_SpawnedGroup",true];
+	_group setVariable ["DMS_Group_Side", SC_BanditSide];  
 	_VehicleClass = SC_BoatClassToUse call BIS_fnc_selectRandom;
 	_VehicleClassToUse = _VehicleClass select 0; 
 
@@ -71,7 +110,7 @@ for "_i" from 1 to _vehiclesToSpawn do
         _vehicle setPosASL _spawnLocation;
         _vehicle setVariable["vehPos",_spawnLocation,true];
         _vehicle setVariable["vehClass",_VehicleClassToUse,true];
-        _vehicle setVariable ["SC_vehicleSpawnLocation", _spawnLocation,true];
+        _vehicle setVariable ["SC_vehicleSpawnLocation", [_spawnLocation,_radius,worldName],true];
         
         // Remove the overpowered weapons from boats
         _vehicle removeWeaponTurret  ["HMG_01",[0]];
@@ -204,7 +243,7 @@ for "_i" from 1 to _vehiclesToSpawn do
         };
 
         
-        [_group, _spawnLocation, 4000] call bis_fnc_taskPatrol;
+        [_group, _spawnLocation, _radius] call bis_fnc_taskPatrol;
         _group setBehaviour "AWARE";
         _group setCombatMode "RED";
         _vehicle addEventHandler ["getin", "_this call SC_fnc_claimVehicle;"];	

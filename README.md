@@ -7,7 +7,7 @@ An AI spawner and monitor to be used in conjunction with DMS and will not work w
 http://www.exilemod.com/topic/61-dms-defents-mission-system/
 
 Download the pbo version here:
-https://www.dropbox.com/sh/00y7gqw0da9ugfj/AAD0sKAhupupaAjuPF2T7UIwa?dl=0
+https://www.dropbox.com/s/4c2dwwa6v86qhx9/a3_exile_occupation.pbo?dl=0
 
 To install place the pbo into the @ExileServer/addons folder
 

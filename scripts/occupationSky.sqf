@@ -59,18 +59,61 @@ _i = 0;
 
 } forEach _locations;
 
+
+
 for "_i" from 1 to _vehiclesToSpawn do
 {
 	private["_group"];
-	_Location = _locations call BIS_fnc_selectRandom;
-	_pos = position _Location;	
-	_position = [_pos select 0, _pos select 1, 300];
-	_safePos = [_position,10,100,5,0,20,0] call BIS_fnc_findSafePos;
 	_height = 350 + (round (random 200));
-	_spawnLocation = [_safePos select 0, _safePos select 1, _height];
-   
+	_locationArray = SC_occupyHeliFixedPositions;
+	
+	// Select the spawn position
+	_spawnLocation = [0,0,0];
+	_radius = 2000;
+	if(SC_occupyHeliUseFixedPos) then
+	{
+		{
+			_vehLocation = _x getVariable "SC_vehicleSpawnLocation";
+			_locationArray = _locationArray - _vehLocation;				
+		}forEach SC_liveHelisArray;
+		
+		if(count _locationArray > 0)  then
+		{
+			_randomLocation = _locationArray call BIS_fnc_selectRandom;
+			diag_log format["_randomLocation: %1",_randomLocation];
+			_tempLocation = _randomLocation select 0;
+			_spawnLocation = [_tempLocation select 0, _tempLocation select 1, _tempLocation select 2];
+			_radius = _randomLocation select 1;
+		}
+		else
+		{
+			_Location = _locations call BIS_fnc_selectRandom;
+			_pos = position _Location;	
+			_position = [_pos select 0, _pos select 1, 300];
+			_safePos = [_position,10,100,5,0,20,0] call BIS_fnc_findSafePos;
+			_spawnLocation = [_safePos select 0, _safePos select 1, _height];
+			_spawnLocation = [_safePos select 0, _safePos select 1, _height];
+			_radius = 2000;
+		};
+	}
+	else
+	{
+		_Location = _locations call BIS_fnc_selectRandom;
+		_pos = position _Location;	
+		_position = [_pos select 0, _pos select 1, 300];
+		_safePos = [_position,10,100,5,0,20,0] call BIS_fnc_findSafePos;
+		_spawnLocation = [_safePos select 0, _safePos select 1, _height];
+		_spawnLocation = [_safePos select 0, _safePos select 1, _height];
+		_radius = 2000;
+	};
+
+	diag_log format["[OCCUPATION:Sky] found position %1",_spawnLocation];
     _group = createGroup SC_BanditSide;
-  	_group setVariable ["DMS_AllowFreezing",false,true];
+	_group setVariable ["DMS_AllowFreezing",false];
+	[_group,false] call DMS_fnc_FreezeToggle;
+	_group setVariable ["DMS_LockLocality",true];
+	_group setVariable ["DMS_SpawnedGroup",true];
+	_group setVariable ["DMS_Group_Side", SC_BanditSide];  
   
 	_VehicleClass = SC_HeliClassToUse call BIS_fnc_selectRandom;
 	_VehicleClassToUse = _VehicleClass select 0;  
@@ -95,7 +138,7 @@ for "_i" from 1 to _vehiclesToSpawn do
 		_group addVehicle _vehicle;
 		_vehicle setVariable["vehPos",_spawnLocation,true];
 		_vehicle setVariable["vehClass",_VehicleClassToUse,true];
-		_vehicle setVariable ["SC_vehicleSpawnLocation", _spawnLocation,true];
+		_vehicle setVariable ["SC_vehicleSpawnLocation", [_spawnLocation,_radius,worldName],true];
 
 		SC_liveHelis = SC_liveHelis + 1;
 		SC_liveHelisArray = SC_liveHelisArray + [_vehicle];
@@ -176,8 +219,6 @@ for "_i" from 1 to _vehiclesToSpawn do
 			[_unit] joinSilent _group;
 		}foreach units _group;
 
-		_group setVariable ["DMS_AllowFreezing",false,true];
-
 		if(SC_extendedLogging && _unitPlaced) then 
 		{ 
 			_logDetail = format['[OCCUPATION:Sky] %1 spawned @ %2',_VehicleClassToUse,_spawnLocation];	
@@ -233,7 +274,7 @@ for "_i" from 1 to _vehiclesToSpawn do
 		};
 
 		
-		[_group, _spawnLocation, 2000] call bis_fnc_taskPatrol;
+		[_group, _spawnLocation, _radius] call bis_fnc_taskPatrol;
 		_group setBehaviour "AWARE";
 		_group setCombatMode "RED";
 		_vehicle addEventHandler ["getin", "_this call SC_fnc_claimVehicle;"];	

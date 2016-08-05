@@ -95,7 +95,7 @@ if(_heliDamage > 0.7 && _damagedEssentials > 0) then
 	_heli setVehicleLock "UNLOCKED";
 	_target = _this select 1;
 	_group = group _heli;
-	_group reveal [_target,2.5];
+
     _destination = position _target;
 
     _heli land "LAND";
@@ -105,6 +105,7 @@ if(_heliDamage > 0.7 && _damagedEssentials > 0) then
     } forEach (fullCrew _heli);
 
 	_group2 allowFleeing 0;
+	_group2 reveal [_target,2.5];
 	_wp = _group2 addWaypoint [_destination, 0] ;
 	_wp setWaypointBehaviour "COMBAT";
 	_wp setWaypointCombatMode "RED";
@@ -117,4 +118,7 @@ if(_heliDamage > 0.7 && _damagedEssentials > 0) then
     _group2 setCombatMode "RED";
 };
 
-_heli addMPEventHandler ["mphit", "_this call SC_fnc_hitAir;"];
+if(_heliDamage <= 0.2 && _damagedEssentials == 0) then
+{
+	_heli addMPEventHandler ["mphit", "_this call SC_fnc_hitAir;"];
+};

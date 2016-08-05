@@ -1,4 +1,13 @@
 =================================================================================
+V56 (05-08-2016)
+=================================================================================
+config.sqf tidied up
+Added the option to specify patrol locations and radius for roaming ai (land/sky/sea)
+Updated the DMS anti freeze setting to work with the latest DMS version to stop
+roaming vehicles from freezing
+Added more info to the process reporter log entries
+
+=================================================================================
 V55 (27-07-2016)
 =================================================================================
 Tweaked military AI

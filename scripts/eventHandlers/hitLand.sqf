@@ -122,10 +122,12 @@ if(_wheelDamage OR _engineDamage OR _fueltankDamage) then
         _wp setWaypointCompletionRadius 1;
         _wp setWaypointType "GETIN";		
         sleep 5;
-        _spawnLocation = _vehicle getVariable "SC_vehicleSpawnLocation";	
+		_tempLocation = _vehicle getVariable "SC_vehicleSpawnLocation";
+		_originalSpawnLocation = _tempLocation select 0;
+		_radius = _tempLocation select 1;		
          _driver action ["movetodriver", _vehicle];	
         _vehicle forceSpeed -1;	
-        [_group, _spawnLocation, 2000] call bis_fnc_taskPatrol;
+        [_group, _originalSpawnLocation, _radius] call bis_fnc_taskPatrol;
         _group setBehaviour "SAFE";
         _group setCombatMode "RED";
 	    _driver enableAI "MOVE";    

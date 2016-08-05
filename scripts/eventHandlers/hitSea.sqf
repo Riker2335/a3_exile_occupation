@@ -1,9 +1,10 @@
 _boat = _this select 0;
 _boat removeAllMPEventHandlers  "mphit";
-_boatDamage = getDammage _boat;
-_boatPosition = getPosATL _boat;
-_boatHeight = getPosATL _boat select 2;
-_crewEjected = _boat getVariable "SC_crewEjected";
+
+_boatDamage 		= damage _boat;
+_boatPosition 		= getPosATL _boat;
+_boatHeight 		= getPosATL _boat select 2;
+_crewEjected 		= _boat getVariable "SC_crewEjected";
 
 _damageLimit 		= 0.2;
 _engineDamage 		= false;
@@ -47,7 +48,7 @@ if(_boatDamage > 0.2 && _damagedEssentials > 0 && !_crewEjected && _ejectChance 
         if(SC_extendedLogging) then 
         { 
             _boatPosition = getPosATL _veh;
-            _logDetail = format ["[OCCUPATION:Sky]:: Air unit %2 ejecting passengers at %3 (time: %1)",time,_veh,_boatPosition]; 
+            _logDetail = format ["[OCCUPATION:Sky]:: Sea unit %2 ejecting passengers at %3 (time: %1)",time,_veh,_boatPosition]; 
             [_logDetail] call SC_fnc_log;	
         };
         _cargo = assignedCargo _veh;
