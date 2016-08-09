@@ -401,14 +401,14 @@ if (worldName == 'Namalsk' AND SC_useMapOverrides) then
 
 if (worldName == 'Napf' AND SC_useMapOverrides) then 
 { 
-	//SC_maxAIcount				= 160;
-	//SC_maxNumberofVehicles 		= 5;
+	SC_maxAIcount				= 160;
+	SC_maxNumberofVehicles 		= 5;
 };
 
 if (worldName == 'Chernarus' AND SC_useMapOverrides) then 
 { 
-	//SC_maxAIcount				= 160;
-	//SC_maxNumberofVehicles 		= 5;
+	SC_maxAIcount				= 160;
+	SC_maxNumberofVehicles 		= 5;
 };
 
 if (worldName == 'Tanoa' AND SC_useMapOverrides) then 
@@ -449,17 +449,18 @@ if (SC_debug) then
 {
     SC_extendedLogging       	= true;
     SC_processReporter      	= true;
-    SC_mapMarkers			    = false;
-    SC_occupyPlaces 			= false;
-    SC_occupyVehicle			= true;
+    SC_mapMarkers			    = true;
+    SC_occupyPlaces 			= true;
+    SC_occupyVehicle			= false;
     SC_occupyMilitary 			= false;
     SC_occupyStatic				= false;
-    SC_occupySky				= true;
-    SC_occupySea				= true;
+    SC_occupySky				= false;
+    SC_occupySea				= false;
+	SC_occupyTraders            = false;	
     SC_occupyTransport			= false;
     SC_occupyLootCrates			= false;
     SC_occupyHeliCrashes		= false;
-	SC_maxAIcount				= 160;	
+	SC_maxAIcount				= 200;	
     SC_maxNumberofVehicles		= 5;
     SC_maxNumberofBoats			= 5;
     SC_maxNumberofHelis			= 5;   
