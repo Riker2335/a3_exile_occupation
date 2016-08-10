@@ -53,7 +53,21 @@ switch (_side) do
                 _magazines pushBack [_newMagazine,_quantity];    
             };             
         };   
-    };    
+    }; 
+    case "cops":
+    {
+        _uniform  			= "U_B_GEN_Soldier_F"; 
+        _vest  				= "V_TacVest_gen_F"; 
+        _headgear  			= "H_Cap_police"; 
+        _weapon  			= "SMG_05_F";
+        _weaponAttachments  = ["muzzle_snds_L"];         
+        _pistol  			= "hgun_Rook40_F"; 
+        _pistolAttachments  = ["muzzle_snds_L"];    
+        _launcher  			= ""; 
+        _backpack  			= "";  
+        _assignedItems 		= ["ItemMap","ItemCompass","ItemRadio","ItemWatch"];    
+        _magazines 			= ["30Rnd_9x21_Mag_SMG_02","30Rnd_9x21_Mag_SMG_02","16Rnd_9x21_Mag","16Rnd_9x21_Mag"];  
+    }; 	
 };
 
 _weaponAttachmentsChance = round (random 100);

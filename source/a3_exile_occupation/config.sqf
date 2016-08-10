@@ -45,7 +45,7 @@ SC_occupyTraders            	= true;						// true if you want to create trader c
 SC_occupyStatic	 		    	= false;		    		// true if you want to add AI in specific locations
 SC_occupyTransport 	        	= true;						// true if you want pubic transport (travels between traders)
 SC_occupyLootCrates		    	= true;						// true if you want to have random loot crates with guards
-SC_occupyRandomSpawn        	= false;                	// (WORK IN PROGRESS, NOT WORKING YET) true if you want random spawning AI that hunt for nearby players
+SC_occupyRandomSpawn        	= true;                		// (WORK IN PROGRESS) true if you want random spawning AI that hunt for nearby players
 SC_occupyMilitary 		    	= false;			    	// true if you want military buildings patrolled
 SC_occupyVehicle				= true;						// true if you want to have roaming AI land vehicles
 SC_occupySky					= true;						// true if you want to have roaming AI helis
@@ -61,12 +61,21 @@ SC_fastNightsEnds           	= 6;                    	// End fast nights at this
 SC_fastNightsMultiplierDay  	= 4;                    	// the time multiplier to use during daylight hours (4 = 4x speed)
 
 /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-//	Random Spawn Setup (not working yet)
+//	Random Spawn Setup (Work in progress)
 /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
 SC_randomSpawnMinPlayers    	= 1;                    	// Minimum number of players to be online before random spawning AI can spawn
-SC_randomSpawnMaxAI         	= 5;                    	// Maximum amount of random AI groups allowed at any time
+SC_randomSpawnMaxGroups        	= 5;                    	// Maximum amount of random AI groups allowed at any time
+SC_randomSpawnMinGroupSize      = 1;                    	// Minimum amount of random AI groups allowed per group
+SC_randomSpawnMaxGroupSize      = 3;                    	// Maximum amount of random AI groups allowed per group
+SC_randomSpawnChance			= 10;						// Percentage chance of spawning if suitable player found
 SC_randomSpawnIgnoreCount		= true;						// true if you want spawn random AI groups regardless of overall AI count (they still count towards the total though)
+SC_randomSpawnFrequency			= 1800;						// time in seconds between the possibility of random AI hunting the same player (1800 for 30 minutes)
+SC_randomSpawnAnnounce			= true;						// true if you want a warning toast issued to all players when AI spawns
+
+SC_randomSpawnNearBases			= false;					// true if you want to allow random spawns in range of territories
+SC_randomSpawnNearSpawns		= false;					// true if you want to allow random spawns in range of spawn zones
+SC_randomSpawnTargetBambis		= false;					// true if you want to allow random spawns to target bambis
 
 /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 //	Occupy Places Setup
@@ -226,7 +235,7 @@ SC_HeliCrashMagazinesAmount 	= [2,2]; 	// [fixed amount to add, random amount to
 /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
 SC_minimumCrewAmount        	= 2;     	// Maximum amount of AI allowed in a vehicle
-SC_maximumCrewAmount        	= 6;     	// Maximum amount of AI allowed in a vehicle
+SC_maximumCrewAmount        	= 4;     	// Maximum amount of AI allowed in a vehicle
 											// (essential crew like drivers and gunners will always spawn regardless of these settings)
 
 /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -450,9 +459,10 @@ if (SC_debug) then
     SC_extendedLogging       	= true;
     SC_processReporter      	= true;
     SC_mapMarkers			    = true;
-    SC_occupyPlaces 			= true;
+    SC_occupyPlaces 			= false;
     SC_occupyVehicle			= false;
     SC_occupyMilitary 			= false;
+	SC_occupyRandomSpawn        = true;
     SC_occupyStatic				= false;
     SC_occupySky				= false;
     SC_occupySea				= false;
@@ -491,6 +501,7 @@ SC_liveHelisArray       		= [];
 SC_liveBoats	 				= 0;
 SC_liveBoatsArray       		= [];
 SC_liveStaticGroups				= [];
+SC_liveRandomGroups				= [];
 SC_transportArray       		= [];
 
 // Remove spawn locations for roaming vehicles that aren't for this map
@@ -511,6 +522,7 @@ publicVariable "SC_liveHelisArray";
 publicVariable "SC_liveBoats";
 publicVariable "SC_liveBoatsArray";
 publicVariable "SC_liveStaticGroups";
+publicVariable "SC_liveRandomGroups";
 publicVariable "SC_numberofLootCrates";
 publicVariable "SC_transportArray";
 publicVariable "SC_SurvivorSide";
