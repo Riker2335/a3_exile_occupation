@@ -305,7 +305,10 @@ SC_suitablePlayers = [];
 				_unit disableAI "TARGET";
 				_unit disableAI "MOVE";
                 _unitName = ["survivor"] call SC_fnc_selectName;
-                if(!isNil "_unitName") then { _unit setName _unitName; }; 				 
+                if(!isNil "_unitName") then { _unit setName _unitName; };
+				// Set money/respect variables
+				_unit setVariable [ "DMS_AI_Money", missionNamespace getVariable [format ["DMS_%1_%2_MoneyGain",SC_BanditSide,"soldier"],0] ];
+				_unit setVariable [ "DMS_AI_Respect", missionNamespace getVariable [format ["DMS_%1_%2_RepGain",SC_BanditSide,"soldier"],0] ];				
 				_unit addMPEventHandler ["mpkilled", "_this call SC_fnc_randomUnitMPKilled;"];
 				_unit addeventhandler ["Fired", {(vehicle (_this select 0)) setvehicleammo 1;}];
 			};
