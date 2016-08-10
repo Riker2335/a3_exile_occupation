@@ -192,6 +192,7 @@ SC_suitablePlayers = [];
 	_selectedPlayer = _x;
 	_suitablePlayer = true;
 	_suitablePlayerisBambi = _selectedPlayer getVariable "ExileIsBambi";
+	if(isNil "_suitablePlayerisBambi") then { _suitablePlayerisBambi = false; };
 	if(_suitablePlayerisBambi && !SC_randomSpawnTargetBambis) exitWith
 	{
 		_suitablePlayer = false;

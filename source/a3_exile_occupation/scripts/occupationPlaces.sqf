@@ -138,10 +138,6 @@ _locations = (nearestLocations [_spawnCenter, ["NameVillage","NameCity", "NameCi
 			//_safeSpawnPosition = [_pos,10,100,5,0,20,0] call BIS_fnc_findSafePos;	
 			_safeSpawnPosition = _pos findEmptyPosition [0,50,"B_T_MRAP_01_F"];
 			
-
-			diag_log "==========================================================================================================================";
-			diag_log format["_pos: %1  _safeSpawnPosition: %2  _temppos: %3 location: %4 (%5)",_pos,_safeSpawnPosition,_temppos,_x,_locationName];
-			diag_log "==========================================================================================================================";
 			
 			if(count _safeSpawnPosition == 0) exitWith 
 			{  

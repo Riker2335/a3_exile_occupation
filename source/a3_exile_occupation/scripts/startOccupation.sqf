@@ -71,7 +71,7 @@ if(SC_occupyRandomSpawn) then
 {
 	uiSleep 15; // delay the start
     fnc_occupyRandomSpawn = compile preprocessFileLineNumbers "\x\addons\a3_exile_occupation\scripts\occupationRandomSpawn.sqf";
-	[SC_refreshTime, fnc_occupyRandomSpawn, [], true] call ExileServer_system_thread_addTask;
+	[60, fnc_occupyRandomSpawn, [], true] call ExileServer_system_thread_addTask;
 };
 
 if(SC_occupyLootCrates) then
