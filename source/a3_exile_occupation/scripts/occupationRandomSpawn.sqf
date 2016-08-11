@@ -307,7 +307,7 @@ _livePlayers call BIS_fnc_arrayShuffle;
 			for "_i" from 1 to _groupSize do
 			{
 				_loadOut = ["cops"] call SC_fnc_selectGear;
-				_unit = [_group,_spawnLocation,"custom","random",_side,"soldier",_loadOut] call DMS_fnc_SpawnAISoldier;				
+				_unit = [_group,_spawnLocation,"custom","random",SC_BanditSide,"soldier",_loadOut] call DMS_fnc_SpawnAISoldier;				
 				_unit allowFleeing 0;
 				_unit allowDamage false;
 				_unit disableAI "AUTOTARGET";
@@ -315,9 +315,7 @@ _livePlayers call BIS_fnc_arrayShuffle;
 				_unit disableAI "MOVE";
                 _unitName = ["survivor"] call SC_fnc_selectName;
                 if(!isNil "_unitName") then { _unit setName _unitName; };
-				// Set money/respect variables
-				_unit setVariable [ "DMS_AI_Money", missionNamespace getVariable [format ["DMS_%1_%2_MoneyGain",SC_BanditSide,"soldier"],0] ];
-				_unit setVariable [ "DMS_AI_Respect", missionNamespace getVariable [format ["DMS_%1_%2_RepGain",SC_BanditSide,"soldier"],0] ];				
+				// Set money/respect variables				
 				_unit addMPEventHandler ["mpkilled", "_this call SC_fnc_randomUnitMPKilled;"];
 				_unit addeventhandler ["Fired", {(vehicle (_this select 0)) setvehicleammo 1;}];
 			};
