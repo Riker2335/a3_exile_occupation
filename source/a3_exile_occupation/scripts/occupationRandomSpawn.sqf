@@ -55,7 +55,7 @@ if(time < 300) exitWith
 		if(!alive _selectedPlayer OR _distanceFromSelectedPlayer >= 500) then
 		{
 			// Select a new target or despawn if not target near
-			_nearPlayers = player nearEntities ["Exile_Unit_Player", 250];	
+			_nearPlayers = player nearEntities ["Exile_Unit_Player", 500];	
 			{
 				_selectedPlayer = _x;
 				_playersPosition = position _selectedPlayer;
@@ -79,12 +79,12 @@ if(time < 300) exitWith
 				_group allowFleeing 0;
 				_wp = _group addWaypoint [_destination, 0] ;
 				_wp setWaypointFormation "Column";
-				_wp setWaypointBehaviour "COMBAT";
+				_wp setWaypointBehaviour "AWARE";
 				_wp setWaypointCombatMode "RED";
 				_wp setWaypointCompletionRadius 25;
 				_wp setWaypointType "SAD";
 					 
-				[_group, _destination, 500] call bis_fnc_taskPatrol;
+				[_group, _destination, 350] call bis_fnc_taskPatrol;
 				_group allowFleeing 0;
 				_group setBehaviour "AWARE";  
 				_group setCombatMode "RED";				
@@ -103,9 +103,6 @@ if(time < 300) exitWith
 		}
 		else
 		{
-			{
-				
-			}forEach units _group;
 			
 			// Make sure the target is being hunted
 			_group reveal [_selectedPlayer,1.5];
@@ -113,12 +110,12 @@ if(time < 300) exitWith
 			_group allowFleeing 0;
 			_wp = _group addWaypoint [_destination, 0] ;
 			_wp setWaypointFormation "Column";
-			_wp setWaypointBehaviour "COMBAT";
+			_wp setWaypointBehaviour "AWARE";
 			_wp setWaypointCombatMode "RED";
 			_wp setWaypointCompletionRadius 25;
 			_wp setWaypointType "SAD";
 				 
-			[_group, _destination, 500] call bis_fnc_taskPatrol;
+			[_group, _destination, 350] call bis_fnc_taskPatrol;
 			_group allowFleeing 0;
 			_group setBehaviour "AWARE";  
 			_group setCombatMode "RED";			
@@ -338,12 +335,12 @@ SC_suitablePlayers = [];
 			_group allowFleeing 0;
 			_wp = _group addWaypoint [_destination, 0] ;
 			_wp setWaypointFormation "Column";
-			_wp setWaypointBehaviour "COMBAT";
+			_wp setWaypointBehaviour "AWARE";
 			_wp setWaypointCombatMode "RED";
 			_wp setWaypointCompletionRadius 25;
 			_wp setWaypointType "SAD";
 				 
-			[_group, _destination, 500] call bis_fnc_taskPatrol;
+			[_group, _destination, 350] call bis_fnc_taskPatrol;
 			_group allowFleeing 0;
 			_group setBehaviour "AWARE";  
 			_group setCombatMode "RED";			
