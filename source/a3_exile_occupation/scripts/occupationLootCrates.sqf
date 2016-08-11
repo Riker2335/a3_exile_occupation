@@ -19,7 +19,6 @@ for "_i" from 1 to SC_numberofLootCrates do
 			SC_occupyLootCratesLocations = SC_occupyLootCratesLocations - _tempPosition;
 			
 			_position = [_tempPosition select 0, _tempPosition select 1, _tempPosition select 2];
-			diag_log format["_tempPosition: %1 _position: %2",_tempPosition,_position];
 			if(isNil "_position") then
 			{
 				_position = [ false, false ] call SC_fnc_findsafePos;

@@ -54,7 +54,7 @@ if(time < 300) exitWith
 		
 		if(!alive _selectedPlayer OR _distanceFromSelectedPlayer >= 500) then
 		{
-			// Select a new target or despawn if not target near
+			// Select a new target or despawn if no target nearby
 			_nearPlayers = player nearEntities ["Exile_Unit_Player", 500];	
 			{
 				_selectedPlayer = _x;
@@ -103,7 +103,7 @@ if(time < 300) exitWith
 		}
 		else
 		{
-			
+				
 			// Make sure the target is being hunted
 			_group reveal [_selectedPlayer,1.5];
 			_destination = getPos _selectedPlayer;
@@ -118,7 +118,10 @@ if(time < 300) exitWith
 			[_group, _destination, 350] call bis_fnc_taskPatrol;
 			_group allowFleeing 0;
 			_group setBehaviour "AWARE";  
-			_group setCombatMode "RED";			
+			_group setCombatMode "RED";	
+
+			_logDetail = format['[OCCUPATION:RandomSpawn] group %1 is hunting player %2 @ location %3',_group,_selectedPlayer,_destination]; 
+			[_logDetail] call SC_fnc_log;			
 		};
 	
 	};	
@@ -182,7 +185,15 @@ _huntedPlayers = [];
 	_huntedPlayers pushback _huntedPlayer;
 }forEach SC_liveRandomGroups;
 
-SC_suitablePlayers = [];
+_livePlayers = [];
+{
+	if(alive _x) then
+	{
+		_livePlayers pushBack _x;
+	};
+}forEach playableUnits;
+
+_livePlayers call BIS_fnc_arrayShuffle;
 
 // Find a player to hunt
 {
@@ -354,6 +365,6 @@ SC_suitablePlayers = [];
 			[_logDetail] call SC_fnc_log;
 		};		
 	};  
-}forEach playableUnits;
+}forEach _livePlayers;
 
 
