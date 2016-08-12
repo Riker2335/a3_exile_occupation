@@ -2,7 +2,7 @@
 // Attempts to get the current vehicle driver to repair the vehicle
 
 _vehicle = _this select 0;
-_vehicle removeAllMPEventHandlers  "mphit";
+_vehicle removeAllMPEventHandlers "mphit";
 
 _vehicleDamage 		= damage _vehicle;
 _damagedWheels 		= 0;
@@ -131,7 +131,8 @@ if(_wheelDamage OR _engineDamage OR _fueltankDamage) then
         _group setBehaviour "SAFE";
         _group setCombatMode "RED";
 	    _driver enableAI "MOVE";    
-        _driver enableAI "FSM"; 
+        _driver enableAI "FSM";
+		_vehicle addMPEventHandler ["mphit", "_this call SC_fnc_hitLand;"];
 	};		
 }
 else
@@ -140,5 +141,9 @@ else
 	[_logDetail] call SC_fnc_log;
 	_logDetail = format ["[OCCUPATION:repairVehicle]:: Vehicle: %1 damage: %2 engine: %3 fuelTank: %4",_vehicle,_vehicleDamage,_engineDamage,_fueltankDamage]; 
 	[_logDetail] call SC_fnc_log;
+	[] spawn 
+	{
+		sleep 2;		
+	};
+	_vehicle addMPEventHandler ["mphit", "_this call SC_fnc_hitLand;"];
 };
-_vehicle addMPEventHandler ["mphit", "_this call SC_fnc_hitLand;"];

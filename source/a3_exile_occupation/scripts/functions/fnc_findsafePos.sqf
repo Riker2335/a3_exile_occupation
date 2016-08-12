@@ -34,7 +34,7 @@ _validspot	= false;
 
 while{!_validspot} do 
 {
-	sleep 0.2;
+	sleep 1;
     _tempPosition = [_pos,0,_maxDist,15,_inWater,20,0] call BIS_fnc_findSafePos;
     _position = [_tempPosition select 0, _tempPosition select 1, 0];
     _validspot = true;

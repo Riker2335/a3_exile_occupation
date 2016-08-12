@@ -103,7 +103,13 @@ if(time < 300) exitWith
 		}
 		else
 		{
-				
+
+			// Remove existing waypoints
+			while {(count (waypoints _group)) > 0} do
+			{
+				deleteWaypoint ((waypoints _group) select 0);
+			};
+		
 			// Make sure the target is being hunted
 			_group reveal [_selectedPlayer,1.5];
 			_destination = getPos _selectedPlayer;
@@ -298,7 +304,7 @@ _livePlayers call BIS_fnc_arrayShuffle;
 			_group setVariable ["DMS_AllowFreezing",false];
 			_group setVariable ["DMS_LockLocality",true];
 			_group setVariable ["DMS_SpawnedGroup",true];
-			_group setVariable ["DMS_Group_Side", SC_BanditSide];
+			_group setVariable ["DMS_Group_Side", "bandit"];
 			_group setVariable ["SC_huntedPlayer",_selectedPlayer];
 			_selectedPlayer setVariable ["SC_lastHunted",time];
 			SC_liveRandomGroups = SC_liveRandomGroups + [_group];

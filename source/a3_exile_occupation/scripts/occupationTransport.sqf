@@ -37,7 +37,7 @@ while {true} do
         _spawnLocation = [_nearestRoadPos select 0, _nearestRoadPos select 1, 0];    
         _transportSpeed = "LIMITED";
         _transportBehaviour = "SAFE";
-        _transportWaitingTime = 10;
+        _transportWaitingTime = 20;
     } 
     else
     { 
@@ -45,7 +45,7 @@ while {true} do
         _spawnLocation = [SC_occupyTransportStartPos select 0, SC_occupyTransportStartPos select 1, 200];
         _transportSpeed = "NORMAL";
         _transportBehaviour = "CARELESS";
-        _transportWaitingTime = 60;
+        _transportWaitingTime = 120;
     };   
 
 

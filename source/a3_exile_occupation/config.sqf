@@ -27,10 +27,10 @@ SC_scaleAI						= 10;						// any more than _scaleAI players on the server and _
 SC_removeUserMapMarkers     	= true;                 	// true to delete map markers placed by players every 10 seconds
 
 															// Distance limits for selecting safe places to spawn AI
-SC_minDistanceToSpawnZones  	= 1000;                  	// Minimum distance in metres to the nearest spawn zone
-SC_minDistanceToTraders     	= 1000;                  	// Minimum distance in metres to the nearest trader zone
-SC_minDistanceToTerritory   	= 500;                  	// Minimum distance in metres to the nearest player territory
-SC_minDistanceToPlayer      	= 400;                  	// Minimum distance in metres to the nearest player
+SC_minDistanceToSpawnZones  	= 750;                  	// Minimum distance in metres to the nearest spawn zone
+SC_minDistanceToTraders     	= 750;                  	// Minimum distance in metres to the nearest trader zone
+SC_minDistanceToTerritory   	= 350;                  	// Minimum distance in metres to the nearest player territory
+SC_minDistanceToPlayer      	= 250;                  	// Minimum distance in metres to the nearest player
 SC_useWaypoints					= true;                 	// When spawning AI create waypoints to make them enter buildings (can affect performance when the AI is spawned and the waypoints are calculated)
 
 
@@ -65,12 +65,12 @@ SC_fastNightsMultiplierDay  	= 4;                    	// the time multiplier to 
 /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
 SC_randomSpawnMinPlayers    	= 1;                    	// Minimum number of players to be online before random spawning AI can spawn
-SC_randomSpawnMaxGroups        	= 5;                    	// Maximum amount of random AI groups allowed at any time
+SC_randomSpawnMaxGroups        	= 4;                    	// Maximum amount of random AI groups allowed at any time
 SC_randomSpawnMinGroupSize      = 1;                    	// Minimum amount of random AI groups allowed per group
-SC_randomSpawnMaxGroupSize      = 3;                    	// Maximum amount of random AI groups allowed per group
-SC_randomSpawnChance			= 10;						// Percentage chance of spawning if suitable player found
+SC_randomSpawnMaxGroupSize      = 4;                    	// Maximum amount of random AI groups allowed per group
+SC_randomSpawnChance			= 12;						// Percentage chance of spawning if suitable player found
 SC_randomSpawnIgnoreCount		= true;						// true if you want spawn random AI groups regardless of overall AI count (they still count towards the total though)
-SC_randomSpawnFrequency			= 1800;						// time in seconds between the possibility of random AI hunting the same player (1800 for 30 minutes)
+SC_randomSpawnFrequency			= 3600;						// time in seconds between the possibility of random AI hunting the same player (1800 for 30 minutes)
 SC_randomSpawnAnnounce			= true;						// true if you want a warning toast issued to all players when AI spawns
 
 SC_randomSpawnNearBases			= false;					// true if you want to allow random spawns in range of territories
@@ -142,7 +142,7 @@ SC_occupyLootCratesLocations	= [
                                     [4000,4000,0]
                                 ];
 SC_numberofLootCrates       	= 6;                    	// if SC_occupyLootCrates = true spawn this many loot crates (overrided below for Namalsk)
-SC_LootCrateGuards          	= 3;                    	// number of AI to spawn at each crate
+SC_LootCrateGuards          	= 2;                    	// number of AI to spawn at each crate
 SC_LootCrateGuardsRandomize 	= true;                 	// Use a random number of guards up to a maximum = SC_LootCrateGuards (so between 1 and SC_LootCrateGuards)
 SC_occupyLootCratesMarkers		= true;						// true if you want to have markers on the loot crate spawns
 
@@ -235,19 +235,19 @@ SC_HeliCrashMagazinesAmount 	= [2,2]; 	// [fixed amount to add, random amount to
 /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
 SC_minimumCrewAmount        	= 2;     	// Maximum amount of AI allowed in a vehicle
-SC_maximumCrewAmount        	= 4;     	// Maximum amount of AI allowed in a vehicle
+SC_maximumCrewAmount        	= 3;     	// Maximum amount of AI allowed in a vehicle
 											// (essential crew like drivers and gunners will always spawn regardless of these settings)
 
 /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 //	Roaming Land Vehicle Setup
 /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
-SC_maxNumberofVehicles 	    	= 4;		// How many roaming vehicles to spawn	
+SC_maxNumberofVehicles 	    	= 3;		// How many roaming vehicles to spawn	
 SC_occupyVehicleIgnoreCount		= true;		// true if you want spawn vehicles regardless of overall AI count
 SC_occupyVehiclesLocked			= false;	// true if AI vehicles to stay locked until all the linked AI are dead		
 SC_occupyVehicleSurvivors		= false;	// true if you want a chance to spawn survivor AI as well as bandits (SC_occupyVehicle must be true to use this option)
 
-SC_occupyVehicleUseFixedPos		= false;	// True if you want to specify the patrol positions and radius of the area to patrol / false for random
+SC_occupyVehicleUseFixedPos		= true;	// True if you want to specify the patrol positions and radius of the area to patrol / false for random
 
 											// if you set SC_maxNumberofVehicles higher than the number of static positions, the remainder will be random
 											// they will also ignore any blacklisted areas
@@ -283,7 +283,7 @@ SC_maxNumberofHelis		    	= 1;
 // Array of aircraft which can be used by AI patrols (the number next to next vehicle is the maximum amount of that class allowed, 0 for no limit)
 SC_HeliClassToUse 		    	=   [ ["Exile_Chopper_Huey_Armed_Green",0] ];
 
-SC_occupyHeliUseFixedPos		= false;	// True if you want to specify the patrol positions and radius of the area to patrol / false for random
+SC_occupyHeliUseFixedPos		= true;		// True if you want to specify the patrol positions and radius of the area to patrol / false for random
 
 											// if you set SC_maxNumberofHelis higher than the number of static positions, the remainder will be random
 											// they will also ignore any blacklisted areas
@@ -423,7 +423,6 @@ if (worldName == 'Chernarus' AND SC_useMapOverrides) then
 if (worldName == 'Tanoa' AND SC_useMapOverrides) then 
 { 
     SC_useApexClasses       	= true;
-    SC_maxAIcount				= 80;
 };
 
 /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
