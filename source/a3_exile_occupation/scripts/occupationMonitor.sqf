@@ -1,6 +1,7 @@
 _logDetail = format ["[OCCUPATION:Unstick]:: Initialised at %1",time];
 [_logDetail] call SC_fnc_log;
 
+SC_liveHelis = count(SC_liveHelisArray);
 {
     if(isNull _x) exitWith { SC_liveHelisArray = SC_liveHelisArray - [_x];  };
     _logDetail = format ["[OCCUPATION:Unstick]:: Air: %1 is active",_x];
@@ -39,6 +40,7 @@ _logDetail = format ["[OCCUPATION:Unstick]:: Initialised at %1",time];
 	
 }forEach SC_liveHelisArray;
 
+SC_liveVehicles = count(SC_liveVehiclesArray);
 {
     if(isNull _x) exitWith { SC_liveVehiclesArray = SC_liveVehiclesArray - [_x];  };
     _logDetail = format ["[OCCUPATION:Unstick]:: Land: %1 is active",_x];
@@ -60,6 +62,7 @@ _logDetail = format ["[OCCUPATION:Unstick]:: Initialised at %1",time];
     sleep 2;       
 }forEach SC_liveVehiclesArray;
 
+SC_liveBoats = count(SC_liveBoatsArray);
 {
     if(isNull _x) exitWith { SC_liveBoatsArray = SC_liveBoatsArray - [_x];  };
     _logDetail = format ["[OCCUPATION:Unstick]:: Sea: %1 is active",_x];

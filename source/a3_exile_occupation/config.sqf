@@ -45,8 +45,8 @@ SC_occupyTraders            	= true;						// true if you want to create trader c
 SC_occupyStatic	 		    	= false;		    		// true if you want to add AI in specific locations
 SC_occupyTransport 	        	= true;						// true if you want pubic transport (travels between traders)
 SC_occupyLootCrates		    	= true;						// true if you want to have random loot crates with guards
-SC_occupyRandomSpawn        	= true;                	// (WORK IN PROGRESS) true if you want random spawning AI that hunt for nearby players
-SC_occupyMilitary 		    	= true;			    	// true if you want military buildings patrolled
+SC_occupyRandomSpawn        	= true;                		// (WORK IN PROGRESS) true if you want random spawning AI that hunt for nearby players
+SC_occupyMilitary 		    	= true;			    		// true if you want military buildings patrolled
 SC_occupyVehicle				= true;						// true if you want to have roaming AI land vehicles
 SC_occupySky					= true;						// true if you want to have roaming AI helis
 SC_occupySea					= false;					// true if you want to have roaming AI boats
@@ -411,13 +411,13 @@ if (worldName == 'Namalsk' AND SC_useMapOverrides) then
 if (worldName == 'Napf' AND SC_useMapOverrides) then 
 { 
 	SC_maxAIcount				= 120;
-	SC_maxNumberofVehicles 		= 5;
+
 };
 
 if (worldName == 'Chernarus' AND SC_useMapOverrides) then 
 { 
 	SC_maxAIcount				= 120;
-	SC_maxNumberofVehicles 		= 5;
+
 };
 
 if (worldName == 'Tanoa' AND SC_useMapOverrides) then 

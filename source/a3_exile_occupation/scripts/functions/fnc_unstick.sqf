@@ -37,6 +37,12 @@ if(count(crew _vehicle) > 0)then
                 _originalSpawnLocation = _vehicle getVariable "SC_vehicleSpawnLocation";
 				_radius = 2000;
                 _group = group _vehicle;
+				
+				// Remove dead units from the group
+				{
+					if(!alive _x) then { [_x] join grpNull; };     
+				}forEach units _group;				
+				
                 _vehClass = typeOf _vehicle;
 
                 if(_vehicle isKindOf "LandVehicle") then
@@ -68,7 +74,7 @@ if(count(crew _vehicle) > 0)then
                 _group2 = createGroup _side;
                 _group2 setVariable ["DMS_AllowFreezing",false];
 				[_group2,false] call DMS_fnc_FreezeToggle;
-                _group2 setVariable ["DMS_LockLocality",true];
+                _group2 setVariable ["DMS_LockLocality",false];
                 _group2 setVariable ["DMS_SpawnedGroup",true];
                 _group2 setVariable ["DMS_Group_Side", _side];
                 [_vehicle] joinSilent _group2;
@@ -96,13 +102,6 @@ if(count(crew _vehicle) > 0)then
     };
     _vehicle setVariable["vehPos",_newPos];
 };
-
-_group = group _vehicle;
-
-// Remove dead units from the group
-{
-    if(!alive _x) then { [_x] join grpNull; };     
-}forEach units _group;
 
 if(count units _group > 0) then
 {
