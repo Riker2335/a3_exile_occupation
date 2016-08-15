@@ -45,8 +45,8 @@ SC_occupyTraders            	= true;						// true if you want to create trader c
 SC_occupyStatic	 		    	= false;		    		// true if you want to add AI in specific locations
 SC_occupyTransport 	        	= true;						// true if you want pubic transport (travels between traders)
 SC_occupyLootCrates		    	= true;						// true if you want to have random loot crates with guards
-SC_occupyRandomSpawn        	= true;                		// (WORK IN PROGRESS) true if you want random spawning AI that hunt for nearby players
-SC_occupyMilitary 		    	= false;			    	// true if you want military buildings patrolled
+SC_occupyRandomSpawn        	= true;                	// (WORK IN PROGRESS) true if you want random spawning AI that hunt for nearby players
+SC_occupyMilitary 		    	= true;			    	// true if you want military buildings patrolled
 SC_occupyVehicle				= true;						// true if you want to have roaming AI land vehicles
 SC_occupySky					= true;						// true if you want to have roaming AI helis
 SC_occupySea					= false;					// true if you want to have roaming AI boats
@@ -243,11 +243,11 @@ SC_maximumCrewAmount        	= 3;     	// Maximum amount of AI allowed in a vehi
 /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
 SC_maxNumberofVehicles 	    	= 3;		// How many roaming vehicles to spawn	
-SC_occupyVehicleIgnoreCount		= true;		// true if you want spawn vehicles regardless of overall AI count
+SC_occupyVehicleIgnoreCount		= false;		// true if you want spawn vehicles regardless of overall AI count
 SC_occupyVehiclesLocked			= false;	// true if AI vehicles to stay locked until all the linked AI are dead		
 SC_occupyVehicleSurvivors		= false;	// true if you want a chance to spawn survivor AI as well as bandits (SC_occupyVehicle must be true to use this option)
 
-SC_occupyVehicleUseFixedPos		= true;	// True if you want to specify the patrol positions and radius of the area to patrol / false for random
+SC_occupyVehicleUseFixedPos		= false;		// True if you want to specify the patrol positions and radius of the area to patrol / false for random
 
 											// if you set SC_maxNumberofVehicles higher than the number of static positions, the remainder will be random
 											// they will also ignore any blacklisted areas
@@ -410,19 +410,20 @@ if (worldName == 'Namalsk' AND SC_useMapOverrides) then
 
 if (worldName == 'Napf' AND SC_useMapOverrides) then 
 { 
-	SC_maxAIcount				= 160;
+	SC_maxAIcount				= 120;
 	SC_maxNumberofVehicles 		= 5;
 };
 
 if (worldName == 'Chernarus' AND SC_useMapOverrides) then 
 { 
-	SC_maxAIcount				= 160;
+	SC_maxAIcount				= 120;
 	SC_maxNumberofVehicles 		= 5;
 };
 
 if (worldName == 'Tanoa' AND SC_useMapOverrides) then 
 { 
     SC_useApexClasses       	= true;
+	
 };
 
 /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -458,18 +459,18 @@ if (SC_debug) then
     SC_extendedLogging       	= true;
     SC_processReporter      	= true;
     SC_mapMarkers			    = true;
-    SC_occupyPlaces 			= false;
-    SC_occupyVehicle			= false;
-    SC_occupyMilitary 			= false;
+    SC_occupyPlaces 			= true;
+    SC_occupyVehicle			= true;
+    SC_occupyMilitary 			= true;
 	SC_occupyRandomSpawn        = true;
     SC_occupyStatic				= false;
-    SC_occupySky				= false;
+    SC_occupySky				= true;
     SC_occupySea				= false;
-	SC_occupyTraders            = false;	
-    SC_occupyTransport			= false;
-    SC_occupyLootCrates			= false;
-    SC_occupyHeliCrashes		= false;
-	SC_maxAIcount				= 200;	
+	SC_occupyTraders            = true;	
+    SC_occupyTransport			= true;
+    SC_occupyLootCrates			= true;
+    SC_occupyHeliCrashes		= true;
+	SC_maxAIcount				= 100;	
     SC_maxNumberofVehicles		= 5;
     SC_maxNumberofBoats			= 5;
     SC_maxNumberofHelis			= 5;   

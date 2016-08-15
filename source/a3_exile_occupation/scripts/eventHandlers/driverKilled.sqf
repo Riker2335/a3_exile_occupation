@@ -16,7 +16,6 @@ if(SC_debug) then
 };
 
 // Select a replacement driver
-_vehicle removeAllMPEventHandlers  "mphit";
 _group = group _vehicle;
 
 // Remove dead units from the group
@@ -31,8 +30,7 @@ if(count units _group > 0) then
         _logDetail = format ["[OCCUPATION:Vehicle]:: vehicle: %1 group: %2 units left:%3",_vehicle,_group,count units _group]; 
         [_logDetail] call SC_fnc_log; 
     };      
-
-    
+  
     _groupMembers = units _group;
     _driver = _groupMembers call BIS_fnc_selectRandom;
     
@@ -68,5 +66,6 @@ else
     [_logDetail] call SC_fnc_log;        
     _vehicle lock 0;			
     _vehicle setVehicleLock "UNLOCKED";
-    _vehicle setVariable ["ExileIsLocked", 0, true];    
+    _vehicle setVariable ["ExileIsLocked", 0, true];  
+	[_vehicle]  call SC_fnc_vehicleDestroyed;	
 };

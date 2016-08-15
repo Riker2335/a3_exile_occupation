@@ -1,8 +1,13 @@
 // Triggered when a ground vehicle takes damage
 // Attempts to get the current vehicle driver to repair the vehicle
 
-_vehicle = _this select 0;
-_vehicle removeAllMPEventHandlers "mphit";
+_vehicle 		= _this select 0;
+_repairStatus 	= _vehicle getVariable "SC_repairStatus";
+
+if(_repairStatus) exitWith {};
+
+// Mark the vehicle as currently being repaired
+_vehicle setVariable ["SC_repairStatus",true];
 
 _vehicleDamage 		= damage _vehicle;
 _damagedWheels 		= 0;
@@ -35,8 +40,7 @@ if(isNil "_assignedDriver") then
     _assignedDriver setVariable ["DMS_AssignedVeh",_vehicle];
     _assignedDriver setVariable ["SC_drivenVehicle", _vehicle,true]; 
     _assignedDriver addMPEventHandler ["mpkilled", "_this call SC_fnc_driverKilled;"];
-    _vehicle setVariable ["SC_assignedDriver", _assignedDriver,true];
-    
+    _vehicle setVariable ["SC_assignedDriver", _assignedDriver,true];  
 };
 
 
@@ -68,13 +72,9 @@ if ((_vehicle getHitPointDamage "HitFuel") > 0) then { _fueltankDamage = true; }
 
 if(_wheelDamage OR _engineDamage OR _fueltankDamage) then
 {
-	if(SC_extendedLogging) then 
-	{
-		_logDetail = format ["[OCCUPATION:repairVehicle]:: Unit %2 repairing vehicle at %1",time,_assignedDriver]; 
-        [_logDetail] call SC_fnc_log;
-	};
+	_logDetail = format ["[OCCUPATION:repairVehicle]:: Unit %2 repairing vehicle at %1",time,_assignedDriver]; 
+    [_logDetail] call SC_fnc_log;
 
-	
 	[_vehicle,_assignedDriver ] spawn 
 	{
 		_vehicle  = _this select 0;
@@ -111,11 +111,8 @@ if(_wheelDamage OR _engineDamage OR _fueltankDamage) then
             _driver assignAsDriver _vehicle;
             _driver moveInDriver _vehicle;
             _driver action ["movetodriver", _vehicle];	
-            if(SC_extendedLogging) then 
-            {
-                _logDetail = format ["[OCCUPATION:repairVehicle]:: Unit %2 finished repairing vehicle %3 at %1",time,_driver,_vehicle]; 
-                [_logDetail] call SC_fnc_log;
-            };				
+            _logDetail = format ["[OCCUPATION:repairVehicle]:: Unit %2 finished repairing vehicle %3 at %1",time,_driver,_vehicle]; 
+            [_logDetail] call SC_fnc_log;			
 		};
         _wp = _group addWaypoint [position _vehicle, 0] ;
         _wp setWaypointFormation "Column";
@@ -132,18 +129,14 @@ if(_wheelDamage OR _engineDamage OR _fueltankDamage) then
         _group setCombatMode "RED";
 	    _driver enableAI "MOVE";    
         _driver enableAI "FSM";
-		_vehicle addMPEventHandler ["mphit", "_this call SC_fnc_hitLand;"];
-	};		
+	};
+	// Mark the vehicle as not currently being repaired
+	_vehicle setVariable ["SC_repairStatus",false];	
 }
 else
 {
 	_logDetail = format ["[OCCUPATION:repairVehicle]:: Not repairing %2, driver is %3 at %1",time,_vehicle,_assignedDriver]; 
 	[_logDetail] call SC_fnc_log;
 	_logDetail = format ["[OCCUPATION:repairVehicle]:: Vehicle: %1 damage: %2 engine: %3 fuelTank: %4",_vehicle,_vehicleDamage,_engineDamage,_fueltankDamage]; 
-	[_logDetail] call SC_fnc_log;
-	[] spawn 
-	{
-		sleep 2;		
-	};
-	_vehicle addMPEventHandler ["mphit", "_this call SC_fnc_hitLand;"];
+	[_logDetail] call SC_fnc_log;	
 };

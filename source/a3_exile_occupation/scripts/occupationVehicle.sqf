@@ -6,11 +6,6 @@ _logDetail = format['[OCCUPATION:Vehicle] Started'];
 // set the default side for bandit AI
 _side               = "bandit"; 
 
-if(SC_occupyVehicleSurvivors) then 
-{   
-    if(!isNil "DMS_Enable_RankChange") then { DMS_Enable_RankChange = true;  };
-};
-
 // more than _scaleAI players on the server and the max AI count drops per additional player
 _currentPlayerCount = count playableUnits;
 _maxAIcount 		= SC_maxAIcount;
@@ -35,35 +30,16 @@ if((_aiActive > _maxAIcount) && !SC_occupyVehicleIgnoreCount) exitWith
 
 if(SC_liveVehicles >= SC_maxNumberofVehicles) exitWith 
 {
-    if(SC_extendedLogging) then 
-    { 
-        _logDetail = format['[OCCUPATION:Vehicle] End check %1 currently active (max %2) @ %3',SC_liveVehicles,SC_maxNumberofVehicles,time]; 
-        [_logDetail] call SC_fnc_log;
-    };   
+    _logDetail = format['[OCCUPATION:Vehicle] End check %1 currently active (max %2) @ %3',SC_liveVehicles,SC_maxNumberofVehicles,time]; 
+    [_logDetail] call SC_fnc_log;  
 };
 
 _vehiclesToSpawn = (SC_maxNumberofVehicles - SC_liveVehicles);
-
-if(SC_extendedLogging) then 
-{ 
-	if(_vehiclesToSpawn > 0) then 
-	{ 
-		_logDetail = format['[OCCUPATION:Vehicle] Started %2 currently active (max %3) spawning %1 extra vehicle(s) @ %4',_vehiclesToSpawn,SC_liveVehicles,SC_maxNumberofVehicles,time]; 
-		[_logDetail] call SC_fnc_log;
-	}
-	else
-	{
-		_logDetail = format['[OCCUPATION:Vehicle] Started %2 currently active (max %3) @ %4',_vehiclesToSpawn,SC_liveVehicles,SC_maxNumberofVehicles,time];
-		[_logDetail] call SC_fnc_log;
-	};
-	
-};
-
 _middle = worldSize/2;
 _spawnCenter = [_middle,_middle,0];
 _maxDistance = _middle;
 
-if(_vehiclesToSpawn >= 1) then
+if(_vehiclesToSpawn > 0) then
 {
     if(SC_occupyVehicleSurvivors) then
     {
@@ -88,8 +64,8 @@ if(_vehiclesToSpawn >= 1) then
 		if(SC_occupyVehicleUseFixedPos) then
 		{
 			{
-				_vehLocation = _x getVariable "SC_vehicleSpawnLocation";
-				_locationArray = _locationArray - _vehLocation;				
+				_vehLocation = _x getVariable "SC_vehicleSpawnLocation";			
+				_locationArray = _locationArray - [_vehLocation];	
 			}forEach SC_liveVehiclesArray;
 			
 			if(count _locationArray > 0)  then
@@ -98,7 +74,7 @@ if(_vehiclesToSpawn >= 1) then
 				diag_log format["_randomLocation: %1",_randomLocation];
 				_spawnLocation = _randomLocation select 0;
 				_radius = _randomLocation select 1;
-				_locationArray = _locationArray - _randomLocation;
+				_locationArray = _locationArray - [_randomLocation];
 			}
 			else
 			{
@@ -120,7 +96,7 @@ if(_vehiclesToSpawn >= 1) then
             _group = createGroup SC_SurvivorSide; 
         };        
         _group setVariable ["DMS_AllowFreezing",false];
-        _group setVariable ["DMS_LockLocality",true];
+        _group setVariable ["DMS_LockLocality",false];
         _group setVariable ["DMS_SpawnedGroup",true];
         _group setVariable ["DMS_Group_Side", _side];        
         
@@ -170,8 +146,9 @@ if(_vehiclesToSpawn >= 1) then
             SC_liveVehicles = SC_liveVehicles + 1;
             SC_liveVehiclesArray = SC_liveVehiclesArray + [_vehicle];
 
-            _vehicle setVariable["vehPos",_spawnLocation,true];
-            _vehicle setVariable["vehClass",_VehicleClassToUse,true];
+            _vehicle setVariable ["vehPos",_spawnLocation,true];
+			_vehicle setVariable ["SC_repairStatus",false];
+            _vehicle setVariable ["vehClass",_VehicleClassToUse,true];
             _vehicle setVariable ["SC_vehicleSpawnLocation", [_spawnLocation,_radius,worldName],true];
             _vehicle setFuel 1;
             _vehicle engineOn true;
