@@ -107,9 +107,15 @@ if(_aiActive > _maxAIcount) exitWith
 			if(!SC_useWaypoints) then
 			{
 				DMS_ai_use_launchers = false;
-				_group = [_spawnPosition, _aiCount, _difficulty, "random", "bandit"] call DMS_fnc_SpawnAIGroup;
+				_groupInitial = [_spawnPosition, _aiCount, _difficulty, "random", "bandit"] call DMS_fnc_SpawnAIGroup;
 				DMS_ai_use_launchers = _useLaunchers;
 
+				_group = createGroup SC_BanditSide;   
+				_group setVariable ["DMS_AllowFreezing",true];
+				_group setVariable ["DMS_LockLocality",false];
+				_group setVariable ["DMS_SpawnedGroup",true];
+				_group setVariable ["DMS_Group_Side", "bandit"]; 
+				
 				{	
 					_unit = _x;
 					[_unit] joinSilent grpNull;
@@ -132,9 +138,15 @@ if(_aiActive > _maxAIcount) exitWith
 			{
 								
 				DMS_ai_use_launchers = false;
-				_group = [_spawnPosition, _aiCount, _difficulty, "random", "bandit"] call DMS_fnc_SpawnAIGroup;
+				_groupInitial = [_spawnPosition, _aiCount, _difficulty, "random", "bandit"] call DMS_fnc_SpawnAIGroup;
 				DMS_ai_use_launchers = _useLaunchers;
 
+				_group = createGroup SC_BanditSide;   
+				_group setVariable ["DMS_AllowFreezing",true];
+				_group setVariable ["DMS_LockLocality",false];
+				_group setVariable ["DMS_SpawnedGroup",true];
+				_group setVariable ["DMS_Group_Side", "bandit"];				
+				
 				{	
 					_unit = _x;
 					[_unit] joinSilent grpNull;
@@ -146,7 +158,8 @@ if(_aiActive > _maxAIcount) exitWith
 						_tag = createVehicle ["Sign_Arrow_Blue_F", position _unit, [], 0, "CAN_COLLIDE"];
 						_tag attachTo [_unit,[0,0,0.6],"Head"];  
 					}; 
-				}foreach units _group;
+				}foreach units _groupInitial;
+				deleteGroup _groupInitial; 
 
 				[ _group,_pos,_difficulty,"STEALTH" ] call DMS_fnc_SetGroupBehavior;
 				

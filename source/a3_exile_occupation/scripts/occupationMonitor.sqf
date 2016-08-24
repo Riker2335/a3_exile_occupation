@@ -1,6 +1,37 @@
 _logDetail = format ["[OCCUPATION:Unstick]:: Initialised at %1",time];
 [_logDetail] call SC_fnc_log;
 
+SC_liveVehiclesArray 	= [];
+SC_liveHelisArray		= [];
+SC_liveBoatsArray		= [];
+
+{
+	_vehicle		= _x;
+	_vehLocation 	= _x getVariable "SC_vehicleSpawnLocation";
+	_transport 		= _x getVariable "SC_transport";
+	
+	if(!isNil "_vehLocation") then
+	{
+		if(_vehicle isKindOf "LandVehicle") then
+		{		
+			SC_liveVehiclesArray pushBack _vehicle; 
+			SC_liveVehicles = count(SC_liveVehiclesArray);		
+		};
+
+		if(_vehicle isKindOf "Air" && isNil "_transport") then
+		{   
+			SC_liveHelisArray pushBack _vehicle; 
+			SC_liveHelis = count(SC_liveHelisArray);
+		};
+
+		if(_vehicle isKindOf "Ship") then
+		{   
+			SC_liveBoatsArray pushBack _vehicle;
+			SC_liveBoatss = count(SC_liveBoatsArray);
+		};
+	};
+}forEach vehicles;
+
 SC_liveHelis = count(SC_liveHelisArray);
 {
     if(isNull _x) exitWith { SC_liveHelisArray = SC_liveHelisArray - [_x];  };
@@ -10,6 +41,7 @@ SC_liveHelis = count(SC_liveHelisArray);
     sleep 2;
 	_tempLocation = _x getVariable "SC_vehicleSpawnLocation";
 	_originalSpawnLocation = _tempLocation select 0;
+	diag_log format ["[occupationMonitor] _tempLocation: %1 _originalSpawnLocation: %2",_tempLocation,_originalSpawnLocation];
 	_radius = _tempLocation select 1;	
 
 	_pos = position _x;	

@@ -87,7 +87,7 @@ if(count(crew _vehicle) > 0)then
                     _unit enableAI "MOVE";  
                     reload _unit;
                 }foreach units _group;  
-                                            
+                deleteGroup _group;                           
                 
                 _GroupLeader = leader (group _vehicle); 
                 _GroupLeader doMove _originalSpawnLocation;
@@ -103,10 +103,11 @@ if(count(crew _vehicle) > 0)then
     _vehicle setVariable["vehPos",_newPos];
 };
 
-if(count units _group > 0) then
+if(count units _group == 0) then
 {
     _vehicle lock 0;			
     _vehicle setVehicleLock "UNLOCKED";
-    _vehicle setVariable ["ExileIsLocked", 0, true];      
+    _vehicle setVariable ["ExileIsLocked", 0, true];  
+	[_vehicle]  call SC_fnc_vehicleDestroyed;
 };
 

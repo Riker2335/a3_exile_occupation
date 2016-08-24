@@ -90,7 +90,7 @@ for "_i" from 1 to SC_numberofLootCrates do
 			[_unit] joinSilent _group;
 			_unit setCaptive false;                               
 		}foreach units _initialGroup;  		
-		
+		deleteGroup _initialGroup;
 		
 		[_group, _spawnPosition, 100] call bis_fnc_taskPatrol;
 		_group setBehaviour "STEALTH";

@@ -28,6 +28,8 @@ if((_aiActive > _maxAIcount) && !SC_occupyVehicleIgnoreCount) exitWith
     [_logDetail] call SC_fnc_log; 
 };
 
+SC_liveVehicles = count(SC_liveVehiclesArray);
+
 if(SC_liveVehicles >= SC_maxNumberofVehicles) exitWith 
 {
     _logDetail = format['[OCCUPATION:Vehicle] End check %1 currently active (max %2) @ %3',SC_liveVehicles,SC_maxNumberofVehicles,time]; 
@@ -143,13 +145,13 @@ if(_vehiclesToSpawn > 0) then
         {
             _group addVehicle _vehicle;	
         
-            SC_liveVehicles = SC_liveVehicles + 1;
             SC_liveVehiclesArray = SC_liveVehiclesArray + [_vehicle];
 
-            _vehicle setVariable ["vehPos",_spawnLocation,true];
-			_vehicle setVariable ["SC_repairStatus",false];
+            _vehicle setVariable ["SC_repairStatus",false,true];
+			_vehicle setVariable ["vehPos",_spawnLocation,true];
             _vehicle setVariable ["vehClass",_VehicleClassToUse,true];
-            _vehicle setVariable ["SC_vehicleSpawnLocation", [_spawnLocation,_radius,worldName],true];
+			_SC_vehicleSpawnLocation = [_spawnLocation,_radius,worldName];
+			_vehicle setVariable ["SC_vehicleSpawnLocation", _SC_vehicleSpawnLocation,true];
             _vehicle setFuel 1;
             _vehicle engineOn true;
             
@@ -257,6 +259,10 @@ if(_vehiclesToSpawn > 0) then
                 _unit = _x;
                 _unit enableAI "FSM"; 
                 _unit enableAI "MOVE";  
+				_unit enableAI "TARGET";
+				_unit enableAI "AUTOTARGET";
+				_unit enableAI "AUTOCOMBAT";
+				_unit allowCrewInImmobile false;
                 reload _unit;   
                 _unitName = [_side] call SC_fnc_selectName;
                 if(!isNil "_unitName") then { _unit setName _unitName; }; 
@@ -267,7 +273,7 @@ if(_vehiclesToSpawn > 0) then
             sleep 10; 
             
             [_group, _spawnLocation, 2000] call bis_fnc_taskPatrol;
-            _group setBehaviour "SAFE";
+            _group setBehaviour "AWARE";
             _group setCombatMode "RED";
             sleep 0.2;
             
@@ -309,6 +315,6 @@ if(_vehiclesToSpawn > 0) then
         };
 	};
 };
-
+SC_liveVehicles = count(SC_liveVehiclesArray);
 _logDetail = format['[OCCUPATION:Vehicle] End check %1 currently active (max %2) @ %3',SC_liveVehicles,SC_maxNumberofVehicles,time]; 
 [_logDetail] call SC_fnc_log;

@@ -11,6 +11,7 @@ if(isPlayer _unit) then
 		if(!alive _x) then { _x action ["EJECT", _vehicle]; };     
 	}forEach units _group; 
 
+	_vehicle setVariable ["SC_vehicleSpawnLocation", nil,true];
     [_vehicle]  call SC_fnc_vehicleDestroyed;
 
 	if(SC_extendedLogging) then 

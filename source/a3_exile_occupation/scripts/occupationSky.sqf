@@ -27,6 +27,8 @@ if(_aiActive > _maxAIcount) exitWith
     [_logDetail] call SC_fnc_log; 
 };
 
+SC_liveHelis = count(SC_liveHelisArray);
+
 if(SC_liveHelis >= SC_maxNumberofHelis) exitWith 
 {
     if(SC_extendedLogging) then 
@@ -73,7 +75,7 @@ for "_i" from 1 to _vehiclesToSpawn do
 	if(SC_occupyHeliUseFixedPos) then
 	{
 		{
-			_vehLocation = _x getVariable "SC_vehicleSpawnLocation";
+			_vehLocation = _x getVariable "SC_vehicleSpawnLocation";		
 			_locationArray = _locationArray - _vehLocation;				
 		}forEach SC_liveHelisArray;
 		
@@ -138,7 +140,9 @@ for "_i" from 1 to _vehiclesToSpawn do
 		_group addVehicle _vehicle;
 		_vehicle setVariable["vehPos",_spawnLocation,true];
 		_vehicle setVariable["vehClass",_VehicleClassToUse,true];
-		_vehicle setVariable ["SC_vehicleSpawnLocation", [_spawnLocation,_radius,worldName],true];
+		_SC_vehicleSpawnLocation = [_spawnLocation,_radius,worldName];
+		diag_log format ["[occupationSky] _SC_vehicleSpawnLocation: %1",_SC_vehicleSpawnLocation];
+		_vehicle setVariable ["SC_vehicleSpawnLocation", _SC_vehicleSpawnLocation,true];
 
 		SC_liveHelis = SC_liveHelis + 1;
 		SC_liveHelisArray = SC_liveHelisArray + [_vehicle];

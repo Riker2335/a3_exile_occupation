@@ -5,20 +5,33 @@ if((damage _vehicle) < 1) then
 	_vehicle removeAllMPEventHandlers  "mphit";
 };
 
-if(_vehicle isKindOf "LandVehicle") then
+SC_liveVehiclesArray 	= [];
+SC_liveHelisArray		= [];
+SC_liveBoatsArray		= [];
+
 {
-    SC_liveVehiclesArray = SC_liveVehiclesArray - [_vehicle];  
-	SC_liveVehicles = count(SC_liveVehiclesArray);
-};
+	_vehicle		= _x;
+	_vehLocation 	= _x getVariable "SC_vehicleSpawnLocation";
+	_transport 		= _x getVariable "SC_transport";
 
-if(_vehicle isKindOf "Air") then
-{   
-    SC_liveHelisArray = SC_liveHelisArray - [_vehicle]; 
-	SC_liveHelis = count(SC_liveHelisArray);
-};
+	if(!isNil "_vehLocation") then
+	{
+		if(_vehicle isKindOf "LandVehicle") then
+		{		
+			SC_liveVehiclesArray pushBack _vehicle; 
+			SC_liveVehicles = count(SC_liveVehiclesArray);		
+		};
 
-if(_vehicle isKindOf "Ship") then
-{   
-    SC_liveBoatsArray = SC_liveBoatsArray - [_vehicle];
-    SC_liveBoatss = count(SC_liveBoatsArray);
-};
+		if(_vehicle isKindOf "Air" && isNil "_transport") then
+		{   
+			SC_liveHelisArray pushBack _vehicle; 
+			SC_liveHelis = count(SC_liveHelisArray);
+		};
+
+		if(_vehicle isKindOf "Ship") then
+		{   
+			SC_liveBoatsArray pushBack _vehicle;
+			SC_liveBoatss = count(SC_liveBoatsArray);
+		};
+	};
+}forEach vehicles;

@@ -7,25 +7,28 @@ _repairStatus 	= _vehicle getVariable "SC_repairStatus";
 if(_repairStatus) exitWith {};
 
 // Mark the vehicle as currently being repaired
-_vehicle setVariable ["SC_repairStatus",true];
+_vehicle setVariable ["SC_repairStatus",true,true];
 
 _vehicleDamage 		= damage _vehicle;
 _damagedWheels 		= 0;
-_damageLimit 		= 1;
+_damageLimit 		= 0.2;
 _engineDamage 		= false;
 _fueltankDamage 	= false;
 _wheelDamage 	    = false;
 _assignedDriver 	= _vehicle getVariable "SC_assignedDriver";
 
+_group = group _vehicle;
+
+// Remove dead units from the group
+{
+	if(!alive _x) then { [_x] join grpNull; };     
+}forEach units _group; 
+
+if(count(units _group) == 0) exitWith { [_vehicle]  call SC_fnc_vehicleDestroyed; };
 
 if(isNil "_assignedDriver") then
 {
-    _group = group _vehicle;
-
-    // Remove dead units from the group
-    {
-        if(!alive _x) then { [_x] join grpNull; };     
-    }forEach units _group;  
+ 
     _groupMembers = units _group;
     _assignedDriver = _groupMembers call BIS_fnc_selectRandom;
     
@@ -59,12 +62,12 @@ _wheels = ["HitLFWheel","HitLF2Wheel","HitRFWheel","HitRF2Wheel","HitLBWheel","H
             _logDetail = format ["[OCCUPATION:repairVehicle]:: Vehicle %1 checking wheel %2 (damage: %4) @ %3",_vehicle, _x, time,_partDamage]; 
             [_logDetail] call SC_fnc_log;
         };        
-		if(_partDamage > 0.3) then { _wheelDamage = true; };
+		if(_partDamage == 1) then { _wheelDamage = true; };
 	};
 } forEach _wheels;
 
 // Check Engine
-if ((_vehicle getHitPointDamage "HitEngine") >= _damageLimit) then { _engineDamage = true; };
+if ((_vehicle getHitPointDamage "HitEngine") == 1) then { _engineDamage = true; };
 
 // Check Fuel Tank
 if ((_vehicle getHitPointDamage "HitFuel") > 0) then { _fueltankDamage = true; };
@@ -131,12 +134,12 @@ if(_wheelDamage OR _engineDamage OR _fueltankDamage) then
         _driver enableAI "FSM";
 	};
 	// Mark the vehicle as not currently being repaired
-	_vehicle setVariable ["SC_repairStatus",false];	
+	_vehicle setVariable ["SC_repairStatus",false,true];	
 }
 else
 {
-	_logDetail = format ["[OCCUPATION:repairVehicle]:: Not repairing %2, driver is %3 at %1",time,_vehicle,_assignedDriver]; 
+	// Mark the vehicle as not currently being repaired
+	_vehicle setVariable ["SC_repairStatus",false,true];	
+	_logDetail = format ["[OCCUPATION:repairVehicle]:: Not enough damage to disable %2, driver is %3 at %1",time,_vehicle,_assignedDriver]; 
 	[_logDetail] call SC_fnc_log;
-	_logDetail = format ["[OCCUPATION:repairVehicle]:: Vehicle: %1 damage: %2 engine: %3 fuelTank: %4",_vehicle,_vehicleDamage,_engineDamage,_fueltankDamage]; 
-	[_logDetail] call SC_fnc_log;	
 };

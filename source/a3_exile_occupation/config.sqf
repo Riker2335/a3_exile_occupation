@@ -46,7 +46,7 @@ SC_occupyStatic	 		    	= false;		    		// true if you want to add AI in specifi
 SC_occupyTransport 	        	= true;						// true if you want pubic transport (travels between traders)
 SC_occupyLootCrates		    	= true;						// true if you want to have random loot crates with guards
 SC_occupyRandomSpawn        	= true;                		// (WORK IN PROGRESS) true if you want random spawning AI that hunt for nearby players
-SC_occupyMilitary 		    	= true;			    		// true if you want military buildings patrolled
+SC_occupyMilitary 		    	= false;			    	// true if you want military buildings patrolled
 SC_occupyVehicle				= true;						// true if you want to have roaming AI land vehicles
 SC_occupySky					= true;						// true if you want to have roaming AI helis
 SC_occupySea					= false;					// true if you want to have roaming AI boats
@@ -243,11 +243,11 @@ SC_maximumCrewAmount        	= 3;     	// Maximum amount of AI allowed in a vehi
 /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
 SC_maxNumberofVehicles 	    	= 3;		// How many roaming vehicles to spawn	
-SC_occupyVehicleIgnoreCount		= false;		// true if you want spawn vehicles regardless of overall AI count
+SC_occupyVehicleIgnoreCount		= true;		// true if you want spawn vehicles regardless of overall AI count
 SC_occupyVehiclesLocked			= false;	// true if AI vehicles to stay locked until all the linked AI are dead		
 SC_occupyVehicleSurvivors		= false;	// true if you want a chance to spawn survivor AI as well as bandits (SC_occupyVehicle must be true to use this option)
 
-SC_occupyVehicleUseFixedPos		= false;		// True if you want to specify the patrol positions and radius of the area to patrol / false for random
+SC_occupyVehicleUseFixedPos		= true;		// True if you want to specify the patrol positions and radius of the area to patrol / false for random
 
 											// if you set SC_maxNumberofVehicles higher than the number of static positions, the remainder will be random
 											// they will also ignore any blacklisted areas
@@ -397,16 +397,6 @@ SC_BanditBackpack           	= ["B_HuntingBackpack","B_Kitbag_cbr","B_Kitbag_mca
 //	Map Specific Overrides
 /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////								
 								
-if (worldName == 'Namalsk' AND SC_useMapOverrides) then 
-{ 
-	SC_maxAIcount 				= 80; 
-	SC_occupySky				= false;
-    SC_maxNumberofVehicles 		= 2;
-    SC_numberofLootCrates 		= 3;
-    SC_numberofHeliCrashes  	= 2;
-    SC_maxNumberofBoats			= 1;
-    SC_occupyTransportClass 	= "Exile_Car_LandRover_Urban"; // the ikarus bus gets stuck on Namalsk
-};
 
 if (worldName == 'Napf' AND SC_useMapOverrides) then 
 { 
@@ -423,6 +413,7 @@ if (worldName == 'Chernarus' AND SC_useMapOverrides) then
 if (worldName == 'Tanoa' AND SC_useMapOverrides) then 
 { 
     SC_useApexClasses       	= true;
+	SC_maxAIcount				= 80;
 	
 };
 
@@ -460,7 +451,7 @@ if (SC_debug) then
     SC_processReporter      	= true;
     SC_mapMarkers			    = true;
     SC_occupyPlaces 			= true;
-    SC_occupyVehicle			= true;
+    SC_occupyVehicle			= false;
     SC_occupyMilitary 			= true;
 	SC_occupyRandomSpawn        = true;
     SC_occupyStatic				= false;
