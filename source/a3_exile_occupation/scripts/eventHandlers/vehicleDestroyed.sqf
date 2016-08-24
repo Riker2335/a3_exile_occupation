@@ -1,5 +1,5 @@
 _vehicle = _this select 0;
-
+_vehicle setVariable ["SC_vehicleSpawnLocation", nil,true];
 if((damage _vehicle) < 1) then
 {
 	_vehicle removeAllMPEventHandlers  "mphit";
