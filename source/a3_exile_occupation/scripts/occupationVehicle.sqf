@@ -73,7 +73,6 @@ if(_vehiclesToSpawn > 0) then
 			if(count _locationArray > 0)  then
 			{
 				_randomLocation = _locationArray call BIS_fnc_selectRandom;
-				diag_log format["_randomLocation: %1",_randomLocation];
 				_spawnLocation = _randomLocation select 0;
 				_radius = _randomLocation select 1;
 				_locationArray = _locationArray - [_randomLocation];

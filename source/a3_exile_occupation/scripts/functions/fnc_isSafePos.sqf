@@ -19,7 +19,7 @@ private _validspot      = true;
 		if(_distance < _blacklistRadius) then
         {
             _validspot = false;
-			diag_log format["%1 is %2m from blacklisted position %3 (blacklisted)",_position,_distance,_blacklistPos];			
+			diag_log format["[OCCUPATION]:: %1 is %2m from blacklisted position %3 (blacklisted)",_position,_distance,_blacklistPos];			
         };
     };
 }forEach SC_blackListedAreas;
@@ -48,7 +48,6 @@ if(_validspot) then
 		if ((_markerPos distance2D _position) < 350) exitWith { _validspot = false; };
 	}
 	forEach allMapMarkers;
-
 };       
 
 _validspot	

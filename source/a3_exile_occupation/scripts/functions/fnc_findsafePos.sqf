@@ -47,7 +47,6 @@ while{!_validspot} do
         if (isNil "_nearRoads" OR count _nearRoads == 0) then
         { 
             _validspot = false;  
-            diag_log format["BIS_fnc_findSafePos no roads found near position  %1",_position];
         }
         else
         {
@@ -57,12 +56,7 @@ while{!_validspot} do
 			if(!_isEmpty) then 
 			{ 
 				_validspot = false;  
-			}
-			else
-			{
-				diag_log format["BIS_fnc_findSafePos checking road found at %1",_position];
-			};
-                    
+			};                   
         };        
     };
     
@@ -71,7 +65,6 @@ while{!_validspot} do
     if(!_waterSpawn && _isOverWater) then
     {
         _validspot = false;  
-        diag_log format["BIS_fnc_findSafePos none waterspawn over water  %1",_position];
     };
     
     if(_validspot) then

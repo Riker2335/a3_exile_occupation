@@ -282,12 +282,12 @@ _livePlayers call BIS_fnc_arrayShuffle;
 		// Find a safe position to spawn
 		_suitableLocation = false;
 		_attempts = 1;
-		while{!_suitableLocation && _attempts < 50} do 
+		while{!_suitableLocation && _attempts < 5} do 
 		{		
 			_spawnLocation = [_playersPosition,250,450,15,0,20,0] call BIS_fnc_findSafePos;
 			_suitableLocation = [ _spawnLocation ] call SC_fnc_isSafePosRandom;
 			_attempts = _attempts + 1;
-			sleep 0.1;
+			sleep 1;
 		};
 		
 		if(!_suitableLocation) then 
