@@ -234,7 +234,7 @@ SC_HeliCrashMagazinesAmount 	= [2,2]; 	// [fixed amount to add, random amount to
 //	Roaming Vehicle Setup - (applies to ground, air and sea vehicles)
 /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
-SC_minimumCrewAmount        	= 2;     	// Maximum amount of AI allowed in a vehicle
+SC_minimumCrewAmount        	= 2;     	// Minimum amount of AI allowed in a vehicle
 SC_maximumCrewAmount        	= 3;     	// Maximum amount of AI allowed in a vehicle
 											// (essential crew like drivers and gunners will always spawn regardless of these settings)
 
