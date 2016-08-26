@@ -66,14 +66,14 @@ SC_fastNightsMultiplierDay  	= 4;                    	// the time multiplier to 
 
 SC_randomSpawnMinPlayers    	= 1;                    	// Minimum number of players to be online before random spawning AI can spawn
 SC_randomSpawnMaxGroups        	= 4;                    	// Maximum amount of random AI groups allowed at any time
-SC_randomSpawnMinGroupSize      = 1;                    	// Minimum amount of random AI groups allowed per group
+SC_randomSpawnMinGroupSize      = 2;                    	// Minimum amount of random AI groups allowed per group
 SC_randomSpawnMaxGroupSize      = 4;                    	// Maximum amount of random AI groups allowed per group
 SC_randomSpawnChance			= 12;						// Percentage chance of spawning if suitable player found
 SC_randomSpawnIgnoreCount		= true;						// true if you want spawn random AI groups regardless of overall AI count (they still count towards the total though)
 SC_randomSpawnFrequency			= 3600;						// time in seconds between the possibility of random AI hunting the same player (1800 for 30 minutes)
 SC_randomSpawnAnnounce			= true;						// true if you want a warning toast issued to all players when AI spawns
 
-SC_randomSpawnNearBases			= false;					// true if you want to allow random spawns in range of territories
+SC_randomSpawnNearBases			= true;						// true if you want to allow random spawns in range of territories
 SC_randomSpawnNearSpawns		= false;					// true if you want to allow random spawns in range of spawn zones
 SC_randomSpawnTargetBambis		= false;					// true if you want to allow random spawns to target bambis
 

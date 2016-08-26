@@ -45,24 +45,26 @@ if(time < 300) exitWith
 		_distanceFromSelectedPlayer = 500;
 		_selectedPlayer = _group getVariable "SC_huntedPlayer";
 		
-		if(alive _selectedPlayer) then
+		if(alive _selectedPlayer && !isNil "_selectedPlayer") then
 		{
 			_distanceFromSelectedPlayer = _selectedPlayer distance _groupLeader;
+			_logDetail = format['[OCCUPATION:RandomSpawn] group %1 is now %2m away from the target (%3)',_group,_distanceFromSelectedPlayer,_selectedPlayer]; 
+			[_logDetail] call SC_fnc_log;
 		};
-		_selectedPlayer getVariable "SC_lastHunted";
+
 		_suitableTargets = [];
 		
 		if(!alive _selectedPlayer OR _distanceFromSelectedPlayer >= 500) then
 		{
 			// Select a new target or despawn if no target nearby
-			_nearPlayers = player nearEntities ["Exile_Unit_Player", 500];	
+			_nearPlayers = _groupLeader nearEntities ["Exile_Unit_Player", 500];	
 			{
 				_selectedPlayer = _x;
 				_playersPosition = position _selectedPlayer;
 				_suitablePlayer = [ _playersPosition ] call SC_fnc_isSafePosRandom;
 				_suitablePlayerisBambi = _selectedPlayer getVariable "ExileIsBambi";
 				
-				if(_suitablePlayer && (!_suitablePlayerisBambi OR SC_randomSpawnTargetBambis)) then
+				if(_suitablePlayer && (!_suitablePlayerisBambi OR SC_randomSpawnTargetBambis) && alive _selectedPlayer) then
 				{
 					_suitableTargets pushBack _selectedPlayer;
 				};
@@ -74,31 +76,50 @@ if(time < 300) exitWith
 				_group setVariable ["SC_huntedPlayer",_selectedPlayer];
 				
 				// Hunt the selected player
-				_group reveal [_selectedPlayer,1.5];
 				_destination = getPos _selectedPlayer;
-				_group allowFleeing 0;
-				_wp = _group addWaypoint [_destination, 0] ;
-				_wp setWaypointFormation "Column";
-				_wp setWaypointBehaviour "AWARE";
-				_wp setWaypointCombatMode "RED";
-				_wp setWaypointCompletionRadius 25;
-				_wp setWaypointType "SAD";
-					 
-				[_group, _destination, 350] call bis_fnc_taskPatrol;
-				_group allowFleeing 0;
-				_group setBehaviour "AWARE";  
-				_group setCombatMode "RED";				
-				
+				if(!isNil "_destination") then
+				{
+					_group reveal [_selectedPlayer,1.5];
+					
+					_group allowFleeing 0;
+					_wp = _group addWaypoint [_destination, 0] ;
+					_wp setWaypointFormation "Column";
+					_wp setWaypointBehaviour "AWARE";
+					_wp setWaypointCombatMode "RED";
+					_wp setWaypointCompletionRadius 5;
+					_wp setWaypointType "SAD";
+						 
+					[_group, _destination, 350] call bis_fnc_taskPatrol;
+					_group allowFleeing 0;
+					_group setBehaviour "AWARE";  
+					_group setCombatMode "RED";						
+				}
+				else
+				{
+					// Remove the group
+					SC_liveRandomGroups = SC_liveRandomGroups - [_group];		
+					_groupToClean = _group;
+					_cleanup = [];
+					{
+						_cleanup pushBack _x;
+					} forEach units _group;
+					_cleanup call DMS_fnc_CleanUp;
+					_logDetail = format['[OCCUPATION:RandomSpawn] group %1 had no target, so was deleted',_groupToClean]; 
+					[_logDetail] call SC_fnc_log;					
+				};			
 			}
 			else
 			{
 				// Remove the group
-				SC_liveRandomGroups = SC_liveRandomGroups - [_group];			
+				SC_liveRandomGroups = SC_liveRandomGroups - [_group];		
+				_groupToClean = _group;
 				_cleanup = [];
 				{
 					_cleanup pushBack _x;
 				} forEach units _group;
 				_cleanup call DMS_fnc_CleanUp;
+				_logDetail = format['[OCCUPATION:RandomSpawn] group %1 had no target, so was deleted',_groupToClean]; 
+				[_logDetail] call SC_fnc_log;						
 			};
 		}
 		else
