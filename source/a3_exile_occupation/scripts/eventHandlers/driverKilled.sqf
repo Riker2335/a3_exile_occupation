@@ -9,6 +9,8 @@ if(SC_extendedLogging) then
 
 _deadDriver	= _this select 0;
 _vehicle = _deadDriver getVariable "SC_drivenVehicle";
+_vehicle removeAllMPEventHandlers  "mphit";
+_vehicle setVariable ["SC_repairStatus",false,true];
 
 if(SC_debug) then
 {

@@ -4,10 +4,17 @@
 _vehicle 		= _this select 0;
 _repairStatus 	= _vehicle getVariable "SC_repairStatus";
 
+_logDetail = format ["[OCCUPATION:repairVehicle]:: Vehicle %1 _repairStatus %2",_vehicle, _repairStatus]; 
+[_logDetail] call SC_fnc_log;
+
 if(_repairStatus) exitWith {};
 
 // Mark the vehicle as currently being repaired
 _vehicle setVariable ["SC_repairStatus",true,true];
+_vehicle removeAllMPEventHandlers  "mphit";
+
+_logDetail = format ["[OCCUPATION:repairVehicle]:: Starting repair check Vehicle %1 _repairStatus %2",_vehicle, _repairStatus]; 
+[_logDetail] call SC_fnc_log;
 
 _vehicleDamage 		= damage _vehicle;
 _damagedWheels 		= 0;
@@ -31,7 +38,10 @@ if(isNil "_assignedDriver") then
  
     _groupMembers = units _group;
     _assignedDriver = _groupMembers call BIS_fnc_selectRandom;
-    
+ 
+	_logDetail = format ["[OCCUPATION:repairVehicle]:: Selected replacement driver for %1 _repairStatus %2",_vehicle, _assignedDriver]; 
+	[_logDetail] call SC_fnc_log;
+ 
     _assignedDriver removeAllMPEventHandlers  "mphit";                                          
     _assignedDriver disableAI "TARGET";
     _assignedDriver disableAI "AUTOTARGET";
@@ -75,13 +85,16 @@ if ((_vehicle getHitPointDamage "HitFuel") > 0) then { _fueltankDamage = true; }
 
 if(_wheelDamage OR _engineDamage OR _fueltankDamage) then
 {
-	_logDetail = format ["[OCCUPATION:repairVehicle]:: Unit %2 repairing vehicle at %1",time,_assignedDriver]; 
-    [_logDetail] call SC_fnc_log;
+
 
 	[_vehicle,_assignedDriver ] spawn 
 	{
 		_vehicle  = _this select 0;
         _driver = _this select 1;
+		_vehicle setVariable ["SC_repairStatus",true,true];
+		_repairStatus = _vehicle getVariable "SC_repairStatus";
+		_logDetail = format ["[OCCUPATION:repairVehicle]:: Unit %2 repairing(%3) vehicle at %1",time,_driver,_repairStatus]; 
+		[_logDetail] call SC_fnc_log;
         
         _vehicle forceSpeed 0;
         sleep 0.2;    
@@ -123,18 +136,22 @@ if(_wheelDamage OR _engineDamage OR _fueltankDamage) then
         _wp setWaypointType "GETIN";		
         sleep 5;
 		_tempLocation = _vehicle getVariable "SC_vehicleSpawnLocation";
-		_originalSpawnLocation = _tempLocation select 0;
-		_radius = _tempLocation select 1;		
-         _driver action ["movetodriver", _vehicle];	
-        _vehicle forceSpeed -1;	
-        [_group, _originalSpawnLocation, _radius] call bis_fnc_taskPatrol;
-        _group setBehaviour "SAFE";
-        _group setCombatMode "RED";
-	    _driver enableAI "MOVE";    
-        _driver enableAI "FSM";
+		if(!isNil "_tempLocation") then
+		{
+			_originalSpawnLocation = _tempLocation select 0;
+			_radius = _tempLocation select 1;		
+			[_group, _originalSpawnLocation, _radius] call bis_fnc_taskPatrol;
+		};
+		_driver action ["movetodriver", _vehicle];	
+		_group setBehaviour "SAFE";
+		_group setCombatMode "RED";
+		_driver enableAI "MOVE";    
+		_driver enableAI "FSM";	
+		// Mark the vehicle as not currently being repaired and reapply the mphit eventhandler
+		_vehicle setVariable ["SC_repairStatus",false,true];
+		_vehicle addMPEventHandler ["mphit", "_this call SC_fnc_hitLand;"];
 	};
-	// Mark the vehicle as not currently being repaired
-	_vehicle setVariable ["SC_repairStatus",false,true];	
+	
 }
 else
 {
@@ -142,4 +159,8 @@ else
 	_vehicle setVariable ["SC_repairStatus",false,true];	
 	_logDetail = format ["[OCCUPATION:repairVehicle]:: Not enough damage to disable %2, driver is %3 at %1",time,_vehicle,_assignedDriver]; 
 	[_logDetail] call SC_fnc_log;
+	//_vehicle addMPEventHandler ["mphit", "_this call SC_fnc_hitLand;"];
 };
+_repairStatus 	= _vehicle getVariable "SC_repairStatus";
+_logDetail = format ["[OCCUPATION:repairVehicle]:: Finished mphit eventhandler for Vehicle %1 _repairStatus %2",_vehicle, _repairStatus]; 
+[_logDetail] call SC_fnc_log;

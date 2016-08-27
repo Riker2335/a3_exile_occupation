@@ -109,8 +109,8 @@ SC_staticSurvivors          	= [		//[[pos],ai count,radius,search buildings]
 /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////							  
 							  
 SC_colourTransport          	= true;                 // true if you want the public transport coloured
-SC_secureTransport          	= true;                 // true if you want the public transport and pilot to be indestructible
-SC_occupyTransportClass 		= ["Exile_Chopper_Hummingbird_Green"]; // to always use the same vehicle, specify one option only
+SC_secureTransport          	= true;                	// true if you want the public transport and pilot to be indestructible
+SC_occupyTransportClass 		= ["Exile_Chopper_Orca_BlackCustom"]; // to always use the same vehicle, specify one option only
 
 SC_occupyTransportStartPos  	= [];                   // if empty defaults to map centre
 
@@ -401,13 +401,14 @@ SC_BanditBackpack           	= ["B_HuntingBackpack","B_Kitbag_cbr","B_Kitbag_mca
 if (worldName == 'Napf' AND SC_useMapOverrides) then 
 { 
 	SC_maxAIcount				= 120;
+	SC_useApexClasses           = false; 
 
 };
 
 if (worldName == 'Chernarus' AND SC_useMapOverrides) then 
 { 
 	SC_maxAIcount				= 120;
-
+	SC_useApexClasses           = false;
 };
 
 if (worldName == 'Tanoa' AND SC_useMapOverrides) then 
@@ -450,21 +451,21 @@ if (SC_debug) then
     SC_extendedLogging       	= true;
     SC_processReporter      	= true;
     SC_mapMarkers			    = true;
-    SC_occupyPlaces 			= true;
-    SC_occupyVehicle			= false;
-    SC_occupyMilitary 			= true;
+    SC_occupyPlaces 			= false;
+    SC_occupyVehicle			= true;
+    SC_occupyMilitary 			= false;
 	SC_occupyRandomSpawn        = true;
     SC_occupyStatic				= false;
-    SC_occupySky				= true;
+    SC_occupySky				= false;
     SC_occupySea				= false;
-	SC_occupyTraders            = true;	
+	SC_occupyTraders            = false;	
     SC_occupyTransport			= true;
-    SC_occupyLootCrates			= true;
-    SC_occupyHeliCrashes		= true;
-	SC_maxAIcount				= 100;	
-    SC_maxNumberofVehicles		= 5;
+    SC_occupyLootCrates			= false;
+    SC_occupyHeliCrashes		= false;
+	SC_maxAIcount				= 150;	
+    SC_maxNumberofVehicles		= 10;
     SC_maxNumberofBoats			= 5;
-    SC_maxNumberofHelis			= 5;   
+    SC_maxNumberofHelis			= 1;   
 };
 
 /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////

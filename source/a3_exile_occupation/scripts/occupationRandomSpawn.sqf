@@ -42,6 +42,13 @@ if(time < 300) exitWith
 	else
 	{
 		_groupLeader = leader _group;
+		
+		if(isNil "_groupLeader" OR !alive _groupLeader) then
+		{
+			_groupMembers = units _group;
+			_groupLeader = _groupMembers call BIS_fnc_selectRandom;			
+		};
+		
 		_distanceFromSelectedPlayer = 500;
 		_selectedPlayer = _group getVariable "SC_huntedPlayer";
 		
@@ -340,6 +347,7 @@ _livePlayers call BIS_fnc_arrayShuffle;
 				_unit disableAI "AUTOTARGET";
 				_unit disableAI "TARGET";
 				_unit disableAI "MOVE";
+				_unit disableAI "FSM";
                 _unitName = ["survivor"] call SC_fnc_selectName;
                 if(!isNil "_unitName") then { _unit setName _unitName; };				
 				_unit addMPEventHandler ["mpkilled", "_this call SC_fnc_randomUnitMPKilled;"];
@@ -352,7 +360,8 @@ _livePlayers call BIS_fnc_arrayShuffle;
 				_unit enableAI "AUTOTARGET";
 				_unit enableAI "TARGET";
 				_unit enableAI "MOVE";  
-				_unit setCaptive false;                               
+				_unit setCaptive false;
+				_unit setCombatMode "RED"				
             }foreach units _group; 			
 			
 			if(SC_randomSpawnAnnounce) then
@@ -373,7 +382,7 @@ _livePlayers call BIS_fnc_arrayShuffle;
 			_wp setWaypointBehaviour "AWARE";
 			_wp setWaypointCombatMode "RED";
 			_wp setWaypointCompletionRadius 25;
-			_wp setWaypointType "SAD";
+			_wp setWaypointType "MOVE";
 				 
 			[_group, _destination, 350] call bis_fnc_taskPatrol;
 			_group allowFleeing 0;

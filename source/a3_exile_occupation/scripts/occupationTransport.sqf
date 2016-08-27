@@ -184,6 +184,9 @@ while {true} do
         _transport setVariable ["SC_assignedDriver", _transportDriver,true];
         _transport setVariable ["SC_transport", true,true];
         _transport setVariable ["SC_vehicleSpawnLocation", _spawnLocation,true];
+		_SC_vehicleSpawnLocation = [_spawnLocation,2000,worldName];
+		_transport setVariable ["SC_vehicleSpawnLocation", _SC_vehicleSpawnLocation,true];
+		
         _transportDriver setVariable ["DMS_AssignedVeh",_transport]; 
         _transportDriver setVariable ["SC_lastSpoke", time, true]; 
         _transport addEventHandler ["getin", "_this call SC_fnc_getOnBus;"];
@@ -214,12 +217,12 @@ while {true} do
         {
             {
                 _markerPos = _x;
-                _wp = _group addWaypoint [_markerPos, 25];
+                _wp = _group addWaypoint [_markerPos, 100];
                 _wp setWaypointType "MOVE";
                 _wp setWaypointBehaviour _transportBehaviour;
                 _wp setWaypointspeed _transportSpeed;
                 
-                _wp = _group addWaypoint [_markerPos, 5];
+                _wp = _group addWaypoint [_markerPos, 25];
                 _wp setWaypointType "TR UNLOAD";
                 _wp setWaypointBehaviour "SAFE";
                 _wp setWaypointspeed "LIMITED";
@@ -251,7 +254,7 @@ while {true} do
         };
 
         // Add a final CYCLE
-        _wp = _group addWaypoint [_spawnLocation, 20];
+        _wp = _group addWaypoint [_spawnLocation, 25];
         _wp setWaypointType "CYCLE";
         _wp setWaypointBehaviour _transportBehaviour;
         _wp setWaypointspeed _transportSpeed; 
