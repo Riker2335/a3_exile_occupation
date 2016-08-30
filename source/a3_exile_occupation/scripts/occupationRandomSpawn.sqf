@@ -14,9 +14,12 @@ _minFPS 			= SC_minFPS;
 _useLaunchers 	    = DMS_ai_use_launchers;
 _scaleAI			= SC_scaleAI;
 _side               = "bandit"; 
+_delay				= 300;
+
+if(SC_debug) then {	_delay = 30; };
 
 // Don't run for the first 5 minutes after restart
-if(time < 300) exitWith 
+if(time < _delay) exitWith 
 {
     if(SC_extendedLogging) then 
     { 
@@ -92,14 +95,13 @@ if(time < 300) exitWith
 					_wp = _group addWaypoint [_destination, 0] ;
 					_wp setWaypointFormation "Column";
 					_wp setWaypointBehaviour "AWARE";
-					_wp setWaypointCombatMode "RED";
+					_wp setWaypointCombatMode "YELLOW";
 					_wp setWaypointCompletionRadius 5;
-					_wp setWaypointType "SAD";
 						 
 					[_group, _destination, 350] call bis_fnc_taskPatrol;
 					_group allowFleeing 0;
 					_group setBehaviour "AWARE";  
-					_group setCombatMode "RED";						
+					_group setCombatMode "YELLOW";						
 				}
 				else
 				{
@@ -137,25 +139,106 @@ if(time < 300) exitWith
 			{
 				deleteWaypoint ((waypoints _group) select 0);
 			};
-		
-			// Make sure the target is being hunted
-			_group reveal [_selectedPlayer,1.5];
-			_destination = getPos _selectedPlayer;
-			_group allowFleeing 0;
-			_wp = _group addWaypoint [_destination, 0] ;
-			_wp setWaypointFormation "Column";
-			_wp setWaypointBehaviour "AWARE";
-			_wp setWaypointCombatMode "RED";
-			_wp setWaypointCompletionRadius 25;
-			_wp setWaypointType "SAD";
-				 
-			[_group, _destination, 350] call bis_fnc_taskPatrol;
-			_group allowFleeing 0;
-			_group setBehaviour "AWARE";  
-			_group setCombatMode "RED";	
 
-			_logDetail = format['[OCCUPATION:RandomSpawn] group %1 is hunting player %2 @ location %3',_group,_selectedPlayer,_destination]; 
-			[_logDetail] call SC_fnc_log;			
+			
+			_groupLeader = leader _group;
+			
+			if(isNil "_groupLeader" OR !alive _groupLeader) then
+			{
+				_groupMembers = units _group;
+				_groupLeader = _groupMembers call BIS_fnc_selectRandom;			
+			};			
+			
+			_searchSet = false;
+			if(!isNil "_selectedPlayer" && alive _selectedPlayer && !isNil "_groupLeader" && alive _groupLeader) then
+			{
+				_distanceFromSelectedPlayer = _selectedPlayer distance _groupLeader;
+				_destination = getPos _selectedPlayer;
+				
+				_group reveal [_selectedPlayer,1.5];
+				_destination = getPos _selectedPlayer;
+				_group allowFleeing 0;
+				_group move _destination;				
+				_group setBehaviour "AWARE";  
+				_group setCombatMode "YELLOW";	
+
+				
+				if(_distanceFromSelectedPlayer < 200) then
+				{
+					_buildings = _selectedPlayer nearObjects ["building", 20];
+					{
+						_isEnterable = [_x] call BIS_fnc_isBuildingEnterable;
+						diag_log format ["[OCCUPATION:RandomSpawn] %1 is enterable",_x];
+						
+						if(_isEnterable) then
+						{
+							_buildingPositions = [_x, 30] call BIS_fnc_buildingPositions;
+							_y = _x;
+							
+							// Find nearest building position to the players position
+							_nearest = [0,0,0];
+							{
+								_distance 			= _nearest distance _selectedPlayer;
+								_distanceToCheck	= _x distance _selectedPlayer; 
+								diag_log format ["[OCCUPATION:RandomSpawn] Checking if %1(%3m) is closer to the target than %2(%4m)",_x,_nearest,_distanceToCheck,_distance];
+								if(_distanceToCheck < _distance) then
+								{
+									_nearest = _x;
+								};
+							} foreach _buildingPositions;		
+							diag_log format ["[OCCUPATION:RandomSpawn] Setting waypoint to nearest position to target %1 (%2m from target)",_nearest,_distance];
+							_i = _buildingPositions find _nearest;
+							_wp = _group addWaypoint [_nearest, 0] ;
+							_wp setWaypointBehaviour "AWARE";
+							_wp setWaypointCombatMode "RED";
+							_wp setWaypointCompletionRadius 5;
+							_wp waypointAttachObject _y;
+							_wp setwaypointHousePosition _i;
+							_logDetail = format['[OCCUPATION:RandomSpawn] group %1 are searching the buildings near player %2 @ location %3',_group,_selectedPlayer,_nearest]; 
+							[_logDetail] call SC_fnc_log;	
+
+						}
+						else
+						{
+							diag_log format ["[OCCUPATION:RandomSpawn] %1 is not enterable",_x];							
+						};
+					} foreach _buildings;
+					if(isNil "_wp") then
+					{
+						_group reveal [_selectedPlayer,1.5];
+						_destination = getPos _selectedPlayer;
+						_group allowFleeing 0;
+						_group move _destination;
+							 
+						[_group, _destination, 50] call bis_fnc_taskPatrol;
+						_group allowFleeing 0;
+						_group setBehaviour "AWARE";  
+						_group setCombatMode "RED";						
+					};	
+					_searchSet = true;	
+					_logDetail = format['[OCCUPATION:RandomSpawn] group %1 are searching the buildings near player %2 @ location %3',_group,_selectedPlayer,_destination]; 
+					[_logDetail] call SC_fnc_log;					
+				};			
+			};
+
+			if(!_searchSet OR isNil "_searchSet") then
+			{
+				// Make sure the target is being hunted
+				_group reveal [_selectedPlayer,1.5];
+				_destination = getPos _selectedPlayer;
+				_group allowFleeing 0;
+				_group move _destination;
+					 
+				[_group, _destination, 100] call bis_fnc_taskPatrol;
+				_group allowFleeing 0;
+				_group setBehaviour "AWARE";  
+				_group setCombatMode "YELLOW";	
+
+				_logDetail = format['[OCCUPATION:RandomSpawn] group %1 is hunting player %2 @ location %3',_group,_selectedPlayer,_destination]; 
+				[_logDetail] call SC_fnc_log;					
+			};
+
+		
 		};
 	
 	};	
@@ -312,7 +395,7 @@ _livePlayers call BIS_fnc_arrayShuffle;
 		_attempts = 1;
 		while{!_suitableLocation && _attempts < 5} do 
 		{		
-			_spawnLocation = [_playersPosition,250,450,15,0,20,0] call BIS_fnc_findSafePos;
+			_spawnLocation = [_playersPosition,250,350,15,0,20,0] call BIS_fnc_findSafePos;
 			_suitableLocation = [ _spawnLocation ] call SC_fnc_isSafePosRandom;
 			_attempts = _attempts + 1;
 			sleep 1;
@@ -347,7 +430,7 @@ _livePlayers call BIS_fnc_arrayShuffle;
 				_unit disableAI "AUTOTARGET";
 				_unit disableAI "TARGET";
 				_unit disableAI "MOVE";
-				_unit disableAI "FSM";
+				//_unit disableAI "FSM";
                 _unitName = ["survivor"] call SC_fnc_selectName;
                 if(!isNil "_unitName") then { _unit setName _unitName; };				
 				_unit addMPEventHandler ["mpkilled", "_this call SC_fnc_randomUnitMPKilled;"];
@@ -361,7 +444,7 @@ _livePlayers call BIS_fnc_arrayShuffle;
 				_unit enableAI "TARGET";
 				_unit enableAI "MOVE";  
 				_unit setCaptive false;
-				_unit setCombatMode "RED"				
+				_unit setCombatMode "YELLOW"				
             }foreach units _group; 			
 			
 			if(SC_randomSpawnAnnounce) then
@@ -380,14 +463,14 @@ _livePlayers call BIS_fnc_arrayShuffle;
 			_wp = _group addWaypoint [_destination, 0] ;
 			_wp setWaypointFormation "Column";
 			_wp setWaypointBehaviour "AWARE";
-			_wp setWaypointCombatMode "RED";
-			_wp setWaypointCompletionRadius 25;
+			_wp setWaypointCombatMode "YELLOW";
+			_wp setWaypointCompletionRadius 10;
 			_wp setWaypointType "MOVE";
 				 
-			[_group, _destination, 350] call bis_fnc_taskPatrol;
+			[_group, _destination, 50] call bis_fnc_taskPatrol;
 			_group allowFleeing 0;
 			_group setBehaviour "AWARE";  
-			_group setCombatMode "RED";			
+			_group setCombatMode "YELLOW";			
 		};	
 	}
 	else

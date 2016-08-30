@@ -66,8 +66,8 @@ SC_fastNightsMultiplierDay  	= 4;                    	// the time multiplier to 
 
 SC_randomSpawnMinPlayers    	= 1;                    	// Minimum number of players to be online before random spawning AI can spawn
 SC_randomSpawnMaxGroups        	= 4;                    	// Maximum amount of random AI groups allowed at any time
-SC_randomSpawnMinGroupSize      = 2;                    	// Minimum amount of random AI groups allowed per group
-SC_randomSpawnMaxGroupSize      = 4;                    	// Maximum amount of random AI groups allowed per group
+SC_randomSpawnMinGroupSize      = 3;                    	// Minimum amount of random AI groups allowed per group
+SC_randomSpawnMaxGroupSize      = 5;                    	// Maximum amount of random AI groups allowed per group
 SC_randomSpawnChance			= 12;						// Percentage chance of spawning if suitable player found
 SC_randomSpawnIgnoreCount		= true;						// true if you want spawn random AI groups regardless of overall AI count (they still count towards the total though)
 SC_randomSpawnFrequency			= 3600;						// time in seconds between the possibility of random AI hunting the same player (1800 for 30 minutes)
@@ -243,11 +243,11 @@ SC_maximumCrewAmount        	= 3;     	// Maximum amount of AI allowed in a vehi
 /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
 SC_maxNumberofVehicles 	    	= 3;		// How many roaming vehicles to spawn	
-SC_occupyVehicleIgnoreCount		= true;		// true if you want spawn vehicles regardless of overall AI count
+SC_occupyVehicleIgnoreCount		= false;	// true if you want spawn vehicles regardless of overall AI count
 SC_occupyVehiclesLocked			= false;	// true if AI vehicles to stay locked until all the linked AI are dead		
 SC_occupyVehicleSurvivors		= false;	// true if you want a chance to spawn survivor AI as well as bandits (SC_occupyVehicle must be true to use this option)
 
-SC_occupyVehicleUseFixedPos		= true;		// True if you want to specify the patrol positions and radius of the area to patrol / false for random
+SC_occupyVehicleUseFixedPos		= false;		// True if you want to specify the patrol positions and radius of the area to patrol / false for random
 
 											// if you set SC_maxNumberofVehicles higher than the number of static positions, the remainder will be random
 											// they will also ignore any blacklisted areas
@@ -465,7 +465,10 @@ if (SC_debug) then
 	SC_maxAIcount				= 150;	
     SC_maxNumberofVehicles		= 10;
     SC_maxNumberofBoats			= 5;
-    SC_maxNumberofHelis			= 1;   
+    SC_maxNumberofHelis			= 1; 
+	SC_randomSpawnChance		= 100;
+	SC_randomSpawnIgnoreCount	= true;
+	SC_randomSpawnFrequency		= 120;
 };
 
 /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////

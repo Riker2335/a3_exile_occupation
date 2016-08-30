@@ -1,4 +1,12 @@
 =================================================================================
+V65 (30-08-2016)
+=================================================================================
+Tweaks to the randomspawn AI to try to get them to search buildings if you hide 
+from them :)
+
+Get well soon Bastian/Eichi, we're all thinking of you XX
+
+=================================================================================
 V64 (27-08-2016)
 =================================================================================
 Another bug fixed in the repair vehicle eventhandler
