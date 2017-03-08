@@ -449,7 +449,14 @@ _livePlayers call BIS_fnc_arrayShuffle;
 			
 			if(SC_randomSpawnAnnounce) then
 			{
+				if (SC_randomSpawnNameTarget) then
+				{
+				["toastRequest", ["InfoTitleAndText", format["Raid group Incoming!", "A squad of Police have been despatched to take out %1!",name _selectedPlayer]]] call ExileServer_system_network_send_broadcast;
+				}				
+				else
+				{
 				["toastRequest", ["InfoTitleAndText", ["Raid group Incoming!", "A squad of Police have been despatched to take out a trouble prisoner."]]] call ExileServer_system_network_send_broadcast;
+				};
 			};
 			
 			_logDetail = format ["[OCCUPATION:RandomSpawn]:: Spawning a group of AI @ %2 to hunt player %1",_selectedPlayer,_spawnLocation]; 

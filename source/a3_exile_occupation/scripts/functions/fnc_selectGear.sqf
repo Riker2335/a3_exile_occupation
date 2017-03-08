@@ -56,17 +56,28 @@ switch (_side) do
     }; 
     case "cops":
     {
-        _uniform  			= "U_B_GEN_Soldier_F"; 
-        _vest  				= "V_TacVest_gen_F"; 
-        _headgear  			= "H_Cap_police"; 
-        _weapon  			= "SMG_05_F";
-        _weaponAttachments  = ["muzzle_snds_L"];         
-        _pistol  			= "hgun_Rook40_F"; 
-        _pistolAttachments  = ["muzzle_snds_L"];    
-        _launcher  			= ""; 
-        _backpack  			= "";  
-        _assignedItems 		= ["ItemMap","ItemCompass","ItemRadio","ItemWatch"];    
-        _magazines 			= ["30Rnd_9x21_Mag_SMG_02","30Rnd_9x21_Mag_SMG_02","16Rnd_9x21_Mag","16Rnd_9x21_Mag"];  
+        if(count SC_RandomUniforms == 0) then { _uniform = ""; } else { _uniform  = SC_RandomUniforms call BIS_fnc_selectRandom; }; 
+        if(count SC_RandomVests == 0) then { _vest = ""; } else { _vest  = SC_RandomVests call BIS_fnc_selectRandom; }; 
+        if(count SC_RandomHeadgear == 0) then { _headgear = ""; } else { _headgear  = SC_RandomHeadgear call BIS_fnc_selectRandom; }; 
+        if(count SC_RandomWeapon == 0) then { _weapon = ""; } else { _weapon  = SC_RandomWeapon call BIS_fnc_selectRandom; }; 
+        if(count SC_RandomWeaponAttachments == 0) then { _weaponAttachments = [""]; } else { _weaponAttachments  = [SC_RandomWeaponAttachments call BIS_fnc_selectRandom]; };         
+        if(count SC_RandomPistol == 0) then { _pistol = ""; } else { _pistol  = SC_RandomPistol call BIS_fnc_selectRandom; }; 
+        if(count SC_RandomPistolAttachments == 0) then { _pistolAttachments = [""]; } else { _pistolAttachments  = [SC_RandomPistolAttachments call BIS_fnc_selectRandom]; };    
+        if(count SC_RandomLauncher == 0) then { _launcher = ""; } else { _launcher  = SC_RandomLauncher call BIS_fnc_selectRandom; }; 
+        if(count SC_RandomBackpack == 0) then { _backpack = ""; } else { _backpack  = SC_RandomBackpack call BIS_fnc_selectRandom; };  
+        _assignedItems = SC_RandomAssignedItems;
+       
+        _magazines = [];
+        if(count SC_RandomMagazines > 0) then
+        {
+            _amountOfMagazines  = 1 + round random (2);
+            for "_i" from 1 to _amountOfMagazines do
+            {
+                _newMagazine    = SC_RandomMagazines call BIS_fnc_selectRandom;
+                _quantity       = 1 + round random (2);
+                _magazines pushBack [_newMagazine,_quantity];    
+            };             
+        };  
     }; 	
 };
 

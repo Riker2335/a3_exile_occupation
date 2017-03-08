@@ -16,7 +16,22 @@ for "_i" from 1 to SC_numberofHeliCrashes do
 	while{!_validspot} do 
 	{
 		sleep 0.2;
-		_position = [ false, false ] call SC_fnc_findsafePos;
+		if(SC_occupyHeliCrashesStatic) then
+		{
+			_tempPosition = SC_occupyHeliCrashesLocations call BIS_fnc_selectRandom;
+			SC_occupyHeliCrashesLocations = SC_occupyHeliCrashesLocations - _tempPosition;
+			
+			_position = [_tempPosition select 0, _tempPosition select 1, _tempPosition select 2];
+			if(isNil "_position") then
+			{
+				_position = [ false, false ] call SC_fnc_findsafePos;
+			};
+		}
+		else
+		{
+			_position = [ false, false ] call SC_fnc_findsafePos;
+		};
+		
 		_validspot	= true;
 	
 		//Check if near another heli crash site
@@ -37,7 +52,7 @@ for "_i" from 1 to SC_numberofHeliCrashes do
 	
 	_effect = "test_EmptyObjectForSmoke";  
 	
-	if(SC_numberofHeliCrashesFire) then 
+	if(SC_HeliCrashesOnFire) then 
 	{
 		_effect = "test_EmptyObjectForFireBig";	
 	};
@@ -45,6 +60,65 @@ for "_i" from 1 to SC_numberofHeliCrashes do
 	_heliFire = _effect createVehicle (position _vehHeli);   
 	_heliFire attachto [_vehHeli, [0,0,-1]];
 	_vehHeli setPos _position;
+	
+	if (SC_SpawnHeliCrashGuards) then
+	{
+			//Infantry spawn using DMS
+			_AICount = SC_HeliCrashGuards;
+			
+			if(SC_HeliCrashGuardsRandomize) then 
+			{
+				_AICount = 1 + (round (random (SC_HeliCrashGuards-1)));    
+			};
+
+			if(_AICount > 0) then
+			{
+				_spawnPosition = [_position select 0, _position select 1, 0];
+				
+				_initialGroup = createGroup SC_BanditSide;
+				_initialGroup setCombatMode "BLUE";
+				_initialGroup setBehaviour "SAFE";
+				
+				for "_i" from 1 to _AICount do
+				{		
+					_loadOut = ["bandit"] call SC_fnc_selectGear;
+					_unit = [_initialGroup,_spawnPosition,"custom","random","bandit","soldier",_loadOut] call DMS_fnc_SpawnAISoldier; 
+					_unitName = ["bandit"] call SC_fnc_selectName;
+					if(!isNil "_unitName") then { _unit setName _unitName; }; 
+					reload _unit;
+				};
+				
+				// Get the AI to shut the fuck up :)
+				enableSentences false;
+				enableRadio false;
+
+				  
+				_group = createGroup SC_BanditSide;           
+				_group setVariable ["DMS_LockLocality",nil];
+				_group setVariable ["DMS_SpawnedGroup",true];
+				_group setVariable ["DMS_Group_Side", SC_BanditSide];
+
+				{	
+					_unit = _x;           
+					[_unit] joinSilent grpNull;
+					[_unit] joinSilent _group;
+					_unit setCaptive false;                               
+				}foreach units _initialGroup;  		
+				deleteGroup _initialGroup;
+				
+				[_group, _spawnPosition, 100] call bis_fnc_taskPatrol;
+				_group setBehaviour "STEALTH";
+				_group setCombatMode "RED";
+
+				_logDetail = format ["[OCCUPATION:HeliCrash]::  Creating HeliCrash %3 at %1 with %2 guards",_position,_AICount,_i];
+				[_logDetail] call SC_fnc_log;		
+			};
+	}
+	else
+	{
+		_logDetail = format ["[OCCUPATION:HeliCrash]::  Creating HeliCrash %2 at %1 with no guards",_position,_i];
+		[_logDetail] call SC_fnc_log;	
+	};
 		
 	_positionOfBox = [_position,3,10,1,0,10,0] call BIS_fnc_findSafePos;
 	_box = "Box_NATO_Ammo_F" createvehicle _positionOfBox;

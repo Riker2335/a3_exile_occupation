@@ -13,20 +13,18 @@
 
 // Shared Config for each occupation monitor
 
-SC_debug						= false;					// set to true to turn on debug features (not recommended for live servers) 
+SC_debug						= false;					// set to true to turn on debug features (not recommended for live servers)
+SC_extendedLogging          	= false;                	// set to true for additional 
+SC_infiSTAR_log					= true;						// true Use infiSTAR logging, false logs to server rpt
+
 SC_useApexClasses           	= true;                 	// true if you want to use the Apex class list over rides, false to use vanilla Arma gear
 SC_useMapOverrides          	= true;                 	// set to true to enable over riding options per map (see the bottom of this file for examples)
-SC_extendedLogging          	= false;                	// set to true for additional logging
 
-SC_infiSTAR_log					= true;						// true Use infiSTAR logging, false logs to server rpt
 SC_maxAIcount					= 100;						// the maximum amount of AI, if the AI count is above this then additional AI won't spawn
 SC_mapMarkers					= false;                	// Place map markers at the occupied areas (occupyPlaces and occupyMilitary only) true/false
 SC_minFPS						= 5;				    	// any lower than minFPS on the server and additional AI won't spawn
 SC_scaleAI						= 10;						// any more than _scaleAI players on the server and _maxAIcount is reduced for each extra player
 
-SC_removeUserMapMarkers     	= true;                 	// true to delete map markers placed by players every 10 seconds
-
-															// Distance limits for selecting safe places to spawn AI
 SC_minDistanceToSpawnZones  	= 750;                  	// Minimum distance in metres to the nearest spawn zone
 SC_minDistanceToTraders     	= 750;                  	// Minimum distance in metres to the nearest trader zone
 SC_minDistanceToTerritory   	= 350;                  	// Minimum distance in metres to the nearest player territory
@@ -50,6 +48,7 @@ SC_occupyMilitary 		    	= false;			    	// true if you want military buildings 
 SC_occupyVehicle				= true;						// true if you want to have roaming AI land vehicles
 SC_occupySky					= true;						// true if you want to have roaming AI helis
 SC_occupySea					= false;					// true if you want to have roaming AI boats
+SC_occupyHeliCrashes			= true;						// true if you want to have Dayz style helicrashes
 
 /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 //	Fast nights Setup
@@ -71,11 +70,11 @@ SC_randomSpawnMaxGroupSize      = 5;                    	// Maximum amount of ra
 SC_randomSpawnChance			= 12;						// Percentage chance of spawning if suitable player found
 SC_randomSpawnIgnoreCount		= true;						// true if you want spawn random AI groups regardless of overall AI count (they still count towards the total though)
 SC_randomSpawnFrequency			= 3600;						// time in seconds between the possibility of random AI hunting the same player (1800 for 30 minutes)
-SC_randomSpawnAnnounce			= true;						// true if you want a warning toast issued to all players when AI spawns
-
 SC_randomSpawnNearBases			= true;						// true if you want to allow random spawns in range of territories
 SC_randomSpawnNearSpawns		= false;					// true if you want to allow random spawns in range of spawn zones
 SC_randomSpawnTargetBambis		= false;					// true if you want to allow random spawns to target bambis
+SC_randomSpawnAnnounce			= true;						// true if you want a warning toast issued to all players when AI spawns
+SC_randomSpawnNameTarget		= false;					// true if you want to name the targeted player
 
 /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 //	Occupy Places Setup
@@ -90,7 +89,7 @@ SC_occupyPlacesSurvivors		= true;						// true if you want a chance to spawn sur
 SC_occupyTraderDetails      	= [
 									//["Tanoa","Lifou Traders",[7317,7217,0],"trader1.sqf",true],
 									//["Tanoa","Lijnhaven Traders",[11580,2051,0],"trader1.sqf",true],
-									["Napf","Hafen Traders",[9286,17606,0],"trader1.sqf",true]
+									//["Napf","Hafen Traders",[9286,17606,0],"trader1.sqf",true]
 								  ];  //["mapname","Name",[x,y,z],"filename",true] trader name, location, safezone true/false
         	
 /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -141,6 +140,7 @@ SC_occupyLootCratesLocations	= [
                                     [3000,3000,0],
                                     [4000,4000,0]
                                 ];
+SC_SpawnLootCrateGuards			= true;						// true if you want to enable AI guards
 SC_numberofLootCrates       	= 6;                    	// if SC_occupyLootCrates = true spawn this many loot crates (overrided below for Namalsk)
 SC_LootCrateGuards          	= 2;                    	// number of AI to spawn at each crate
 SC_LootCrateGuardsRandomize 	= true;                 	// Use a random number of guards up to a maximum = SC_LootCrateGuards (so between 1 and SC_LootCrateGuards)
@@ -196,9 +196,18 @@ SC_blackListedAreas         	=   [
 //	Heli Crash Setup
 /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////								
 
-SC_occupyHeliCrashes			= true;					// true if you want to have Dayz style helicrashes
-SC_numberofHeliCrashesFire  	= true;                 // true if you want the crash on fire, false if you just want smoke
-SC_numberofHeliCrashes      	= 5;                    // if SC_occupyHeliCrashes = true spawn this many loot crates
+SC_occupyHeliCrashesStatic   	= false;			    	// true if you want to have random Heli Crash spawn in pre-defined locations set in SC_occupyHeliCrashesLocations
+SC_occupyHeliCrashesLocations	= [
+                                    [1000,1000,0],
+                                    [2000,2000,0],
+                                    [3000,3000,0],
+                                    [4000,4000,0]
+                                ];
+SC_HeliCrashesOnFire			= true;                 	// true if you want the crash on fire, false if you just want smoke
+SC_SpawnHeliCrashGuards			= true;						// true if you want to enable AI guards
+SC_numberofHeliCrashes      	= 5;						// if SC_occupyHeliCrashes = true spawn this many Heli Crashes
+SC_HeliCrashGuards          	= 6;                    	// number of AI to spawn at each crate
+SC_HeliCrashGuardsRandomize 	= true;                 	// Use a random number of guards up to a maximum = SC_HeliCrashGuards (so between 1 and SC_HeliCrashGuards)
 
 // Array of possible common items to go in heli crash crates ["classname",fixed amount,random amount] NOT INCLUDING WEAPONS
 // ["HandGrenade",0,2] this example would add between 0 and 2 HandGrenade to the crate (fixed 0 plus 0-2 random)
@@ -265,6 +274,21 @@ SC_VehicleClassToUse 			=   [
                                     ["Exile_Car_UAZ_Open_Green",2] 
                                 ];
 SC_VehicleClassToUseRare		=   [	
+                                    ["Exile_Car_Hunter",1],
+                                    ["Exile_Car_HEMMT",1],
+                                    ["Exile_Car_Zamak",1],
+                                    ["Exile_Car_Offroad_Armed_Guerilla12",1],
+                                    ["Exile_Car_Offroad_Armed_Guerilla03",1],
+                                    ["Exile_Car_Tempest",1] 
+                                ];
+								
+// Array of arrays of ground vehicles which can be used by Survivor AI patrols (the number next to next vehicle is the maximum amount of that class allowed, 0 for no limit)									
+SC_SurvivorVehicleClassToUse 			=   [	
+									["Exile_Car_LandRover_Green",0],
+                                    ["Exile_Bike_QuadBike_Black",2],
+                                    ["Exile_Car_UAZ_Open_Green",2] 
+                                ];
+SC_SurvivorVehicleClassToUseRare		=   [	
                                     ["Exile_Car_Hunter",1],
                                     ["Exile_Car_HEMMT",1],
                                     ["Exile_Car_Zamak",1],
@@ -391,7 +415,21 @@ SC_BanditPistol             	= ["hgun_ACPC2_F","hgun_P07_F","hgun_Pistol_heavy_0
 SC_BanditPistolAttachments  	= [];
 SC_BanditAssignedItems      	= ["ItemMap","ItemCompass","ItemRadio","ItemWatch"]; // all these items will be added
 SC_BanditLauncher           	= [];
-SC_BanditBackpack           	= ["B_HuntingBackpack","B_Kitbag_cbr","B_Kitbag_mcamo","B_Kitbag_sgg","B_OutdoorPack_blk","B_OutdoorPack_blu","B_OutdoorPack_tan","B_TacticalPack_blk","B_TacticalPack_mcamo","B_TacticalPack_ocamo","B_TacticalPack_oli","B_TacticalPack_rgr"];  								
+SC_BanditBackpack           	= ["B_HuntingBackpack","B_Kitbag_cbr","B_Kitbag_mcamo","B_Kitbag_sgg","B_OutdoorPack_blk","B_OutdoorPack_blu","B_OutdoorPack_tan","B_TacticalPack_blk","B_TacticalPack_mcamo","B_TacticalPack_ocamo","B_TacticalPack_oli","B_TacticalPack_rgr"];
+
+// Possible equipment for random ai to spawn with 
+// spawning random ai without vests or backpacks will result in them having no ammunition                                                    
+SC_RandomUniforms           	= ["U_B_GEN_Soldier_F"]; 
+SC_RandomVests              	= ["V_TacVest_gen_F"]; 
+SC_RandomHeadgear           	= ["H_Cap_police"];
+SC_RandomWeapon             	= ["SMG_05_F"];
+SC_RandomWeaponAttachments  	= ["muzzle_snds_L"];
+SC_RandomMagazines          	= ["Exile_Item_InstaDoc","Exile_Item_Vishpirin","Exile_Item_Bandage","Exile_Item_DuctTape","Exile_Item_PlasticBottleFreshWater","Exile_Item_Energydrink","Exile_Item_EMRE","Exile_Item_Cheathas","Exile_Item_Noodles","Exile_Item_BBQSandwich","Exile_Item_Catfood"];
+SC_RandomPistol             	= ["hgun_Rook40_F"];
+SC_RandomPistolAttachments  	= ["muzzle_snds_L"];
+SC_RandomAssignedItems      	= ["ItemMap","ItemCompass","ItemRadio","ItemWatch"]; // all these items will be added
+SC_RandomLauncher           	= [];
+SC_RandomBackpack           	= ["B_AssaultPack_blk"];
 								
 /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 //	Map Specific Overrides
@@ -424,22 +462,64 @@ if (worldName == 'Tanoa' AND SC_useMapOverrides) then
 
 if(SC_useApexClasses) then 
 {
-	SC_BanditWeapon 			= [	"arifle_MX_khk_F","arifle_MX_GL_khk_F","arifle_MX_SW_khk_F","arifle_MXC_khk_F","arifle_MXM_khk_F","arifle_AK12_F","arifle_AK12_GL_F","arifle_AKM_F",
-                                    "arifle_AKS_F","arifle_ARX_blk_F","arifle_ARX_ghex_F","arifle_ARX_hex_F","arifle_CTAR_blk_F","arifle_CTAR_GL_blk_F","arifle_CTARS_blk_F","arifle_SPAR_01_blk_F","arifle_SPAR_01_khk_F",
-                                    "arifle_SPAR_01_snd_F","arifle_SPAR_01_GL_blk_F","arifle_SPAR_01_GL_khk_F","arifle_SPAR_01_GL_snd_F","arifle_SPAR_02_blk_F","arifle_SPAR_02_khk_F","arifle_SPAR_02_snd_F",
-                                    "arifle_SPAR_03_blk_F","arifle_SPAR_03_khk_F","arifle_SPAR_03_snd_F"];
-	SC_BanditUniforms			= [	"U_I_C_Soldier_Para_1_F","U_I_C_Soldier_Para_2_F","U_I_C_Soldier_Para_3_F","U_I_C_Soldier_Para_4_F","U_I_C_Soldier_Para_5_F","U_I_C_Soldier_Bandit_1_F","U_I_C_Soldier_Bandit_2_F",
-								    "U_I_C_Soldier_Bandit_3_F","U_I_C_Soldier_Bandit_4_F","U_I_C_Soldier_Bandit_5_F","U_I_C_Soldier_Camo_F","U_B_CTRG_Soldier_urb_1_F","U_B_CTRG_Soldier_urb_2_F","U_B_CTRG_Soldier_urb_3_F"];
-	SC_VehicleClassToUse 		=   [	
+	SC_BanditWeapon 			=	[
+									"arifle_MX_khk_F",
+									"arifle_MX_GL_khk_F",
+									"arifle_MX_SW_khk_F",
+									"arifle_MXC_khk_F",
+									"arifle_MXM_khk_F",
+									"arifle_AK12_F",
+									"arifle_AK12_GL_F",
+									"arifle_AKM_F",
+									"arifle_AKS_F",
+									"arifle_ARX_blk_F",
+									"arifle_ARX_ghex_F",
+									"arifle_ARX_hex_F",
+									"arifle_CTAR_blk_F",
+									"arifle_CTAR_GL_blk_F",
+									"arifle_CTARS_blk_F",
+									"arifle_SPAR_01_blk_F",
+									"arifle_SPAR_01_khk_F",
+									"arifle_SPAR_01_snd_F",
+									"arifle_SPAR_01_GL_blk_F",
+									"arifle_SPAR_01_GL_khk_F",
+									"arifle_SPAR_01_GL_snd_F",
+									"arifle_SPAR_02_blk_F",
+									"arifle_SPAR_02_khk_F",
+									"arifle_SPAR_02_snd_F",
+									"arifle_SPAR_03_blk_F",
+									"arifle_SPAR_03_khk_F",
+									"arifle_SPAR_03_snd_F"
+									];
+									
+	SC_BanditUniforms			=	[
+									"U_I_C_Soldier_Para_1_F",
+									"U_I_C_Soldier_Para_2_F",
+									"U_I_C_Soldier_Para_3_F",
+									"U_I_C_Soldier_Para_4_F",
+									"U_I_C_Soldier_Para_5_F",
+									"U_I_C_Soldier_Bandit_1_F",
+									"U_I_C_Soldier_Bandit_2_F",
+									"U_I_C_Soldier_Bandit_3_F",
+									"U_I_C_Soldier_Bandit_4_F",
+									"U_I_C_Soldier_Bandit_5_F",
+									"U_I_C_Soldier_Camo_F",
+									"U_B_CTRG_Soldier_urb_1_F",
+									"U_B_CTRG_Soldier_urb_2_F",
+									"U_B_CTRG_Soldier_urb_3_F"
+									];
+	
+	SC_VehicleClassToUse 		=   [
 									["B_GEN_Offroad_01_gen_F",0],
 									["C_Offroad_02_unarmed_F",0],
 									["I_C_Offroad_02_unarmed_F",0]
-                                ];
+									];
+									
     SC_VehicleClassToUseRare	=   [	
                                     ["B_LSV_01_unarmed_black_F",1],
                                     ["O_T_LSV_02_unarmed_black_F",1],
                                     ["O_T_Truck_03_device_ghex_F",1]
-                                ];
+									];
 };
 
 /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////

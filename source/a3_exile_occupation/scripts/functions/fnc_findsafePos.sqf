@@ -15,6 +15,11 @@ if (worldName == 'Esseker') then
     _maxDist = 5000;
 };
 
+if (worldName == 'Chernarus') then 
+{ 
+	_maxDist = _middle - 1500;;
+};
+
 if(_roadSpawn) then
 {
     _maxDist = _maxDist - 1400;

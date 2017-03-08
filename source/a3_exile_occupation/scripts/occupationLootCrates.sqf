@@ -49,55 +49,58 @@ for "_i" from 1 to SC_numberofLootCrates do
 		_event_marker setMarkerSize [(3), (3)];
 	};	
 
-	//Infantry spawn using DMS
-    _AICount = SC_LootCrateGuards;
-    
-    if(SC_LootCrateGuardsRandomize) then 
-    {
-        _AICount = 1 + (round (random (SC_LootCrateGuards-1)));    
-    };
-
-	if(_AICount > 0) then
+	if (SC_SpawnLootCrateGuards) then
 	{
-		_spawnPosition = [_position select 0, _position select 1, 0];
-		
-		_initialGroup = createGroup SC_BanditSide;
-		_initialGroup setCombatMode "BLUE";
-        _initialGroup setBehaviour "SAFE";
-		
-        for "_i" from 1 to _AICount do
-        {		
-			_loadOut = ["bandit"] call SC_fnc_selectGear;
-			_unit = [_initialGroup,_spawnPosition,"custom","random","bandit","soldier",_loadOut] call DMS_fnc_SpawnAISoldier; 
-			_unitName = ["bandit"] call SC_fnc_selectName;
-			if(!isNil "_unitName") then { _unit setName _unitName; }; 
-			reload _unit;
-		};
-		
-		// Get the AI to shut the fuck up :)
-		enableSentences false;
-		enableRadio false;
+			//Infantry spawn using DMS
+			_AICount = SC_LootCrateGuards;
+			
+			if(SC_LootCrateGuardsRandomize) then 
+			{
+				_AICount = 1 + (round (random (SC_LootCrateGuards-1)));    
+			};
 
-	      
-		_group = createGroup SC_BanditSide;           
-		_group setVariable ["DMS_LockLocality",nil];
-		_group setVariable ["DMS_SpawnedGroup",true];
-		_group setVariable ["DMS_Group_Side", SC_BanditSide];
+			if(_AICount > 0) then
+			{
+				_spawnPosition = [_position select 0, _position select 1, 0];
+				
+				_initialGroup = createGroup SC_BanditSide;
+				_initialGroup setCombatMode "BLUE";
+				_initialGroup setBehaviour "SAFE";
+				
+				for "_i" from 1 to _AICount do
+				{		
+					_loadOut = ["bandit"] call SC_fnc_selectGear;
+					_unit = [_initialGroup,_spawnPosition,"custom","random","bandit","soldier",_loadOut] call DMS_fnc_SpawnAISoldier; 
+					_unitName = ["bandit"] call SC_fnc_selectName;
+					if(!isNil "_unitName") then { _unit setName _unitName; }; 
+					reload _unit;
+				};
+				
+				// Get the AI to shut the fuck up :)
+				enableSentences false;
+				enableRadio false;
 
-		{	
-			_unit = _x;           
-			[_unit] joinSilent grpNull;
-			[_unit] joinSilent _group;
-			_unit setCaptive false;                               
-		}foreach units _initialGroup;  		
-		deleteGroup _initialGroup;
-		
-		[_group, _spawnPosition, 100] call bis_fnc_taskPatrol;
-		_group setBehaviour "STEALTH";
-		_group setCombatMode "RED";
+				  
+				_group = createGroup SC_BanditSide;           
+				_group setVariable ["DMS_LockLocality",nil];
+				_group setVariable ["DMS_SpawnedGroup",true];
+				_group setVariable ["DMS_Group_Side", SC_BanditSide];
 
-		_logDetail = format ["[OCCUPATION:LootCrates]::  Creating crate %3 at drop zone %1 with %2 guards",_position,_AICount,_i];
-		[_logDetail] call SC_fnc_log;		
+				{	
+					_unit = _x;           
+					[_unit] joinSilent grpNull;
+					[_unit] joinSilent _group;
+					_unit setCaptive false;                               
+				}foreach units _initialGroup;  		
+				deleteGroup _initialGroup;
+				
+				[_group, _spawnPosition, 100] call bis_fnc_taskPatrol;
+				_group setBehaviour "STEALTH";
+				_group setCombatMode "RED";
+
+				_logDetail = format ["[OCCUPATION:LootCrates]::  Creating crate %3 at drop zone %1 with %2 guards",_position,_AICount,_i];
+				[_logDetail] call SC_fnc_log;		
+			};
 	}
 	else
 	{
