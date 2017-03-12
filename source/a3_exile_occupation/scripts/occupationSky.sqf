@@ -20,11 +20,11 @@ if(diag_fps < SC_minFPS) exitWith
     [_logDetail] call SC_fnc_log; 
 };
 
-_aiActive = {alive _x && (side _x == SC_BanditSide OR side _x == SC_SurvivorSide)} count allUnits;
-if(_aiActive > _maxAIcount) exitWith 
-{ 
-    _logDetail = format ["[OCCUPATION:Sky]:: %1 active AI, so not spawning AI this time",_aiActive]; 
-    [_logDetail] call SC_fnc_log; 
+_aiActive = { !isPlayer _x } count allunits;
+if((_aiActive > _maxAIcount) && !SC_occupySkyVehicleIgnoreCount) exitWith
+{
+    _logDetail = format ["[OCCUPATION:Sky]:: %1 active AI, so not spawning AI this time",_aiActive];
+    [_logDetail] call SC_fnc_log;
 };
 
 SC_liveHelis = count(SC_liveHelisArray);

@@ -22,7 +22,7 @@ if(diag_fps < SC_minFPS) exitWith
     [_logDetail] call SC_fnc_log; 
 };
 _aiActive = { !isPlayer _x } count allunits;
-if((_aiActive > _maxAIcount) && !SC_occupyVehicleIgnoreCount) exitWith 
+if((_aiActive > _maxAIcount) && !SC_occupyLandVehicleIgnoreCount) exitWith 
 { 
     _logDetail = format ["[OCCUPATION:Vehicle]:: %1 active AI, so not spawning AI this time",_aiActive]; 
     [_logDetail] call SC_fnc_log; 
