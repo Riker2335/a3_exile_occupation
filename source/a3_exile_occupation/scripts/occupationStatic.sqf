@@ -29,7 +29,7 @@ if(diag_fps < _minFPS) exitWith
 
 _aiActive = { !isPlayer _x } count allunits;
 
-if(_aiActive > _maxAIcount) exitWith 
+if(!(SC_staticIgnoreAICount) && (_aiActive > _maxAIcount)) exitWith 
 { 
     _logDetail = format ["[OCCUPATION Static]:: %1 active AI, so not spawning AI this time",_aiActive]; 
     [_logDetail] call SC_fnc_log;

@@ -41,7 +41,7 @@ if(_side == "survivor") then { _currentSide = SC_SurvivorSide };
 		
 		
 		// Don't spawn additional AI if there are players in range
-		if([_spawnPosition, 250] call ExileClient_util_world_isAlivePlayerInRange) exitwith 
+		if(!(SC_staticIgnoreNearbyPlayers) && ([_spawnPosition, 250] call ExileClient_util_world_isAlivePlayerInRange)) exitwith 
         { 
             _okToSpawn = false; 
             if(_debug) then 

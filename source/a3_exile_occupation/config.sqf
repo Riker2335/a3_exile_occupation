@@ -96,6 +96,8 @@ SC_occupyTraderDetails      	= [
 //	Occupy Static Setup
 /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////	
 
+SC_staticIgnoreNearbyPlayers	= false;// Spawn even if players are nearby
+SC_staticIgnoreAICount			= false;// Ignore the AI count for Static AI Spawns
 SC_staticBandits            	= [		//[[pos],ai count,radius,search buildings]	
     
 								  ];     
