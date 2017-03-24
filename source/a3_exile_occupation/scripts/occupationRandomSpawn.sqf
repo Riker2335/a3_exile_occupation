@@ -451,7 +451,7 @@ _livePlayers call BIS_fnc_arrayShuffle;
 			{
 				if (SC_randomSpawnNameTarget) then
 				{
-				["toastRequest", ["InfoTitleAndText", format["Raid group Incoming!", "A squad of Police have been despatched to take out %1!",name _selectedPlayer]]] call ExileServer_system_network_send_broadcast;
+				["toastRequest", ["InfoTitleAndText", ["Raid group Incoming!", format["A squad of Police have been despatched to take out %1!",name _selectedPlayer]]]] call ExileServer_system_network_send_broadcast;
 				}				
 				else
 				{
