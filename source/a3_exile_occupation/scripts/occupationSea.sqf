@@ -21,7 +21,7 @@ if(diag_fps < SC_minFPS) exitWith
 };
 
 _aiActive = {alive _x && (side _x == SC_BanditSide OR side _x == SC_SurvivorSide)} count allUnits;
-if(_aiActive > _maxAIcount) exitWith 
+if((_aiActive > _maxAIcount) && !SC_occupySeaVehicleIgnoreCount) exitWith
 { 
     _logDetail = format ["[OCCUPATION:Sea]:: %1 active AI, so not spawning AI this time",_aiActive]; 
     [_logDetail] call SC_fnc_log; 
@@ -135,6 +135,9 @@ for "_i" from 1 to _vehiclesToSpawn do
 			_vehicle setVariable ["ExileIsLocked", 0, true];
 			_vehicle setVariable ["ExileIsPersistent", false];
 			_vehicle action ["LightOn", _vehicle];
+			// Limit boat speed to help stop beaching
+			_vehicle setSpeedMode "LIMITED";
+            _vehicle limitSpeed 60;
 			sleep 0.2;
 			_group addVehicle _vehicle;	
 			

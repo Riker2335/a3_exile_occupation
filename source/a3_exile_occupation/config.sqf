@@ -327,6 +327,7 @@ SC_occupyHeliFixedPositions		= [
 
 // Settings for roaming seaborne AI (non armed boats will just sail around)
 SC_maxNumberofBoats		    = 1;
+SC_occupySeaVehicleIgnoreCount		= false;	// true if you want spawn vehicles regardless of overall AI count
 
 // Array of boats which can be used by AI patrols (the number next to next vehicle is the maximum amount of that class allowed, 0 for no limit)
 SC_BoatClassToUse 		    =   [	
