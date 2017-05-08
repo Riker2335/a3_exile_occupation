@@ -27,6 +27,8 @@ if(_aiActive > _maxAIcount) exitWith
     [_logDetail] call SC_fnc_log; 
 };
 
+SC_liveBoats = count(SC_liveBoatsArray);
+
 if(SC_liveBoats >= SC_maxNumberofBoats) exitWith 
 {
     if(SC_extendedLogging) then 
