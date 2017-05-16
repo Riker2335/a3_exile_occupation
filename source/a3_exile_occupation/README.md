@@ -1,6 +1,6 @@
 # Exile Occupation (a3_exile_occupation)
 
-![v68 New Features](https://img.shields.io/badge/v67-New%20Features-red.svg) ![Arma 1.70](https://img.shields.io/badge/Arma-1.70-blue.svg) ![Exile 1.0.2 Sweet Potato](https://img.shields.io/badge/Exile-1.0.2%20Sweet%20Potato-C72651.svg) 
+![v68 New Features](https://img.shields.io/badge/v68-New%20Features-red.svg) ![Arma 1.70](https://img.shields.io/badge/Arma-1.70-blue.svg) ![Exile 1.0.2 Sweet Potato](https://img.shields.io/badge/Exile-1.0.2%20Sweet%20Potato-C72651.svg) 
 
 WTF is Occupation?
 An AI spawner and monitor to be used in conjunction with DMS and will not work without it:
