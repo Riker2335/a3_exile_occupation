@@ -339,7 +339,7 @@ SC_BoatClassToUse 		    =   [
 								
 SC_occupyBoatUseFixedPos		= false;	// True if you want to specify the patrol positions and radius of the area to patrol / false for random
 
-											// if you set SC_maxNumberofHelis higher than the number of static positions, the remainder will be random
+											// if you set SC_maxNumberofBoats higher than the number of static positions, the remainder will be random
 											// they will also ignore any blacklisted areas
 SC_occupyBoatFixedPositions		= [
                                     [[200,200,0],2000,"Tanoa"],	// [[x,y,z],radius,"mapname"] leave no spaces between 
