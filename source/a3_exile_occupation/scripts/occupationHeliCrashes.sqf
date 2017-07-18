@@ -119,6 +119,19 @@ for "_i" from 1 to SC_numberofHeliCrashes do
 		_logDetail = format ["[OCCUPATION:HeliCrash]::  Creating HeliCrash %2 at %1 with no guards",_position,_i];
 		[_logDetail] call SC_fnc_log;	
 	};
+
+	_mapMarkerName = format ["SC_helicrash_marker_%1", _i];
+	
+	if (SC_occupyLootCratesMarkers) then 
+	{		
+		_heli_marker = createMarker [ format ["SC_helicrash_marker_%1", _i], _position];
+		_heli_marker setMarkerColor "ColorOrange";
+		_heli_marker setMarkerAlpha 1;
+		_heli_marker setMarkerText "Helicrash";
+		_heli_marker setMarkerType "c_air";
+		_heli_marker setMarkerBrush "Vertical";
+		_heli_marker setMarkerSize [(1), (1)];
+	};
 		
 	_positionOfBox = [_position,3,10,1,0,10,0] call BIS_fnc_findSafePos;
 	_box = "Box_NATO_Ammo_F" createvehicle _positionOfBox;
