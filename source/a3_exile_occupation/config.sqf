@@ -210,6 +210,7 @@ SC_SpawnHeliCrashGuards			= true;						// true if you want to enable AI guards
 SC_numberofHeliCrashes      	= 5;						// if SC_occupyHeliCrashes = true spawn this many Heli Crashes
 SC_HeliCrashGuards          	= 6;                    	// number of AI to spawn at each crate
 SC_HeliCrashGuardsRandomize 	= true;                 	// Use a random number of guards up to a maximum = SC_HeliCrashGuards (so between 1 and SC_HeliCrashGuards)
+SC_HeliCrashMarkers				= true;						// true if you want to have markers on the Heli Crashes
 
 // Array of possible common items to go in heli crash crates ["classname",fixed amount,random amount] NOT INCLUDING WEAPONS
 // ["HandGrenade",0,2] this example would add between 0 and 2 HandGrenade to the crate (fixed 0 plus 0-2 random)
@@ -455,9 +456,16 @@ if (worldName == 'Chernarus' AND SC_useMapOverrides) then
 
 if (worldName == 'Tanoa' AND SC_useMapOverrides) then 
 { 
-    SC_useApexClasses       	= true;
-	SC_maxAIcount				= 80;
+    SC_maxAIcount				= 80;
+	SC_useApexClasses       	= true;
 	
+};
+
+if (worldName == 'Malden' AND SC_useMapOverrides) then 
+{ 
+	SC_maxAIcount				= 70;
+	SC_useApexClasses           = false; 
+
 };
 
 /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
