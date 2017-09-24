@@ -15,20 +15,20 @@
 
 SC_debug						= false;					// set to true to turn on debug features (not recommended for live servers)
 SC_extendedLogging          	= false;                	// set to true for additional 
-SC_infiSTAR_log					= true;						// true Use infiSTAR logging, false logs to server rpt
+SC_infiSTAR_log					= false;						// true Use infiSTAR logging, false logs to server rpt
 
 SC_useApexClasses           	= true;                 	// true if you want to use the Apex class list over rides, false to use vanilla Arma gear
-SC_useMapOverrides          	= true;                 	// set to true to enable over riding options per map (see the bottom of this file for examples)
+SC_useMapOverrides          	= false;                 	// set to true to enable over riding options per map (see the bottom of this file for examples)
 
 SC_maxAIcount					= 100;						// the maximum amount of AI, if the AI count is above this then additional AI won't spawn
 SC_mapMarkers					= false;                	// Place map markers at the occupied areas (occupyPlaces and occupyMilitary only) true/false
-SC_minFPS						= 5;				    	// any lower than minFPS on the server and additional AI won't spawn
+SC_minFPS						= 15;				    	// any lower than minFPS on the server and additional AI won't spawn
 SC_scaleAI						= 10;						// any more than _scaleAI players on the server and _maxAIcount is reduced for each extra player
 
 SC_minDistanceToSpawnZones  	= 750;                  	// Minimum distance in metres to the nearest spawn zone
 SC_minDistanceToTraders     	= 750;                  	// Minimum distance in metres to the nearest trader zone
 SC_minDistanceToTerritory   	= 350;                  	// Minimum distance in metres to the nearest player territory
-SC_minDistanceToPlayer      	= 250;                  	// Minimum distance in metres to the nearest player
+SC_minDistanceToPlayer      	= 500;                  	// Minimum distance in metres to the nearest player
 SC_useWaypoints					= true;                 	// When spawning AI create waypoints to make them enter buildings (can affect performance when the AI is spawned and the waypoints are calculated)
 
 
@@ -36,17 +36,17 @@ SC_useWaypoints					= true;                 	// When spawning AI create waypoint
 //	Turn Modules On or Off (can be overridden in the map overrides section)
 /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
-SC_processReporter				= true;                 	// log the a list of active server processes every 60 seconds (useful for debugging server problems)
+SC_processReporter				= false;                 	// log the a list of active server processes every 60 seconds (useful for debugging server problems)
 SC_fastNights               	= true;						// true if you want night time to go faster than daytime
-SC_occupyPlaces 				= true;						// true if you want villages,towns,cities patrolled by bandits
-SC_occupyTraders            	= true;						// true if you want to create trader camps at positions specified in SC_occupyTraderDetails
+SC_occupyPlaces 				= false;						// true if you want villages,towns,cities patrolled by bandits
+SC_occupyTraders            	= false;						// true if you want to create trader camps at positions specified in SC_occupyTraderDetails
 SC_occupyStatic	 		    	= false;		    		// true if you want to add AI in specific locations
-SC_occupyTransport 	        	= true;						// true if you want pubic transport (travels between traders)
+SC_occupyTransport 	        	= false;						// true if you want pubic transport (travels between traders)
 SC_occupyLootCrates		    	= true;						// true if you want to have random loot crates with guards
-SC_occupyRandomSpawn        	= true;                		// (WORK IN PROGRESS) true if you want random spawning AI that hunt for nearby players
+SC_occupyRandomSpawn        	= false;                		// (WORK IN PROGRESS) true if you want random spawning AI that hunt for nearby players
 SC_occupyMilitary 		    	= false;			    	// true if you want military buildings patrolled
-SC_occupyVehicle				= true;						// true if you want to have roaming AI land vehicles
-SC_occupySky					= true;						// true if you want to have roaming AI helis
+SC_occupyVehicle				= false;						// true if you want to have roaming AI land vehicles
+SC_occupySky					= false;						// true if you want to have roaming AI helis
 SC_occupySea					= false;					// true if you want to have roaming AI boats
 SC_occupyHeliCrashes			= true;						// true if you want to have Dayz style helicrashes
 
@@ -55,7 +55,7 @@ SC_occupyHeliCrashes			= true;						// true if you want to have Dayz style helic
 /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
 SC_fastNightsStarts         	= 18;                   	// Start fast nights at this hour (24 hour clock) eg. 18 for 6pm
-SC_fastNightsMultiplierNight	= 24;                   	// the time multiplier to use at night (12 = 12x speed)
+SC_fastNightsMultiplierNight	= 8;                   	// the time multiplier to use at night (12 = 12x speed)
 SC_fastNightsEnds           	= 6;                    	// End fast nights at this hour (24 hour clock) eg. 6 for 6am
 SC_fastNightsMultiplierDay  	= 4;                    	// the time multiplier to use during daylight hours (4 = 4x speed)
 
@@ -69,12 +69,12 @@ SC_randomSpawnMinGroupSize      = 3;                    	// Minimum amount of ra
 SC_randomSpawnMaxGroupSize      = 5;                    	// Maximum amount of random AI groups allowed per group
 SC_randomSpawnChance			= 12;						// Percentage chance of spawning if suitable player found
 SC_randomSpawnIgnoreCount		= true;						// true if you want spawn random AI groups regardless of overall AI count (they still count towards the total though)
-SC_randomSpawnFrequency			= 3600;						// time in seconds between the possibility of random AI hunting the same player (1800 for 30 minutes)
-SC_randomSpawnNearBases			= true;						// true if you want to allow random spawns in range of territories
+SC_randomSpawnFrequency			= 14400;						// time in seconds between the possibility of random AI hunting the same player (1800 for 30 minutes)
+SC_randomSpawnNearBases			= false;						// true if you want to allow random spawns in range of territories
 SC_randomSpawnNearSpawns		= false;					// true if you want to allow random spawns in range of spawn zones
 SC_randomSpawnTargetBambis		= false;					// true if you want to allow random spawns to target bambis
 SC_randomSpawnAnnounce			= true;						// true if you want a warning toast issued to all players when AI spawns
-SC_randomSpawnNameTarget		= false;					// true if you want to name the targeted player
+SC_randomSpawnNameTarget		= true;					// true if you want to name the targeted player
 
 /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 //	Occupy Places Setup
@@ -143,41 +143,48 @@ SC_occupyLootCratesLocations	= [
                                     [4000,4000,0]
                                 ];
 SC_SpawnLootCrateGuards			= true;						// true if you want to enable AI guards
-SC_numberofLootCrates       	= 6;                    	// if SC_occupyLootCrates = true spawn this many loot crates (overrided below for Namalsk)
-SC_LootCrateGuards          	= 2;                    	// number of AI to spawn at each crate
+SC_numberofLootCrates       	= 4;                    	// if SC_occupyLootCrates = true spawn this many loot crates (overrided below for Namalsk)
+SC_LootCrateGuards          	= 4;                    	// number of AI to spawn at each crate
 SC_LootCrateGuardsRandomize 	= true;                 	// Use a random number of guards up to a maximum = SC_LootCrateGuards (so between 1 and SC_LootCrateGuards)
 SC_occupyLootCratesMarkers		= true;						// true if you want to have markers on the loot crate spawns
 
-SC_ropeAttach               	= false;                	// Allow lootcrates to be airlifted (for SC_occupyLootCrates and SC_occupyHeliCrashes)
+SC_ropeAttach               	= true;                	// Allow lootcrates to be airlifted (for SC_occupyLootCrates and SC_occupyHeliCrashes)
 
 // Array of possible common items to go in loot crates ["classname",fixed amount,random amount]
 // ["Exile_Item_Matches",1,2] this example would add between 1 and 3 Exile_Item_Matches to the crate (1 + 0 to 2 more)
 // to add a fixed amount make the second number 0
 SC_LootCrateItems           	= [
-                                    ["Exile_Melee_Axe",1,0],
+                                    ["Exile_Melee_Axe",0,1],
                                     ["Exile_Item_GloriousKnakworst",1,2],
-                                    ["Exile_Item_PlasticBottleFreshWater",1,2],
-                                    ["Exile_Item_Beer",5,1],
-                                    ["Exile_Item_BaseCameraKit",0,2],
-                                    ["Exile_Item_InstaDoc",1,1],
+                                    ["Exile_Item_PlasticBottleFreshWater",0,2],
+                                    ["Exile_Item_Beer",1,1],
+                                    ["Exile_Item_BaseCameraKit",0,1],
+                                    ["Exile_Item_InstaDoc",0,2],
                                     ["Exile_Item_Matches",1,0],
                                     ["Exile_Item_CookingPot",1,0],                      
-                                    ["Exile_Item_MetalPole",1,0],
-                                    ["Exile_Item_LightBulb",1,0],
-                                    ["Exile_Item_FuelCanisterEmpty",1,0],
-                                    ["Exile_Item_WoodPlank",0,8],
+                                    ["Exile_Item_MetalPole",0,2],
+                                    ["Exile_Item_LightBulb",0,1],
+                                    ["Exile_Item_FuelCanisterEmpty",0,1],
+                                    ["Exile_Item_WoodPlank",0,4],
                                     ["Exile_Item_woodFloorKit",0,2],
                                     ["Exile_Item_WoodWindowKit",0,1],
                                     ["Exile_Item_WoodDoorwayKit",0,1],
-                                    ["Exile_Item_WoodFloorPortKit",0,2],   
-                                    ["Exile_Item_Laptop",0,1],
+                                    ["Exile_Item_WoodFloorPortKit",0,1],   
                                     ["Exile_Item_CodeLock",0,1],
-									["Exile_Item_Cement",2,10],
-									["Exile_Item_Sand",2,10],
-									["Exile_Item_MetalWire",1,5],
-									["Exile_Item_WaterCanisterEmpty",0,2],
-									["Exile_Item_Shovel",0,1],
-									["Exile_Item_MetalScrews",0,5]
+									["Exile_Item_Cement",0,3],
+									["Exile_Item_Sand",0,5],
+									["Exile_Item_Junkmetal",0,3],
+									["Exile_Item_MetalBoard",0,2],
+									["Exile_Item_MetalScrews",0,1],
+									["Exile_Item_MetalWire",0,1],
+									["Exile_Item_Watercanisterempty",0,1],
+									["Exile_Item_Heatpack",0,2],
+									// Exile Extended Items Stuff
+									["Exitem_documents",0,2],
+									["Exitem_nails",0,2],
+									["Exitem_measuringtape",0,1],
+									// Ammo for starter pistol
+									["CUP_17Rnd_9x19_glock17",0,2]
                             ];
 
 /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -205,12 +212,12 @@ SC_occupyHeliCrashesLocations	= [
                                     [3000,3000,0],
                                     [4000,4000,0]
                                 ];
-SC_HeliCrashesOnFire			= true;                 	// true if you want the crash on fire, false if you just want smoke
-SC_SpawnHeliCrashGuards			= true;						// true if you want to enable AI guards
-SC_numberofHeliCrashes      	= 5;						// if SC_occupyHeliCrashes = true spawn this many Heli Crashes
+SC_HeliCrashesOnFire			= false;                 	// true if you want the crash on fire, false if you just want smoke
+SC_SpawnHeliCrashGuards			= false;						// true if you want to enable AI guards
+SC_numberofHeliCrashes      	= 2;						// if SC_occupyHeliCrashes = true spawn this many Heli Crashes
 SC_HeliCrashGuards          	= 6;                    	// number of AI to spawn at each crate
 SC_HeliCrashGuardsRandomize 	= true;                 	// Use a random number of guards up to a maximum = SC_HeliCrashGuards (so between 1 and SC_HeliCrashGuards)
-SC_HeliCrashMarkers				= true;						// true if you want to have markers on the Heli Crashes
+SC_HeliCrashMarkers				= false;						// true if you want to have markers on the Heli Crashes
 
 // Array of possible common items to go in heli crash crates ["classname",fixed amount,random amount] NOT INCLUDING WEAPONS
 // ["HandGrenade",0,2] this example would add between 0 and 2 HandGrenade to the crate (fixed 0 plus 0-2 random)
@@ -218,25 +225,41 @@ SC_HeliCrashMarkers				= true;						// true if you want to have markers on the H
 
 SC_HeliCrashItems           	=   [
                                     ["B_Parachute",1,1],
+									["U_B_HeliPilotCoveralls",1,1],
                                     ["H_CrewHelmetHeli_B",1,1],
-                                    ["ItemGPS",0,1],
+									["H_PilotHelmetFighter_B",0,1],
+                                    ["I_UavTerminal",0,1],
                                     ["Exile_Item_InstaDoc",0,1],
                                     ["Exile_Item_PlasticBottleFreshWater",2,2],
-                                    ["Exile_Item_EMRE",2,2]                                 
+                                    ["Exile_Item_EMRE",2,2],
+									["Rangefinder",0,1],
+									["Exile_Item_MobilePhone",0,2],
+									["Exile_Item_DuctTape",0,3],
+									["NVGoggles",0,1],
+									["NVGogglesB_blk_F",0,1]                       
                                 ];
 
 SC_HeliCrashRareItems       	=   [
-                                    ["HandGrenade",0,2],
-                                    ["APERSBoundingMine_Range_Mag",0,2]                 
+                                    ["MiniGrenade",2,2],
+									["Laserdesignator",0,1],
+									["H_HelmetO_ViperSP_hex_F",0,1],
+									["launch_B_Titan_short_F",0,1],
+									["launch_RPG32_F",0,1],
+									["launch_NLAW_F",0,1],
+									["I_UAV_01_backpack_F",1,0]                
                                 ];
-SC_HeliCrashRareItemChance  	= 10;                   // percentage chance to spawn each SC_HeliCrashRareItems
+SC_HeliCrashRareItemChance  	= 20;                   // percentage chance to spawn each SC_HeliCrashRareItems
                                 
 // Array of possible weapons to place in the crate                            
 SC_HeliCrashWeapons         	=   [
                                     "srifle_DMR_02_camo_F",
                                     "srifle_DMR_03_woodland_F",
                                     "srifle_DMR_04_F",
-                                    "srifle_DMR_05_hex_F"
+                                    "srifle_DMR_05_hex_F",
+									"CUP_srifle_AWM_wdl",
+									"CUP_srifle_SVD",
+									"CUP_lmg_M249_para",
+									"CUP_lmg_Mk48_wdl"
                                 ];
                                 
 SC_HeliCrashWeaponsAmount   	= [1,3]; 	// [fixed amount to add, random amount to add]
@@ -255,8 +278,8 @@ SC_maximumCrewAmount        	= 5;     	// Maximum amount of AI allowed in a vehi
 /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
 SC_maxNumberofVehicles 	    	= 3;		// How many roaming vehicles to spawn	
-SC_occupyLandVehicleIgnoreCount		= false;	// true if you want spawn vehicles regardless of overall AI count
-SC_occupyVehiclesLocked			= false;	// true if AI vehicles to stay locked until all the linked AI are dead		
+SC_occupyLandVehicleIgnoreCount		= true;	// true if you want spawn vehicles regardless of overall AI count
+SC_occupyVehiclesLocked			= true;	// true if AI vehicles to stay locked until all the linked AI are dead		
 SC_occupyVehicleSurvivors		= false;	// true if you want a chance to spawn survivor AI as well as bandits (SC_occupyVehicle must be true to use this option)
 
 SC_occupyVehicleUseFixedPos		= false;		// True if you want to specify the patrol positions and radius of the area to patrol / false for random
@@ -272,12 +295,16 @@ SC_occupyVehicleFixedPositions	= [
 
 // Array of arrays of ground vehicles which can be used by AI patrols (the number next to next vehicle is the maximum amount of that class allowed, 0 for no limit)				
 SC_VehicleClassToUse 			=   [	
-									["Exile_Car_LandRover_Green",0],
-                                    ["Exile_Bike_QuadBike_Black",2],
-                                    ["Exile_Car_UAZ_Open_Green",2] 
+									//["Exile_Car_LandRover_Green",0],
+                                    //["Exile_Bike_QuadBike_Black",2],
+									["Exile_Car_Ural_Covered_Military",2],
+									["Exile_Car_Lada_Taxi",2],
+									["CUP_I_UAZ_OPEN_UN",2],
+									["CUP_I_UAZ_UNARMED_UN",2],
+                                    ["Exile_Car_UAZ_Open_Green",0] 
                                 ];
 SC_VehicleClassToUseRare		=   [	
-                                    ["Exile_Car_Hunter",1],
+                                   //["Exile_Car_Hunter",1],
                                     ["Exile_Car_HEMMT",1],
                                     ["Exile_Car_Zamak",1],
                                     ["Exile_Car_Offroad_Armed_Guerilla12",1],
@@ -311,7 +338,7 @@ SC_occupySkyVehicleIgnoreCount		= false;	// true if you want spawn vehicles rega
 // Array of aircraft which can be used by AI patrols (the number next to next vehicle is the maximum amount of that class allowed, 0 for no limit)
 SC_HeliClassToUse 		    	=   [ ["Exile_Chopper_Huey_Armed_Green",0] ];
 
-SC_occupyHeliUseFixedPos		= true;		// True if you want to specify the patrol positions and radius of the area to patrol / false for random
+SC_occupyHeliUseFixedPos		= false;		// True if you want to specify the patrol positions and radius of the area to patrol / false for random
 
 											// if you set SC_maxNumberofHelis higher than the number of static positions, the remainder will be random
 											// they will also ignore any blacklisted areas
@@ -332,10 +359,10 @@ SC_occupySeaVehicleIgnoreCount		= false;	// true if you want spawn vehicles rega
 
 // Array of boats which can be used by AI patrols (the number next to next vehicle is the maximum amount of that class allowed, 0 for no limit)
 SC_BoatClassToUse 		    =   [	
-                                    ["B_Boat_Armed_01_minigun_F",1],
-                                    ["I_Boat_Armed_01_minigun_F",1],
+                                    //["B_Boat_Armed_01_minigun_F",1],
+                                    //["I_Boat_Armed_01_minigun_F",1],
                                     ["O_Boat_Transport_01_F",0],
-                                    ["Exile_Boat_MotorBoat_Police",1] 
+                                    //["Exile_Boat_MotorBoat_Police",1] 
                                 ];
 								
 SC_occupyBoatUseFixedPos		= false;	// True if you want to specify the patrol positions and radius of the area to patrol / false for random
@@ -466,6 +493,13 @@ if (worldName == 'Malden' AND SC_useMapOverrides) then
 	SC_maxAIcount				= 70;
 	SC_useApexClasses           = false; 
 
+};
+
+if (worldName == 'Abramia' AND SC_useMapOverrides) then 
+{ 
+    SC_useApexClasses       	= true;
+	SC_maxAIcount				= 180;
+	
 };
 
 /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
