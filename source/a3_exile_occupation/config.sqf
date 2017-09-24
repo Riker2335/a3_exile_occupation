@@ -361,7 +361,7 @@ SC_occupySeaVehicleIgnoreCount		= false;	// true if you want spawn vehicles rega
 SC_BoatClassToUse 		    =   [	
                                     //["B_Boat_Armed_01_minigun_F",1],
                                     //["I_Boat_Armed_01_minigun_F",1],
-                                    ["O_Boat_Transport_01_F",0],
+                                    ["O_Boat_Transport_01_F",0]
                                     //["Exile_Boat_MotorBoat_Police",1] 
                                 ];
 								
